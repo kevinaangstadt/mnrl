@@ -1,0 +1,66 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "id": "mnrl-schema.json",
+    "type": "object",
+    "definitions": {
+        "element" : {
+            "type": "object",
+            "properties": {
+                "id": { "type": "string" },
+                "type": {
+                    "type": "string",
+                    "enum": [
+                        "state",
+                        "hState",
+                        "upCounter",
+                        "boolean"
+                    ]
+                },
+                "enable": {
+                    "type": "string",
+                    "enum": [ "onActivateIn", "onStartAndActivateIn", "always" ]
+                },
+                "report": { "type": "boolean" },
+                "inputDefs" : {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "portId": { "type": "string" },
+                            "width": { "type": "number" }
+                        }
+                    }
+                },
+                "outputDefs" : {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "portId": { "type": "string" },
+                            "activate": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "portId": { "type": "string" }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "attributes": { "type": "array" },
+            }
+        }
+    },
+    "properties": {
+        "id": { "type": "string" },
+        "elements": {
+            "type": "array",
+            "items": {
+                "$ref": "#/definitions/element"
+            }
+        }
+    }
+}
