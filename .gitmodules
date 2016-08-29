@@ -1,0 +1,3 @@
+[submodule "jsonschema"]
+	path = jsonschema
+	url = https://github.com/Julian/jsonschema.git
