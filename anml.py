@@ -235,7 +235,7 @@ class Counter(object):
     def getMNRL(self):
         MNRLObject = {
             'id': self.anmlId,
-            'type': 'uCounter',
+            'type': 'upCounter',
             'report': self.match,
             'enable': 'onActivateIn',
             'inputDefs': [

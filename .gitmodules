@@ -1,6 +1,3 @@
-[submodule "jsonschema"]
-	path = jsonschema
-	url = https://github.com/Julian/jsonschema.git
 [submodule "untangle"]
 	path = untangle
 	url = https://github.com/stchris/untangle.git

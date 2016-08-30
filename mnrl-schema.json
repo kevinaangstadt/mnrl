@@ -50,7 +50,7 @@
                         }
                     }
                 },
-                "attributes": { "type": "array" },
+                "attributes": { "type": "object" }
             }
         }
     },
