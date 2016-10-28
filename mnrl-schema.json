@@ -37,6 +37,7 @@
                         "type": "object",
                         "properties": {
                             "portId": { "type": "string" },
+                            "width": { "type": "number" },
                             "activate": {
                                 "type": "array",
                                 "items": {
