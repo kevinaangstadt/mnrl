@@ -308,7 +308,7 @@ class State(MNRLNode):
             for output_id, symbol_set in outputSymbols:
                 if isinstance(output_id, basestring):
                     stateAttributes.symbolSet[output_id] = symbol_set
-                    outputDefs.append((output,id,1))
+                    outputDefs.append((output_id,1))
                 else:
                     raise mnrlerror.PortDefError("output")
         except ValueError:
