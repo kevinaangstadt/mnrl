@@ -4,11 +4,11 @@ import os, sys, argparse, json
 
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../')
 sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../untangle')
-sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../jsonschema')
+sys.path.append(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../json-spec/src/')
 
 from anml import *
 import untangle
-from jsonschema import validate
+from jsonspec.validators import load
 
 def raw2anml(raw):
     # our anml network
@@ -111,11 +111,17 @@ def main():
         except IndexError:
             print "Could not find ANML root"
             sys.exit(1)
-            
-    mnrl = network.getMNRL()
-    schema = json.load('mnrl-schema.json')
     
-    validate(mnrl,schema)
+    f = open(os.path.dirname(os.path.abspath(sys.argv[0])) + '/../mnrl-schema.json')
+    mnrl_schema = json.load(f)
+    f.close()
+    
+    #mnrl = network.getMNRL()
+    schema = load(mnrl_schema)
+    
+    schema.validate(json.loads(network.getMNRL()))
+    
+    #schema.validate(mnrl)
     
     f = open(args.outfile, 'w')
     f.write(json.dumps(json.loads(network.getMNRL()), indent=2, sort_keys=True))

@@ -133,6 +133,74 @@ class MNRLNetwork(object):
     
     def addConnection(self, source, destination):
         """Add a connection between node 'source' (id,port) and 'destination' (id,port)"""
+        (s_id,
+         s_port,
+         s_node,
+         s_output_width,
+         s_output,
+         d_id,
+         d_port,
+         d_node,
+         d_input_width,
+         d_input) = self.__getConnectionNodeInformation(source, destination)
+        
+        if s_output_width != d_input_width:
+            raise mnrlerror.PortWidthMismatch(s_output_width, d_input_width)
+        
+        s_output.append({
+            'id': d_id,
+            'portId': d_port
+        })
+        
+        d_input.append({
+            'id': s_id,
+            'portId': s_port
+        })
+    
+    def removeConnection(self, source, destination):
+        """Remove a connection between 'source' (id,port) and 'destination'
+        (id,port). If no connection exists, do nothing."""
+        (s_id,
+         s_port,
+         s_node,
+         s_output_width,
+         s_output,
+         d_id,
+         d_port,
+         d_node,
+         d_input_width,
+         d_input) = self.__getConnectionNodeInformation(source, destination)
+        
+        # remove the connection
+        try:
+            s_output.remove({
+                'id': d_id,
+                'portId': d_port
+            })
+        except ValueError:
+            pass # don't care
+        
+        try:
+            d_input.remove({
+                'id': s_id,
+                'portId': s_port
+            })
+        except ValueError:
+            pass # don't care
+        
+    def _getUniqueNodeId(self,id):
+        """return a unique ID for the MNRL network. If an ID is passed in and is
+        unique, it will be returned."""
+        if id is None:
+            id = "_" + self._elements_added
+            self._elements_added += 1
+            
+        if id in self.elements:
+            raise MNRLDuplicateId('This MNRL id already exists: ' + id)
+        
+        return id
+    
+    def __getConnectionNodeInformation(self, source, destination):
         try:
             s_id, s_port = source
             d_id, d_port = destination
@@ -148,29 +216,20 @@ class MNRLNetwork(object):
             raise mnrlerror.UnknownPort(s_id,s_port)
             
         try:
-            d_input_width = d_node.inputDefs[d_port]
+            d_input_width, d_input = d_node.inputDefs[d_port]
         except KeyError:
             raise mnrlerror.UnknownPort(d_id,d_port)
         
-        if s_output_width != d_input_width:
-            raise mnrlerror.PortWidthMismatch(s_output_width, d_input_width)
-        
-        s_output.append({
-            'id': d_id,
-            'portId': d_port
-        })
-    
-    def _getUniqueNodeId(self,id):
-        """return a unique ID for the MNRL network. If an ID is passed in and is
-        unique, it will be returned."""
-        if id is None:
-            id = "_" + self._elements_added
-            self._elements_added += 1
-            
-        if id in self.elements:
-            raise MNRLDuplicateId('This MNRL id already exists: ' + id)
-        
-        return id
+        return (s_id,
+                s_port,
+                s_node,
+                s_output_width,
+                s_output,
+                d_id,
+                d_port,
+                d_node,
+                d_input_width,
+                d_input)
 
 class MNRLNode(object):
     def __init__(self,
@@ -199,15 +258,13 @@ class MNRLNode(object):
         #validate output ports
         self.outputDefs = self.__validate_ports(outputDefs,"output")
         
-        #store output connections
-        for port,width in self.outputDefs.iteritems():
-            self.outputDefs[port] = (width,[])
-        
         self.attributes = attributes
         
     
     def __validate_ports(port_def,inout):
-        portDefs = {}
+        '''Returns a dictionary of ports. Keys are the port id's; each maps to a
+        width and list of connections tuple.'''
+        portDefs = dict()
         try:
             for port_id,width in inputDefs:
                 # check that the port_id is a string
@@ -216,7 +273,7 @@ class MNRLNode(object):
                         raise mnrlerror.DuplicatePortId(port_id)
                     else:
                         if isinstance(width, int):
-                            portDefs[port_id] = width
+                            portDefs[port_id] = (width, [])
                         else:
                             raise mnrlerror.InvalidPortWidth(width)
                 else:
