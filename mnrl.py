@@ -260,6 +260,13 @@ class MNRLNode(object):
         
         self.attributes = attributes
         
+    def getOutputConnections(self):
+        """Returns the output connections dict of portid => (width, conn_list)"""
+        return self.outputDefs
+    
+    def getInputConnections(self):
+        """Returns the input connections dict of portid => (width, conn_list)"""
+        return self.inputsDefs
     
     def __validate_ports(port_def,inout):
         '''Returns a dictionary of ports. Keys are the port id's; each maps to a
