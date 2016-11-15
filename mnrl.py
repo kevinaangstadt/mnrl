@@ -268,19 +268,37 @@ class MNRLNode(object):
         self.attributes = attributes
     
     def toJSON(self):
-        def enableToJSON(term):
-            if term == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
-                return "onActivateIn"
-            elif term == MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN:
-                return "onStartAndActivateIn"
-            elif term == MNRLDefs.ENABLE_ALWAYS:
-                return "always"
-            elif term == MNRLDefs.ENABLE_ON_LAST:
-                return "onLast"
+        # define the enable string
+        if self.enable == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
+            enable_string = "onActivateIn"
+        elif self.enable == MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN:
+            enable_string = "onStartAndActivateIn"
+        elif self.enable == MNRLDefs.ENABLE_ALWAYS:
+            enable_string = "always"
+        elif self.enable == MNRLDefs.ENABLE_ON_LAST:
+            enable_string = "onLast"
+            
+        # properly define input ports (drop the connections)
+        inputDefs = list()
+        for port_id,(width,_) in self.inputDefs.iteritems():
+            inputDefs.append({
+                'portId': port_id,
+                'width': width
+            })
+        
+        # properly define output ports
+        outputDefs = list()
+        for port_id,(width,connection_list) in self.outputDefs.iteritems():
+            outputDefs.append({
+                'portId': port_id,
+                'width': width,
+                'activate': connection_list
+            })
+            
         return json.dumps({
             'id' : self.id,
             'report' : self.report,
-            'enable' : enableToJSON(self.enable),
+            'enable' : enable_string,
             'inputDefs' : self.inputDefs,
             'outputDefs' : self.outputDefs,
             'attributes' : self.attributes
