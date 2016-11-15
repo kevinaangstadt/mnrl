@@ -266,17 +266,17 @@ class MNRLNode(object):
     
     def getInputConnections(self):
         """Returns the input connections dict of portid => (width, conn_list)"""
-        return self.inputsDefs
+        return self.inputDefs
     
-    def __validate_ports(port_def,inout):
+    def __validate_ports(self,port_def,inout):
         '''Returns a dictionary of ports. Keys are the port id's; each maps to a
         width and list of connections tuple.'''
         portDefs = dict()
         try:
-            for port_id,width in inputDefs:
+            for port_id,width in port_def:
                 # check that the port_id is a string
                 if isinstance(port_id, basestring):
-                    if port_id in self.inputDefs:
+                    if port_id in portDefs:
                         raise mnrlerror.DuplicatePortId(port_id)
                     else:
                         if isinstance(width, int):
@@ -306,7 +306,8 @@ class State(MNRLNode):
             'reportId': reportId,
             'latched': latched,
             'symbolSet': dict()
-        }.update(attributes)
+        }
+        stateAttributes.update(attributes)
         
         # outputSymbols is a tuple:
         # ("outputId","symbolSet")
@@ -314,7 +315,7 @@ class State(MNRLNode):
         try:
             for output_id, symbol_set in outputSymbols:
                 if isinstance(output_id, basestring):
-                    stateAttributes.symbolSet[output_id] = symbol_set
+                    stateAttributes['symbolSet'][output_id] = symbol_set
                     outputDefs.append((output_id,1))
                 else:
                     raise mnrlerror.PortDefError("output")
@@ -327,7 +328,7 @@ class State(MNRLNode):
             report = report,
             inputDefs = [(MNRLDefs.H_STATE_INPUT,1)],
             outputDefs = outputDefs,
-            attributes = hStateAttributes
+            attributes = stateAttributes
         )
 
 class HState(MNRLNode):
@@ -347,7 +348,8 @@ class HState(MNRLNode):
             'latched': latched,
             'reportId': reportId,
             'symbolSet': symbols
-        }.update(attributes)
+        }
+        hStateAttributes.update(attributes)
         
         super(HState, self).__init__(
             id = id,
@@ -372,7 +374,8 @@ class UpCounter(MNRLNode):
             'reportId': reportId,
             'threshold': threshold,
             'mode': mode
-        }.update(attributes)
+        }
+        counterAttributes.update(attributes)
         
         #validate that the threshold is a non-negative int
         if not (isinstance(threshold, int) and threshold >= 0):
@@ -419,7 +422,8 @@ class Boolean(MNRLNode):
             booleanAttributes = {
                 'gateType': gateType,
                 'reportId': reportId
-            }.update(attributes)
+            }
+            booleanAttributes.update(attributes)
             
             inputDefs = []
             for i in range(portCount):
