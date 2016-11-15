@@ -18,7 +18,7 @@
                 },
                 "enable": {
                     "type": "string",
-                    "enum": [ "onActivateIn", "onStartAndActivateIn", "always" ]
+                    "enum": [ "onActivateIn", "onStartAndActivateIn", "onLast", "always" ]
                 },
                 "report": { "type": "boolean" },
                 "inputDefs" : {

@@ -29,6 +29,16 @@ class MNRLDefs(object):
         'not': 1,
         'nand': 1
     }
+    
+    def toJSON(term):
+        if term == ENABLE_ON_ACTIVATE_IN:
+            return "onActivateIn"
+        elif term == ENABLE_ON_START_AND_ACTIVATE_IN:
+            return "onStartAndActivateIn"
+        elif term == ENABLE_ALWAYS:
+            return "always"
+        elif term == ENABLE_ON_LAST:
+            return "onLast"
 
 class MNRLNetwork(object):
     """Represents the top level of a MNRL file."""
@@ -38,6 +48,12 @@ class MNRLNetwork(object):
         self.id = id
         self.elements = dict()
         self._elements_added = 0
+        
+    def toJSON(self):
+        return json.dumps({
+            'id' : self.id,
+            'elements' : [json.loads(e.toJSON()) for _,e in self.elements.iteritems()]
+        })
     
     def getNodeById(self, id):
         """Return the element from the MNRL network with the given ID"""
@@ -245,7 +261,8 @@ class MNRLNode(object):
         if enable not in [
             MNRLDefs.ENABLE_ALWAYS,
             MNRLDefs.ENABLE_ON_ACTIVATE_IN,
-            MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN
+            MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN,
+            MNRLDefs.ENABLE_ON_LAST
             ]:
             raise mnrlerror.EnableError(enable)
         self.enable = enable
@@ -259,7 +276,17 @@ class MNRLNode(object):
         self.outputDefs = self.__validate_ports(outputDefs,"output")
         
         self.attributes = attributes
-        
+    
+    def toJSON(self):
+        return json.dumps({
+            'id' : self.id,
+            'report' : self.report,
+            'enable' : MNRLDefs.toJSON(self.enable),
+            'inputDefs' : self.inputDefs,
+            'outputDefs' : self.outputDefs,
+            'attributes' : self.attributes
+        })
+    
     def getOutputConnections(self):
         """Returns the output connections dict of portid => (width, conn_list)"""
         return self.outputDefs
@@ -330,6 +357,11 @@ class State(MNRLNode):
             outputDefs = outputDefs,
             attributes = stateAttributes
         )
+    
+    def toJSON(self):
+        j = json.loads(super(State, self).toJSON())
+        j.update({'type' : 'state'})
+        return json.dumps(s)
 
 class HState(MNRLNode):
     """Object representation of a homogeneous state. A homogenous state only has
@@ -359,6 +391,11 @@ class HState(MNRLNode):
             outputDefs = [(MNRLDefs.H_STATE_OUTPUT,1)],
             attributes = hStateAttributes
         )
+    
+    def toJSON(self):
+        j = json.loads(super(HState, self).toJSON())
+        j.update({'type' : 'hState'})
+        return json.dumps(j)
         
 class UpCounter(MNRLNode):
     def __init__(self,
@@ -402,6 +439,11 @@ class UpCounter(MNRLNode):
             ],
             attributes = counterAttributes
         )
+    
+    def toJSON(self):
+        j = json.loads(super(UpCounter, self).toJSON())
+        j.update({'type' : 'upCounter'})
+        return json.dumps(j)
 
 class Boolean(MNRLNode):
     def __init__(self,
@@ -439,3 +481,7 @@ class Boolean(MNRLNode):
             )
         else:
             raise mnrlerror.InvalidGateFormat()
+    def toJSON(self):
+        j = json.loads(super(Boolean, self).toJSON())
+        j.update({'type' : 'boolean'})
+        return json.dumps(j)
