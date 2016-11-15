@@ -29,16 +29,6 @@ class MNRLDefs(object):
         'not': 1,
         'nand': 1
     }
-    
-    def toJSON(term):
-        if term == ENABLE_ON_ACTIVATE_IN:
-            return "onActivateIn"
-        elif term == ENABLE_ON_START_AND_ACTIVATE_IN:
-            return "onStartAndActivateIn"
-        elif term == ENABLE_ALWAYS:
-            return "always"
-        elif term == ENABLE_ON_LAST:
-            return "onLast"
 
 class MNRLNetwork(object):
     """Represents the top level of a MNRL file."""
@@ -278,10 +268,19 @@ class MNRLNode(object):
         self.attributes = attributes
     
     def toJSON(self):
+        def enableToJSON(term):
+            if term == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
+                return "onActivateIn"
+            elif term == MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN:
+                return "onStartAndActivateIn"
+            elif term == MNRLDefs.ENABLE_ALWAYS:
+                return "always"
+            elif term == MNRLDefs.ENABLE_ON_LAST:
+                return "onLast"
         return json.dumps({
             'id' : self.id,
             'report' : self.report,
-            'enable' : MNRLDefs.toJSON(self.enable),
+            'enable' : enableToJSON(self.enable),
             'inputDefs' : self.inputDefs,
             'outputDefs' : self.outputDefs,
             'attributes' : self.attributes
@@ -361,7 +360,7 @@ class State(MNRLNode):
     def toJSON(self):
         j = json.loads(super(State, self).toJSON())
         j.update({'type' : 'state'})
-        return json.dumps(s)
+        return json.dumps(j)
 
 class HState(MNRLNode):
     """Object representation of a homogeneous state. A homogenous state only has
