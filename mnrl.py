@@ -299,8 +299,8 @@ class MNRLNode(object):
             'id' : self.id,
             'report' : self.report,
             'enable' : enable_string,
-            'inputDefs' : self.inputDefs,
-            'outputDefs' : self.outputDefs,
+            'inputDefs' : inputDefs,
+            'outputDefs' : outputDefs,
             'attributes' : self.attributes
         })
     
