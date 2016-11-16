@@ -36,19 +36,19 @@ class MNRLNetwork(object):
     def __init__(self, id):
         """Create a MNRL Network with an id set to 'id'"""
         self.id = id
-        self.elements = dict()
-        self._elements_added = 0
+        self.nodes = dict()
+        self._nodes_added = 0
         
     def toJSON(self):
         return json.dumps({
             'id' : self.id,
-            'elements' : [json.loads(e.toJSON()) for _,e in self.elements.iteritems()]
+            'nodes' : [json.loads(e.toJSON()) for _,e in self.nodes.iteritems()]
         })
     
     def getNodeById(self, id):
         """Return the element from the MNRL network with the given ID"""
         try:
-            return self.elements[id]
+            return self.nodes[id]
         except KeyError:
             raise mnrlerror.UnknownNode(id)
     
@@ -56,7 +56,7 @@ class MNRLNetwork(object):
         """Add a MNRL Node object to the Network. Note that this may assign an
         ID to the node if none exists."""
         theNode.id = self._getUniqueNodeId(theNode.id)
-        self.elements[theNode.id] = node
+        self.nodes[theNode.id] = node
         return theNode
     
     def addState(self,
@@ -74,7 +74,7 @@ class MNRLNetwork(object):
         
         state = State(outputSymbols, enable=enable, id=id, report=report, reportId=reportId, latched=latched, attributes=attributes)
         
-        self.elements[id] = state
+        self.nodes[id] = state
         
         return state
     
@@ -93,7 +93,7 @@ class MNRLNetwork(object):
         
         hState = HState(symbols,enable=enable,id=id,report=report,reportId=reportId,latched=latched,attributes=attributes)
         
-        self.elements[id] = hState
+        self.nodes[id] = hState
         
         return hState
     
@@ -111,7 +111,7 @@ class MNRLNetwork(object):
         
         new_counter = UpCounter(target, mode=mode, id=id, report=report, reportId=reportId, attributes=attributes)
         
-        self.elements[id] = new_counter
+        self.nodes[id] = new_counter
         
         return new_counter
     
@@ -133,7 +133,7 @@ class MNRLNetwork(object):
         
         boolean = Boolean(booleanType,portCount=number_of_ports,id=id,enable=enable,report=report,reportId=reportId,attributes=attributes)
         
-        self.elements[id] = boolean
+        self.nodes[id] = boolean
         
         return boolean
     
@@ -198,10 +198,10 @@ class MNRLNetwork(object):
         """return a unique ID for the MNRL network. If an ID is passed in and is
         unique, it will be returned."""
         if id is None:
-            id = "_" + self._elements_added
-            self._elements_added += 1
+            id = "_" + self._nodes_added
+            self._nodes_added += 1
             
-        if id in self.elements:
+        if id in self.nodes:
             raise MNRLDuplicateId('This MNRL id already exists: ' + id)
         
         return id

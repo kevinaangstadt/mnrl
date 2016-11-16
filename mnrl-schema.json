@@ -3,7 +3,7 @@
     "id": "mnrl-schema.json",
     "type": "object",
     "definitions": {
-        "element" : {
+        "node" : {
             "type": "object",
             "properties": {
                 "id": { "type": "string" },
@@ -57,10 +57,10 @@
     },
     "properties": {
         "id": { "type": "string" },
-        "elements": {
+        "nodes": {
             "type": "array",
             "items": {
-                "$ref": "#/definitions/element"
+                "$ref": "#/definitions/node"
             }
         }
     }
