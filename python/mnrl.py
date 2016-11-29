@@ -113,8 +113,7 @@ class MNRLNetwork(object):
     def exportToFile(self, filename):
         """Save the MNRL Network to filename"""
         with open(filename,"w") as f:
-            json.dump(json.loads(self.toJSON), f, sortedKeys=True,
-                      indent=2, separators=(',', ': '))
+            json.dump(json.loads(self.toJSON()), f, indent=2)
     
     def getNodeById(self, id):
         """Return the element from the MNRL network with the given ID"""
@@ -127,7 +126,7 @@ class MNRLNetwork(object):
         """Add a MNRL Node object to the Network. Note that this may assign an
         ID to the node if none exists."""
         theNode.id = self._getUniqueNodeId(theNode.id)
-        self.nodes[theNode.id] = node
+        self.nodes[theNode.id] = theNode
         return theNode
     
     def addState(self,
@@ -650,9 +649,9 @@ class MNRLDecoder(json.JSONDecoder):
             for k in n['outputDefs']:
                 # for each output port
                 for c in k['activate']:
-                    mnrl_object.addConnection(
+                    mnrl_obj.addConnection(
                         (n['id'],k['portId']),
-                        (c['id'],c['portid'])
+                        (c['id'],c['portId'])
                     )
         
         return mnrl_obj
