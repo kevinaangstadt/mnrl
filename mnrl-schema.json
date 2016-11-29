@@ -4,18 +4,8 @@
     "type": "object",
     "definitions": {
         "node" : {
-            "type": "object",
             "properties": {
                 "id": { "type": "string" },
-                "type": {
-                    "type": "string",
-                    "enum": [
-                        "state",
-                        "hState",
-                        "upCounter",
-                        "boolean"
-                    ]
-                },
                 "enable": {
                     "type": "string",
                     "enum": [ "onActivateIn", "onStartAndActivateIn", "onLast", "always" ]
@@ -28,7 +18,8 @@
                         "properties": {
                             "portId": { "type": "string" },
                             "width": { "type": "number" }
-                        }
+                        },
+                        "required": ["portId","width"]
                     }
                 },
                 "outputDefs" : {
@@ -45,14 +36,160 @@
                                     "properties": {
                                         "id": { "type": "string" },
                                         "portId": { "type": "string" }
-                                    }
+                                    },
+                                    "required": ["id","portId"]
                                 }
                             }
+                        },
+                        "required": ["portId","width","activate"]
+                    }
+                }
+            },
+            "required": ["id","enable","report","inputDefs","outputDefs"]
+        },
+        "attributes": {
+            "type": "object",
+            "properties": {
+                "reportId": { "type": [ "string", "number" ] }
+            }
+        },
+        "state": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["state"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "latched": {
+                                            "type": "boolean"
+                                        },
+                                        "symbolSet" : {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "required": ["symbolSet"]
+                                }
+                            ]
                         }
                     }
+                }
+            ]
+        },
+        "hState": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
                 },
-                "attributes": { "type": "object" }
-            }
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["hState"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "latched": {
+                                            "type": "boolean"
+                                        },
+                                        "symbolSet" : {
+                                            "type": "string"
+                                        }
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "upCounter": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["upCounter"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "threshold": {
+                                            "type": "number"
+                                        },
+                                        "mode": {
+                                            "enum": [
+                                                "trigger",
+                                                "high",
+                                                "rollover"
+                                            ]
+                                        }
+                                    },
+                                    "required": ["threshold","mode"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "boolean": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["boolean"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "gateType": {
+                                            "enum": [
+                                                "and",
+                                                "or",
+                                                "nor",
+                                                "not",
+                                                "nand"
+                                            ]
+                                        }
+                                    },
+                                    "required": ["gateType"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
         }
     },
     "properties": {
@@ -60,8 +197,15 @@
         "nodes": {
             "type": "array",
             "items": {
-                "$ref": "#/definitions/node"
+                "oneOf": [
+                    { "$ref": "#/definitions/state" },
+                    { "$ref": "#/definitions/hState" },
+                    { "$ref": "#/definitions/upCounter" },
+                    { "$ref": "#/definitions/boolean" }
+                ]
             }
-        }
-    }
+        },
+        "attributes" : { "type": "object" }
+    },
+    "required" : ["id", "nodes"]
 }

@@ -17,7 +17,7 @@ def loadMNRL(filename):
         try:
             jsonschema.validate(json.loads(json_string),schema)
         except jsonschema.exceptions.ValidationError as e:
-            print "ERROR:", e.message
+            print "ERROR:", e
             return None
         
         # parse into MNRL
@@ -47,6 +47,7 @@ class MNRLDefs(object):
         'nand': 1
     }
     
+    @staticmethod
     def fromMNRLEnable(en):
         if en == "onActivateIn":
             return MNRLDefs.ENABLE_ON_ACTIVATE_IN
@@ -59,6 +60,7 @@ class MNRLDefs(object):
         else:
             raise mnrlerror.EnableError(en)
     
+    @staticmethod
     def toMNRLEnable(en):
         if en == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
             return "onActivateIn"
@@ -70,7 +72,8 @@ class MNRLDefs(object):
             return "onLast"
         else:
             raise mnrlerror.EnableError(en)
-        
+    
+    @staticmethod
     def fromMNRLCounterMode(m):
         if m == "trigger":
             return MNRLDefs.TRIGGER_ON_THRESHOLD
@@ -81,6 +84,7 @@ class MNRLDefs(object):
         else:
             raise mnrlerror.UpCounterModeError(m)
     
+    @staticmethod
     def toMNRLCounterMode(m):
         if m == MNRLDefs.TRIGGER_ON_THRESHOLD:
             return "trigger"
@@ -109,7 +113,8 @@ class MNRLNetwork(object):
     def exportToFile(self, filename):
         """Save the MNRL Network to filename"""
         with open(filename,"w") as f:
-            f.write(self.toJSON)
+            json.dump(json.loads(self.toJSON), f, sortedKeys=True,
+                      indent=2, separators=(',', ': '))
     
     def getNodeById(self, id):
         """Return the element from the MNRL network with the given ID"""
@@ -565,7 +570,7 @@ class Boolean(MNRLNode):
 
 class MNRLDecoder(json.JSONDecoder):
     def decode(self, json_string):
-        default_obj = super(TemplateJSONDecoder,self).decode(json_string)
+        default_obj = super(MNRLDecoder,self).decode(json_string)
         
         # build up a proper MNRL representation
         mnrl_obj = MNRLNetwork(default_obj['id'])
@@ -582,8 +587,8 @@ class MNRLDecoder(json.JSONDecoder):
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     id = n['id'],
                     report = n['report'],
-                    latched = n['attributes']['latched'],
-                    reportId = n['attributes']['reportId'],
+                    latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
+                    reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
             elif n['type'] == "hState":
@@ -592,8 +597,8 @@ class MNRLDecoder(json.JSONDecoder):
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     id = n['id'],
                     report = n['report'],
-                    latched = n['attributes']['latched'],
-                    reportId = n['attributes']['reportId'],
+                    latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
+                    reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
             elif n['type'] == "upCounter":
@@ -602,7 +607,7 @@ class MNRLDecoder(json.JSONDecoder):
                     mode = MNRLDefs.fromMNRLCounterMode(n['attributes']['mode']),
                     id = n['id'],
                     report = n['report'],
-                    reportId = n['attributes']['reportId'],
+                    reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
             elif n['type'] == "Boolean":
@@ -614,7 +619,7 @@ class MNRLDecoder(json.JSONDecoder):
                     id = n['id'],
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     report = n['report'],
-                    reportId = n['attributes']['reportId'],
+                    reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
             else:
