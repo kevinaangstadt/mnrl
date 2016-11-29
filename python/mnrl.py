@@ -180,7 +180,7 @@ class MNRLNetwork(object):
         
         id = self._getUniqueNodeId(id)
         
-        new_counter = UpCounter(target, mode=mode, id=id, report=report, reportId=reportId, attributes=attributes)
+        new_counter = UpCounter(threshold, mode=mode, id=id, report=report, reportId=reportId, attributes=attributes)
         
         self.nodes[id] = new_counter
         
