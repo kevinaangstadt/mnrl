@@ -6,6 +6,23 @@
 
 import json
 import mnrlerror
+import jsonschema
+
+def loadMNRL(filename):
+    with open("mnrl-schema.json", "r") as s:
+        schema = json.load(s)
+    with open(filename, "r") as f:
+        json_string = f.read()
+        
+        try:
+            jsonschema.validate(json.loads(json_string),schema)
+        except jsonschema.exceptions.ValidationError as e:
+            print "ERROR:", e.message
+            return None
+        
+        # parse into MNRL
+        d = MNRLDecoder()
+        return d.decode(json_string)
 
 class MNRLDefs(object):
     (ENABLE_ON_ACTIVATE_IN,
@@ -29,6 +46,50 @@ class MNRLDefs(object):
         'not': 1,
         'nand': 1
     }
+    
+    def fromMNRLEnable(en):
+        if en == "onActivateIn":
+            return MNRLDefs.ENABLE_ON_ACTIVATE_IN
+        elif en == "onStartAndActivateIn":
+            return MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN
+        elif en == "onLast":
+            return MNRLDefs.ENABLE_ON_LAST
+        elif en == "always":
+            return MNRLDefs.ENABLE_ALWAYS
+        else:
+            raise mnrlerror.EnableError(en)
+    
+    def toMNRLEnable(en):
+        if en == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
+            return "onActivateIn"
+        elif en == MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN:
+            return "onStartAndActivateIn"
+        elif en == MNRLDefs.ENABLE_ALWAYS:
+            return "always"
+        elif en == MNRLDefs.ENABLE_ON_LAST:
+            return "onLast"
+        else:
+            raise mnrlerror.EnableError(en)
+        
+    def fromMNRLCounterMode(m):
+        if m == "trigger":
+            return MNRLDefs.TRIGGER_ON_THRESHOLD
+        elif m == "high":
+            return MNRLDefs.HIGH_ON_THRESHOLD
+        elif m == "rollover":
+            return MNRLDefs.ROLLOVER_ON_THRESHOLD
+        else:
+            raise mnrlerror.UpCounterModeError(m)
+    
+    def toMNRLCounterMode(m):
+        if m == MNRLDefs.TRIGGER_ON_THRESHOLD:
+            return "trigger"
+        elif m == MNRLDefs.HIGH_ON_THRESHOLD:
+            return "high"
+        elif m == MNRLDefs.ROLLOVER_ON_THRESHOLD:
+            return "rollover"
+        else:
+            raise mnrlerror.UpCounterModeError(m)
 
 class MNRLNetwork(object):
     """Represents the top level of a MNRL file."""
@@ -44,6 +105,11 @@ class MNRLNetwork(object):
             'id' : self.id,
             'nodes' : [json.loads(e.toJSON()) for _,e in self.nodes.iteritems()]
         })
+
+    def exportToFile(self, filename):
+        """Save the MNRL Network to filename"""
+        with open(filename,"w") as f:
+            f.write(self.toJSON)
     
     def getNodeById(self, id):
         """Return the element from the MNRL network with the given ID"""
@@ -269,14 +335,7 @@ class MNRLNode(object):
     
     def toJSON(self):
         # define the enable string
-        if self.enable == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
-            enable_string = "onActivateIn"
-        elif self.enable == MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN:
-            enable_string = "onStartAndActivateIn"
-        elif self.enable == MNRLDefs.ENABLE_ALWAYS:
-            enable_string = "always"
-        elif self.enable == MNRLDefs.ENABLE_ON_LAST:
-            enable_string = "onLast"
+        enable_string = MNRLDefs.toMNRLEnable(self.enable)
             
         # properly define input ports (drop the connections)
         inputDefs = list()
@@ -460,6 +519,7 @@ class UpCounter(MNRLNode):
     def toJSON(self):
         j = json.loads(super(UpCounter, self).toJSON())
         j.update({'type' : 'upCounter'})
+        j['attributes'].update({'mode' : MNRLDefs.toMNRLCounterMode(j['attributes']['mode'])})
         return json.dumps(j)
 
 class Boolean(MNRLNode):
@@ -502,3 +562,92 @@ class Boolean(MNRLNode):
         j = json.loads(super(Boolean, self).toJSON())
         j.update({'type' : 'boolean'})
         return json.dumps(j)
+
+class MNRLDecoder(json.JSONDecoder):
+    def decode(self, json_string):
+        default_obj = super(TemplateJSONDecoder,self).decode(json_string)
+        
+        # build up a proper MNRL representation
+        mnrl_obj = MNRLNetwork(default_obj['id'])
+        
+        # build up the mnrl network in two passes
+        # 1. add all the nodes
+        # 2. add all the connections
+        
+        for n in default_obj['nodes']:
+            # for each node in the network, add it to the network
+            if n['type'] == "state":
+                node = State(
+                    n['attributes']['symbolSet'],
+                    enable = MNRLDefs.fromMNRLEnable(n['enable']),
+                    id = n['id'],
+                    report = n['report'],
+                    latched = n['attributes']['latched'],
+                    reportId = n['attributes']['reportId'],
+                    attributes = n['attributes']
+                )
+            elif n['type'] == "hState":
+                node = HState(
+                    n['attributes']['symbolSet'],
+                    enable = MNRLDefs.fromMNRLEnable(n['enable']),
+                    id = n['id'],
+                    report = n['report'],
+                    latched = n['attributes']['latched'],
+                    reportId = n['attributes']['reportId'],
+                    attributes = n['attributes']
+                )
+            elif n['type'] == "upCounter":
+                node = UpCounter(
+                    n['attributes']['threshold'],
+                    mode = MNRLDefs.fromMNRLCounterMode(n['attributes']['mode']),
+                    id = n['id'],
+                    report = n['report'],
+                    reportId = n['attributes']['reportId'],
+                    attributes = n['attributes']
+                )
+            elif n['type'] == "Boolean":
+                if n['attributes']['gateType'] not in MNRLDefs.BOOLEAN_TYPES:
+                    raise mnrlerror.InvalidGateType(n['attributes']['gateType'])
+                node = Boolean(
+                    n['attributes']['gateType'],
+                    portCounte=MNRLDefs.BOOLEAN_TYPES[n['attributes']['gateType']],
+                    id = n['id'],
+                    enable = MNRLDefs.fromMNRLEnable(n['enable']),
+                    report = n['report'],
+                    reportId = n['attributes']['reportId'],
+                    attributes = n['attributes']
+                )
+            else:
+                # convert input defs into format needed for constructor
+                ins = list()
+                for k in n['inputDefs']:
+                    ins.append((k['portId'],k['width']))
+                    
+                # convert output defs into format needed for constructor
+                outs = list()
+                for k in n['outputDefs']:
+                    outs.append((k['portId'], k['width']))
+
+                node = MNRLNode(
+                    id = n['id'],
+                    enable = MNRLDefs.fromMNRLEnable(n['enable']),
+                    report = n['report'],
+                    inputDefs = ins,
+                    outputDefs = outs,
+                    attributes = n['attributes']
+                )
+            
+            # add the node to the network
+            mnrl_obj.addNode(node)
+        
+        for n in default_obj['nodes']:
+            # for each node, add all the connections
+            for k in n['outputDefs']:
+                # for each output port
+                for c in k['activate']:
+                    mnrl_object.addConnection(
+                        (n['id'],k['portId']),
+                        (c['id'],c['portid'])
+                    )
+        
+        return mnrl_obj
