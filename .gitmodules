@@ -1,0 +1,6 @@
+[submodule "C++/lib/valijson"]
+	path = C++/lib/valijson
+	url = https://github.com/tristanpenman/valijson.git
+[submodule "C++/lib/json11"]
+	path = C++/lib/json11
+	url = https://github.com/dropbox/json11.git
