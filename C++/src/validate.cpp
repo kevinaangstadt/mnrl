@@ -1,4 +1,4 @@
-#include <rapidjson/document.h>
+#include <json11.hpp>
 
 #include <valijson/adapters/json11_adapter.hpp>
 #include <valijson/utils/json11_utils.hpp>
