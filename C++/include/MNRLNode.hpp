@@ -7,9 +7,9 @@
 #define MNRLNODE_HPP
 
 #include <map>
+#include <memory>
 #include <string>
 #include <vector>
-#include <tuple>
 #include <json11.hpp>
 #include "MNRLDefs.hpp"
 #include "MNRLPort.hpp"
@@ -20,19 +20,19 @@ namespace MNRL {
 	class MNRLPort;
     class MNRLNode {
         public:
-            MNRLNode(
+			MNRLNode(
                 std::string id,
                 MNRL::MNRLDefs::EnableType enable,
                 bool report,
-                std::vector<MNRL::MNRLPort> inputDefs,
-                std::vector<MNRL::MNRLPort> outputDefs,
-                std::map<std::string, json11::Json> attributes
+                std::vector<std::shared_ptr<MNRL::MNRLPort>> inputDefs,
+                std::vector<std::shared_ptr<MNRL::MNRLPort>> outputDefs,
+                std::map<std::string, std::shared_ptr<json11::Json>> attributes
             );
-            ~MNRLNode();
-            json11::Json to_json();
+            virtual ~MNRLNode();
+            virtual json11::Json to_json();
 
-            std::map<std::string, MNRL::MNRLPort> *getOutputConnections();
-            std::map<std::string, MNRL::MNRLPort> *getInputConnections();
+            std::shared_ptr<MNRL::port_map> getOutputConnections();
+            std::shared_ptr<MNRL::port_map> getInputConnections();
 
             std::string getId();
             bool getReport();
@@ -47,12 +47,12 @@ namespace MNRL {
             std::string id;
             bool report;
             MNRL::MNRLDefs::EnableType enable;
-            std::map<std::string, MNRL::MNRLPort> *inputDefs;
-            std::map<std::string, MNRL::MNRLPort> *outputDefs;
-            std::map<std::string, json11::Json> attributes;
+            std::map<std::string, *MNRL::MNRLPort> *inputDefs;
+            std::map<std::string, *MNRL::MNRLPort> *outputDefs;
+            std::map<std::string, *json11::Json> attributes;
 
         private:
-            std::map<std::string, MNRL::MNRLPort> *validate_ports(std::vector<MNRL::MNRLPort> portdef);
+            std::shared_ptr<MNRL::port_map> validate_ports(std::vector<std::shared_ptr<MNRL::MNRLPort>> &portdef);
     };
 
 

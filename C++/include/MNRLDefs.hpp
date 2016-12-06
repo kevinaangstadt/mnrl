@@ -32,6 +32,14 @@ namespace MNRL {
 				NAND
             };
 
+            const std::string STATE_INPUT = "i";
+            const std::string H_STATE_INPUT = STATE_INPUT;
+
+            const std::string H_STATE_OUTPUT = "o";
+            const std::string UP_COUNTER_OUTPUT = H_STATE_OUTPUT;
+            const std::string BOOLEAN_OUTPUT = H_STATE_OUTPUT;
+
+
             static unsigned int BooleanToPort(const BooleanMode b);
             static std::string toMNRLEnable(const EnableType e);
     };

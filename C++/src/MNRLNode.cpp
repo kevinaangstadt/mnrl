@@ -12,23 +12,23 @@ using namespace MNRL;
 using namespace json11;
 
 MNRLNode::MNRLNode(
-		string id,
-		MNRLDefs::EnableType enable,
-		bool report,
-		vector<MNRLPort> inputDefs,
-		vector<MNRLPort> outputDefs,
-		map<string, Json> attributes
-) : id(id),
-    enable(enable),
-	report(report),
-	inputDefs( MNRLNode::validate_ports(inputDefs) ),
-	outputDefs( MNRLNode::validate_ports(outputDefs) ),
-	attributes(attributes) {};
+					string id,
+					MNRLDefs::EnableType enable,
+					bool report,
+					vector<shared_ptr<MNRLPort>> inputDefs,
+					vector<shared_ptr<MNRLPort>> outputDefs,
+					map<string, shared_ptr<Json>> attributes
+				) : id(id),
+					enable(enable),
+					report(report),
+					inputDefs( MNRLNode::validate_ports(inputDefs) ),
+					outputDefs( MNRLNode::validate_ports(outputDefs) ),
+					attributes(attributes) {}
 
 MNRLNode::~MNRLNode() {
 	delete inputDefs;
 	delete outputDefs;
-};
+}
 
 Json MNRLNode::to_json() {
 
@@ -45,7 +45,7 @@ Json MNRLNode::to_json() {
 	vector<Json::object> oDefs;
 	for(auto &kv : *outputDefs) {
 		// get all of the connections
-		vector<pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>>> conn = kv.second.getConnections();
+		port_conns conn = kv.second.getConnections();
 		vector<Json::object> mnrl_conn;
 		for(pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>> &np : conn) {
 			mnrl_conn.push_back(Json::object {
@@ -102,8 +102,8 @@ Json MNRLNode::to_json() {
 	 */
 }
 
-map<string, MNRLPort> *MNRLNode::getOutputConnections(){ return outputDefs; }
-map<string, MNRLPort> *MNRLNode::getInputConnections(){ return inputDefs; }
+shared_ptr<port_map> MNRLNode::getOutputConnections(){ return outputDefs; }
+shared_ptr<port_map> MNRLNode::getInputConnections(){ return inputDefs; }
 string MNRLNode::getId() { return id; }
 bool MNRLNode::getReport() { return report; }
 MNRLDefs::EnableType MNRLNode::getEnable(){ return enable; }
@@ -120,11 +120,11 @@ void MNRLNode::setReport(bool b) {
 	report = b;
 }
 
-map<string, MNRLPort> *MNRLNode::validate_ports(vector<MNRLPort> portdef) {
-	map<string, MNRLPort> *ports = new map<string, MNRLPort>();
+shared_ptr<port_map> MNRLNode::validate_ports(vector<shared_ptr<MNRLPort>> &portdef) {
+	shared_ptr<port_map> ports = shared_ptr<port_map>(new port_map());
 
-	for (MNRLPort p : portdef) {
-		ports->insert(map<string, MNRLPort>::value_type(p.getId(),p));
+	for (MNRLPort *p : portdef) {
+		ports->insert(map<string, MNRLPort>::value_type(p->getId(),p));
 	}
 
 	return ports;

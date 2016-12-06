@@ -8,13 +8,16 @@
 
 #include <string>
 #include <vector>
-#include <tuple>
+#include <utility>
 #include <memory>
 
 #include "MNRLDefs.hpp"
 #include "MNRLNode.hpp"
 
 namespace MNRL {
+	typedef std::map<std::string, std::shared_ptr<MNRL::MNRLPort>> port_map;
+	typedef std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> port_conns;
+
 	class MNRLNode;
     class MNRLPort {
         public:
@@ -27,7 +30,7 @@ namespace MNRL {
             // accessor methods
             std::string getId();
             int getWidth();
-            std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> getConnections();
+            MNRL::port_conns getConnections();
 
             void addConnection(std::shared_ptr<MNRL::MNRLNode> id, std::shared_ptr<MNRL::MNRLPort> port);
             bool deleteConnection(std::string id, std::string port);
@@ -36,7 +39,7 @@ namespace MNRL {
         private:
             std::string id;
             int width;
-            std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> connections;
+            MNRL::port_conns connections;
     };
 }
 

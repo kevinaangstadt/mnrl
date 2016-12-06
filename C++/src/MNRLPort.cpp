@@ -26,7 +26,7 @@ int MNRLPort::getWidth() {
 	return width;
 }
 
-vector<pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>>> MNRLPort::getConnections() {
+port_conns MNRLPort::getConnections() {
 	return connections;
 }
 
