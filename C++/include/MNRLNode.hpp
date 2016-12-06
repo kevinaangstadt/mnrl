@@ -11,10 +11,13 @@
 #include <vector>
 #include <tuple>
 #include <json11.hpp>
-#include "mnrl.hpp"
+#include "MNRLDefs.hpp"
+#include "MNRLPort.hpp"
 
 
 namespace MNRL {
+	class MNRLDefs;
+	class MNRLPort;
     class MNRLNode {
         public:
             MNRLNode(
