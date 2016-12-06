@@ -7,8 +7,10 @@
 
 #include "MNRLDefs.hpp"
 
+using namespace std;
+using namespace MNRL;
 
-unsigned int MNRL::MNRLDefs::BooleanToPort(const BooleanMode b) {
+unsigned int MNRLDefs::BooleanToPort(const BooleanMode b) {
 	switch(b){
 	case AND:
 	case OR:
@@ -22,7 +24,7 @@ unsigned int MNRL::MNRLDefs::BooleanToPort(const BooleanMode b) {
 	}
 }
 
-std::string MNRL::MNRLDefs::toMNRLEnable(const MNRL::MNRLDefs::EnableType e) {
+std::string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 	switch (e) {
 	case ENABLE_ALWAYS:
 		return "always";

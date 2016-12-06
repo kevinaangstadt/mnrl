@@ -5,64 +5,69 @@
  * MNRLNode.cpp
  */
 
+#include "MNRLNode.hpp"
+
+using namespace std;
+using namespace MNRL;
+using namespace json11;
 
 MNRL::MNRLNode(
-		std::string id,
+		string id,
 		MNRLDefs::EnableType enable,
 		bool report,
-		std::vector<MNRL::MNRLPort> inputDefs,
-		std::vector<MNRL::MNRLPort> outputDefs,
-		std::map<std::string, json11::Json> attributes
-) : MNRL::MNRLNode::id(id),
-    MNRL::MNRLNode::enable(enable),
-	MNRL::MNRLNode::report(report),
-	MNRL::MNRLNode::inputDefs( MNRL::MNRLNode::validate_ports(inputDefs) ),
-	MNRL::MNRLNode::outputDefs( MNRL::MNRLNode::validate_ports(outputDefs) ),
-	MNRL::MNRLNode::attributes(attributes) {};
+		vector<MNRLPort> inputDefs,
+		vector<MNRLPort> outputDefs,
+		map<string, Json> attributes
+) : MNRLNode::id(id),
+    MNRLNode::enable(enable),
+	MNRLNode::report(report),
+	MNRLNode::inputDefs( MNRLNode::validate_ports(inputDefs) ),
+	MNRLNode::outputDefs( MNRLNode::validate_ports(outputDefs) ),
+	MNRLNode::attributes(attributes) {};
 
-MNRL::MNRLNode::~MNRLNode() {
+MNRLNode::~MNRLNode() {
 	delete inputDefs;
 	delete outputDefs;
 };
 
-json11::Json MNRL::MNRLNode::to_json() {
+Json MNRLNode::to_json() {
 
 	// convert to input port definitions
-	std::vector<json11::Json::object> iDefs;
+	vector<Json::object> iDefs;
 	for(auto &kv : inputDefs) {
-		iDefs.push_back(json11::Json::object {
+		iDefs.push_back(Json::object {
 			{ "portId", kv.first },
 			{ "width", kv.second.getWidth() }
 		});
 	}
 
 	// convert to output port definitions
-	std::vector<json11::Json::object> oDefs;
+	vector<Json::object> oDefs;
 	for(auto &kv : outputDefs) {
 		// get all of the connections
-		std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> conn = kv.second.getConnections();
-		std::vector<json11::Json::object> mnrl_conn;
-		for(std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>> &np : conn) {
-			mnrl_conn.push_back(json11::Json::object {
+		vector<pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>>> conn = kv.second.getConnections();
+		vector<Json::object> mnrl_conn;
+		for(pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>> &np : conn) {
+			mnrl_conn.push_back(Json::object {
 				{ "id", np.first->getId() },
 				{ "portId", np.second->getId() }
 			});
 		}
 
-		iDefs.push_back(json11::Json::object {
+		iDefs.push_back(Json::object {
 			{ "portId", kv.first },
 			{ "width", kv.second.getWidth() },
 			{ "activate", mnrl_conn }
 		});
 	}
 
-	return json11::Json::object {
+	return Json::object {
 		{ "id", id },
 		{ "report", report },
-		{ "enable", MNRL::MNRLDefs::toMNRLEnable(enable) },
-		{ "outputDefs", json11::Json::array(oDefs) },
-		{ "inputDefs", json11::Json::array(iDefs) },
-		{ "attributes", json11::Json::object(attributes) }
+		{ "enable", MNRLDefs::toMNRLEnable(enable) },
+		{ "outputDefs", Json::array(oDefs) },
+		{ "inputDefs", Json::array(iDefs) },
+		{ "attributes", Json::object(attributes) }
 	};
 
 	/*
@@ -97,29 +102,29 @@ json11::Json MNRL::MNRLNode::to_json() {
 	 */
 }
 
-std::map<std::string, MNRL::MNRLPort> MNRL::MNRLNode::getOutputConnections(){ return outputDefs; }
-std::map<std::string, MNRL::MNRLPort> MNRL::MNRLNode::getInputConnections(){ return inputDefs; }
-std::string MNRL::MNRLNode::getId() { return id; }
-bool MNRL::MNRLNode::getReport() { return report; }
-MNRL::MNRLDefs::EnableType MNRL::MNRLNode::getEnable(){ return enable; }
+map<string, MNRLPort> MNRLNode::getOutputConnections(){ return outputDefs; }
+map<string, MNRLPort> MNRLNode::getInputConnections(){ return inputDefs; }
+string MNRLNode::getId() { return id; }
+bool MNRLNode::getReport() { return report; }
+MNRLDefs::EnableType MNRLNode::getEnable(){ return enable; }
 
-void MNRL::MNRLNode::setId(std::string new_id) {
+void MNRLNode::setId(string new_id) {
 	id = new_id;
 }
 
-void MNRL::MNRLNode::setEnable(MNRL::MNRLDefs::EnableType e) {
+void MNRLNode::setEnable(MNRLDefs::EnableType e) {
 	enable = e;
 }
 
-void MNRL::MNRLNode::setReport(bool b) {
+void MNRLNode::setReport(bool b) {
 	report = b;
 }
 
-std::map<std::string, MNRL::MNRLPort> MNRL::MNRLNode::validate_ports(std::vector<MNRL::MNRLPort> portdef) {
-	std::map<std::string, MNRL::MNRLPort> *ports = new std::map<std::string, MNRL::MNRLPort>();
+map<string, MNRLPort> MNRLNode::validate_ports(vector<MNRLPort> portdef) {
+	map<string, MNRLPort> *ports = new map<string, MNRLPort>();
 
-	for (MNRL::MNRLPort p : portdef) {
-		ports->insert(std::map<std::string, MNRL::MNRLPort>::value_type(p.getId(),p));
+	for (MNRLPort p : portdef) {
+		ports->insert(map<string, MNRLPort>::value_type(p.getId(),p));
 	}
 
 	return *ports;
