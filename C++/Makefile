@@ -7,7 +7,7 @@ JSON11 = ./lib/json11/
 CXXFLAGS = -I$(IDIR) -I./lib/valijson/include -I$(JSON11) -I./lib/valijson/thirdparty/rapidjson-1.0.2/include --std=c++11 -g -O0
 ARFLAGS = rcs
 
-_DEPS = *.hpp
+_DEPS = mnrl.hpp MNRLNode.hpp MNRLDefs.hpp MNRLPort.hpp
 _OBJ_VALIDATE = validate.o 
 _OBJ_MNRL = MNRLDefs.o MNRLPort.o MNRLNode.o
 

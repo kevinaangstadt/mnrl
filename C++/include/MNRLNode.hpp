@@ -11,7 +11,7 @@
 #include <vector>
 #include <tuple>
 #include <json11.hpp>
-#include "MNRLPort.hpp"
+#include "mnrl.hpp"
 
 
 namespace MNRL {
@@ -19,7 +19,7 @@ namespace MNRL {
         public:
             MNRLNode(
                 std::string id,
-                MNRLDefs::EnableType enable,
+                MNRL::MNRLDefs::EnableType enable,
                 bool report,
                 std::vector<MNRL::MNRLPort> inputDefs,
                 std::vector<MNRL::MNRLPort> outputDefs,
@@ -33,17 +33,17 @@ namespace MNRL {
 
             std::string getId();
             bool getReport();
-            MNRLDefs::EnableType getEnable();
+            MNRL::MNRLDefs::EnableType getEnable();
 
             void setId(std::string new_id);
             void setReport(bool r);
-            void setEnable(MNRLDefs::EnableType e);
+            void setEnable(MNRL::MNRLDefs::EnableType e);
 
 
         protected:
             std::string id;
             bool report;
-            MNRLDefs::EnableType enable;
+            MNRL::MNRLDefs::EnableType enable;
             std::map<std::string, MNRL::MNRLPort> inputDefs;
             std::map<std::string, MNRL::MNRLPort> outputDefs;
             std::map<std::string, json11::Json> attributes;

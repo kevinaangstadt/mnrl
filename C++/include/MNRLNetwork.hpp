@@ -3,6 +3,9 @@
 //
 // MNRLNetwork Object
 
+#ifndef MNRLNETWORK_HPP
+#define MNRLNETWORK_HPP
+
 #include <unordered_map>
 #include <string>
 
@@ -67,3 +70,4 @@ namespace MNRL {
             string getUniqueNodeId(string id);
     }
 }
+#endif

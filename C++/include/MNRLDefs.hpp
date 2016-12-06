@@ -7,6 +7,7 @@
 #define MNRLDEFS_HPP
 
 #include <string>
+#include "mnrl.hpp"
 
 namespace MNRL {
     class MNRLDefs {

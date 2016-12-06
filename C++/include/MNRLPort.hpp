@@ -11,8 +11,7 @@
 #include <tuple>
 #include <memory>
 
-#include "MNRLDefs.hpp"
-#include "MNRLNode.hpp"
+#include "mnrl.hpp"
 
 namespace MNRL {
     class MNRLPort {
