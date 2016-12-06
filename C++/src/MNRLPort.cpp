@@ -6,6 +6,7 @@
  */
 
 #include "MNRLPort.hpp"
+#include "MNRLNode.hpp"
 
 using namespace std;
 using namespace MNRL;

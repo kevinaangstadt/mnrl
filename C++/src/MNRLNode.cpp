@@ -12,18 +12,18 @@ using namespace MNRL;
 using namespace json11;
 
 MNRLNode::MNRLNode(
-					string id,
-					MNRLDefs::EnableType enable,
-					bool report,
-					vector<shared_ptr<MNRLPort>> inputDefs,
-					vector<shared_ptr<MNRLPort>> outputDefs,
-					map<string, shared_ptr<Json>> attributes
-				) : id(id),
-					enable(enable),
-					report(report),
-					inputDefs( MNRLNode::validate_ports(inputDefs) ),
-					outputDefs( MNRLNode::validate_ports(outputDefs) ),
-					attributes(attributes) {}
+	string id,
+	MNRLDefs::EnableType enable,
+	bool report,
+	port_def inputDefs,
+	port_def outputDefs,
+	map<string, shared_ptr<Json>> attributes
+) : id(id),
+	enable(enable),
+	report(report),
+	inputDefs( MNRLNode::validate_ports(inputDefs) ),
+	outputDefs( MNRLNode::validate_ports(outputDefs) ),
+	attributes(attributes) {}
 
 MNRLNode::~MNRLNode() {
 	delete inputDefs;
@@ -34,18 +34,18 @@ Json MNRLNode::to_json() {
 
 	// convert to input port definitions
 	vector<Json::object> iDefs;
-	for(auto &kv : *inputDefs) {
+	for(auto &kv : inputDefs) {
 		iDefs.push_back(Json::object {
 			{ "portId", kv.first },
-			{ "width", kv.second.getWidth() }
+			{ "width", kv.second->getWidth() }
 		});
 	}
 
 	// convert to output port definitions
 	vector<Json::object> oDefs;
-	for(auto &kv : *outputDefs) {
+	for(auto &kv : outputDefs) {
 		// get all of the connections
-		port_conns conn = kv.second.getConnections();
+		port_conns conn = kv.second->getConnections();
 		vector<Json::object> mnrl_conn;
 		for(pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>> &np : conn) {
 			mnrl_conn.push_back(Json::object {
@@ -56,7 +56,7 @@ Json MNRLNode::to_json() {
 
 		iDefs.push_back(Json::object {
 			{ "portId", kv.first },
-			{ "width", kv.second.getWidth() },
+			{ "width", kv.second->getWidth() },
 			{ "activate", mnrl_conn }
 		});
 	}
@@ -120,7 +120,7 @@ void MNRLNode::setReport(bool b) {
 	report = b;
 }
 
-shared_ptr<port_map> MNRLNode::validate_ports(vector<shared_ptr<MNRLPort>> &portdef) {
+shared_ptr<port_map> MNRLNode::validate_ports(port_def &portdef) {
 	shared_ptr<port_map> ports = shared_ptr<port_map>(new port_map());
 
 	for (MNRLPort *p : portdef) {

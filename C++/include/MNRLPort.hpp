@@ -10,15 +10,18 @@
 #include <vector>
 #include <utility>
 #include <memory>
+#include <map>
 
 #include "MNRLDefs.hpp"
-#include "MNRLNode.hpp"
 
 namespace MNRL {
+	class MNRLNode;
+	class MNRLPort;
+
 	typedef std::map<std::string, std::shared_ptr<MNRL::MNRLPort>> port_map;
 	typedef std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> port_conns;
 
-	class MNRLNode;
+
     class MNRLPort {
         public:
             MNRLPort(

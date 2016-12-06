@@ -16,16 +16,16 @@
 
 
 namespace MNRL {
-	class MNRLDefs;
-	class MNRLPort;
+	typedef std::vector<std::shared_ptr<MNRL::MNRLPort>> port_def;
+
     class MNRLNode {
         public:
 			MNRLNode(
                 std::string id,
                 MNRL::MNRLDefs::EnableType enable,
                 bool report,
-                std::vector<std::shared_ptr<MNRL::MNRLPort>> inputDefs,
-                std::vector<std::shared_ptr<MNRL::MNRLPort>> outputDefs,
+				MNRL::port_def inputDefs,
+				MNRL::port_def outputDefs,
                 std::map<std::string, std::shared_ptr<json11::Json>> attributes
             );
             virtual ~MNRLNode();
@@ -47,12 +47,12 @@ namespace MNRL {
             std::string id;
             bool report;
             MNRL::MNRLDefs::EnableType enable;
-            std::map<std::string, *MNRL::MNRLPort> *inputDefs;
-            std::map<std::string, *MNRL::MNRLPort> *outputDefs;
-            std::map<std::string, *json11::Json> attributes;
+            port_map inputDefs;
+            port_map outputDefs;
+            std::map<std::string, std::shared_ptr<json11::Json>> attributes;
 
         private:
-            std::shared_ptr<MNRL::port_map> validate_ports(std::vector<std::shared_ptr<MNRL::MNRLPort>> &portdef);
+            std::shared_ptr<MNRL::port_map> validate_ports(MNRL::port_def &portdef);
     };
 
 
