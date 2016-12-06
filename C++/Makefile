@@ -31,7 +31,7 @@ $(ODIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
 
 $(ODIR)/json11.o: $(JSON11)/json11.cpp
 	@mkdir -p $(ODIR)
-	$(CC) $(CXXFLAGS) -c -o $@ $< $(CXXFLAGS)
+	$(CC) $(CXXFLAGS) -c -o $@ $< 
 	
 .PHONY: clean
 
