@@ -10,7 +10,7 @@
 using namespace std;
 using namespace MNRL;
 
-MNRL::MNRLPort(string id, unsigned int width) : MNRLPort::id(id), MNRLPort::width(width) {
+MNRLPort::MNRLPort(string id, unsigned int width) : id(id), width(width) {
 
 }
 
@@ -31,7 +31,7 @@ vector<pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>>> MNRLPort::getConnection
 }
 
 void MNRLPort::addConnection(shared_ptr<MNRLNode> id, shared_ptr<MNRLPort> port) {
-	connections.push_back(make_tuple(id,port));
+	connections.push_back(make_pair(id,port));
 }
 
 bool MNRLPort::deleteConnection(string node_to_delete, string port) {

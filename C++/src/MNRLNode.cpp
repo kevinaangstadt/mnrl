@@ -11,19 +11,19 @@ using namespace std;
 using namespace MNRL;
 using namespace json11;
 
-MNRL::MNRLNode(
+MNRLNode::MNRLNode(
 		string id,
 		MNRLDefs::EnableType enable,
 		bool report,
 		vector<MNRLPort> inputDefs,
 		vector<MNRLPort> outputDefs,
 		map<string, Json> attributes
-) : MNRLNode::id(id),
-    MNRLNode::enable(enable),
-	MNRLNode::report(report),
-	MNRLNode::inputDefs( MNRLNode::validate_ports(inputDefs) ),
-	MNRLNode::outputDefs( MNRLNode::validate_ports(outputDefs) ),
-	MNRLNode::attributes(attributes) {};
+) : id(id),
+    enable(enable),
+	report(report),
+	inputDefs( MNRLNode::validate_ports(inputDefs) ),
+	outputDefs( MNRLNode::validate_ports(outputDefs) ),
+	attributes(attributes) {};
 
 MNRLNode::~MNRLNode() {
 	delete inputDefs;
@@ -34,7 +34,7 @@ Json MNRLNode::to_json() {
 
 	// convert to input port definitions
 	vector<Json::object> iDefs;
-	for(auto &kv : inputDefs) {
+	for(auto &kv : *inputDefs) {
 		iDefs.push_back(Json::object {
 			{ "portId", kv.first },
 			{ "width", kv.second.getWidth() }
@@ -43,7 +43,7 @@ Json MNRLNode::to_json() {
 
 	// convert to output port definitions
 	vector<Json::object> oDefs;
-	for(auto &kv : outputDefs) {
+	for(auto &kv : *outputDefs) {
 		// get all of the connections
 		vector<pair<shared_ptr<MNRLNode>, shared_ptr<MNRLPort>>> conn = kv.second.getConnections();
 		vector<Json::object> mnrl_conn;
@@ -120,12 +120,12 @@ void MNRLNode::setReport(bool b) {
 	report = b;
 }
 
-map<string, MNRLPort> MNRLNode::validate_ports(vector<MNRLPort> portdef) {
+map<string, MNRLPort> *MNRLNode::validate_ports(vector<MNRLPort> portdef) {
 	map<string, MNRLPort> *ports = new map<string, MNRLPort>();
 
 	for (MNRLPort p : portdef) {
 		ports->insert(map<string, MNRLPort>::value_type(p.getId(),p));
 	}
 
-	return *ports;
+	return ports;
 }

@@ -47,12 +47,12 @@ namespace MNRL {
             std::string id;
             bool report;
             MNRL::MNRLDefs::EnableType enable;
-            std::map<std::string, MNRL::MNRLPort> inputDefs;
-            std::map<std::string, MNRL::MNRLPort> outputDefs;
+            std::map<std::string, MNRL::MNRLPort> *inputDefs;
+            std::map<std::string, MNRL::MNRLPort> *outputDefs;
             std::map<std::string, json11::Json> attributes;
 
         private:
-            std::map<std::string, MNRL::MNRLPort> validate_ports(std::vector<MNRL::MNRLPort> portdef);
+            std::map<std::string, MNRL::MNRLPort> *validate_ports(std::vector<MNRL::MNRLPort> portdef);
     };
 
 
