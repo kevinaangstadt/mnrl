@@ -65,9 +65,9 @@ Json MNRLNode::to_json() {
 		{ "id", id },
 		{ "report", report },
 		{ "enable", MNRLDefs::toMNRLEnable(enable) },
-		{ "outputDefs", Json::array(oDefs) },
-		{ "inputDefs", Json::array(iDefs) },
-		{ "attributes", Json::object(attributes) }
+		{ "outputDefs", Json(oDefs) },
+		{ "inputDefs", Json(iDefs) },
+		{ "attributes", Json(attributes) }
 	};
 
 	/*
@@ -102,8 +102,8 @@ Json MNRLNode::to_json() {
 	 */
 }
 
-map<string, MNRLPort> MNRLNode::getOutputConnections(){ return outputDefs; }
-map<string, MNRLPort> MNRLNode::getInputConnections(){ return inputDefs; }
+map<string, MNRLPort> *MNRLNode::getOutputConnections(){ return outputDefs; }
+map<string, MNRLPort> *MNRLNode::getInputConnections(){ return inputDefs; }
 string MNRLNode::getId() { return id; }
 bool MNRLNode::getReport() { return report; }
 MNRLDefs::EnableType MNRLNode::getEnable(){ return enable; }

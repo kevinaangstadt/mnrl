@@ -20,13 +20,13 @@ namespace MNRL {
         public:
             MNRLPort(
                 std::string id,
-                unsigned int width
+                int width
             );
             ~MNRLPort();
 
             // accessor methods
             std::string getId();
-            unsigned int getWidth();
+            int getWidth();
             std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> getConnections();
 
             void addConnection(std::shared_ptr<MNRL::MNRLNode> id, std::shared_ptr<MNRL::MNRLPort> port);
@@ -35,7 +35,7 @@ namespace MNRL {
 
         private:
             std::string id;
-            unsigned int width;
+            int width;
             std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> connections;
     };
 }

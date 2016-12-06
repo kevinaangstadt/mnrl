@@ -5,12 +5,12 @@
  * MNRLPort.cpp
  */
 
-#import "MNRLPort.hpp"
+#include "MNRLPort.hpp"
 
 using namespace std;
 using namespace MNRL;
 
-MNRLPort::MNRLPort(string id, unsigned int width) : id(id), width(width) {
+MNRLPort::MNRLPort(string id, int width) : id(id), width(width) {
 
 }
 
@@ -22,7 +22,7 @@ string MNRLPort::getId() {
 	return id;
 }
 
-unsigned int MNRLPort::getWidth() {
+int MNRLPort::getWidth() {
 	return width;
 }
 

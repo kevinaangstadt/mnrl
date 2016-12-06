@@ -1,7 +1,7 @@
 IDIR = ./include
 SRCDIR = ./src
 CC = g++-5
-AR = gcc-ar-5
+AR = ar
 JSON11 = ./lib/json11/
 
 CXXFLAGS = -I$(IDIR) -I./lib/valijson/include -I$(JSON11) -I./lib/valijson/thirdparty/rapidjson-1.0.2/include --std=c++11 -g -O0
@@ -19,7 +19,7 @@ OBJ_MNRL = $(patsubst %,$(ODIR)/%,$(_OBJ_MNRL)) $(ODIR)/json11.o
 all: validate libmnrl
 
 libmnrl: $(OBJ_MNRL)
-	$(AR) $@.a $^ 
+	$(AR) $(ARFLAGS) $@.a $^ 
 
 validate: $(OBJ_VALIDATE)
 	$(CC) $(CXXFLAGS) -o $@ $^

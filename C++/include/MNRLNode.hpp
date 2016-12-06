@@ -31,8 +31,8 @@ namespace MNRL {
             ~MNRLNode();
             json11::Json to_json();
 
-            std::map<std::string, MNRL::MNRLPort> getOutputConnections();
-            std::map<std::string, MNRL::MNRLPort> getInputConnections();
+            std::map<std::string, MNRL::MNRLPort> *getOutputConnections();
+            std::map<std::string, MNRL::MNRLPort> *getInputConnections();
 
             std::string getId();
             bool getReport();
