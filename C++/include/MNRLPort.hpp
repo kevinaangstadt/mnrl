@@ -3,6 +3,9 @@
 //
 // MNRLPort Object
 
+#ifndef MNRLPORT_HPP
+#define MNRLPORT_HPP
+
 #include <string>
 #include <vector>
 #include <tuple>
@@ -35,3 +38,5 @@ namespace MNRL {
             std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> connections;
     };
 }
+
+#endif

@@ -3,6 +3,9 @@
 //
 // MNRLNetwork Object
 
+#ifndef MNRLDEFS_HPP
+#define MNRLDEFS_HPP
+
 #include <string>
 
 namespace MNRL {
@@ -33,3 +36,5 @@ namespace MNRL {
             static std::string toMNRLEnable(const EnableType e);
     };
 }
+
+#endif

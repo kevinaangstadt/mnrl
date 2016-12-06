@@ -3,6 +3,9 @@
 //
 // MNRLNetwork Object
 
+#ifndef MNRLNODE_HPP
+#define MNRLNODE_HPP
+
 #include <map>
 #include <string>
 #include <vector>
@@ -51,3 +54,5 @@ namespace MNRL {
 
 
 }
+
+#endif
