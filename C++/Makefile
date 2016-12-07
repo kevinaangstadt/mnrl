@@ -4,7 +4,12 @@ CC = g++-5
 AR = ar
 JSON11 = ./lib/json11/
 
-CXXFLAGS = -I$(IDIR) -I./lib/valijson/include -I$(JSON11) -I./lib/valijson/thirdparty/rapidjson-1.0.2/include --std=c++11 -g -O0
+NAME = libmnrl
+SNAME = $(NAME).a
+DNAME = $(NAME).so
+
+CXXFLAGS = -I$(IDIR) -I./lib/valijson/include -I$(JSON11) -I./lib/valijson/thirdparty/rapidjson-1.0.2/include --std=c++11 -g -O0 -fPIC
+LDFLAGS = -L.
 ARFLAGS = rcs
 
 _DEPS = *.hpp
@@ -18,8 +23,14 @@ OBJ_MNRL = $(patsubst %,$(ODIR)/%,$(_OBJ_MNRL)) $(ODIR)/json11.o
 
 all: validate libmnrl
 
-libmnrl: $(OBJ_MNRL)
-	$(AR) $(ARFLAGS) $@.a $^ 
+libmnrl: $(SNAME)
+
+$(DNAME): LDFLAGS += -shared
+$(DNAME): $(OBJ_MNRL)
+	$(CC) $(LDFLAGS) $^ -o $@
+
+$(SNAME): $(OBJ_MNRL)
+	$(AR) $(ARFLAGS) $@ $^ 
 
 validate: $(OBJ_VALIDATE)
 	$(CC) $(CXXFLAGS) -o $@ $^
@@ -36,5 +47,5 @@ $(ODIR)/json11.o: $(JSON11)/json11.cpp
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o validate
+	rm -f $(ODIR)/*.o validate $(SNAME) $(DNAME)
 	rmdir $(ODIR)

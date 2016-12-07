@@ -3,8 +3,8 @@
 //
 // MNRLBoolean Object
 
-#ifndef MNRLUPCOUNTER_HPP
-#define MNRLUPCOUNTER_HPP
+#ifndef MNRLBOOLEAN_HPP
+#define MNRLBOOLEAN_HPP
 
 #include <string>
 #include <utility>

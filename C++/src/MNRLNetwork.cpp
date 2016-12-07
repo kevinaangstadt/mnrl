@@ -63,7 +63,7 @@ shared_ptr<MNRLState> MNRLNetwork::addState(
 	return state;
 }
 
-shared_ptr<MNRLState> addState(
+shared_ptr<MNRLState> MNRLNetwork::addState(
 	vector<pair<string,string>> outputSymbols,
 	MNRLDefs::EnableType enable,
 	std::string id,
@@ -131,7 +131,7 @@ shared_ptr<MNRLUpCounter> MNRLNetwork::addUpCounter(
 		throw MNRLError::UpCounterThresholdError(threshold);
 	}
 	string new_id = getUniqueNodeId(id);
-	shared_ptr<MNRLUpCounter> ctr = shared_ptr<MNRLUpCounter>(new MNRLUpCounter(threshold, mode, new_id, MNRLDefs::HIGH_ON_THRESHOLD, report, reportId, attributes));
+	shared_ptr<MNRLUpCounter> ctr = shared_ptr<MNRLUpCounter>(new MNRLUpCounter(threshold, mode, new_id, MNRLDefs::EnableType::ENABLE_ON_ACTIVATE_IN, report, reportId, attributes));
 	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,ctr));
 	return ctr;
 }
