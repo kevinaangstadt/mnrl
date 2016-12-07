@@ -272,7 +272,7 @@ class MNRLNetwork(object):
             self._nodes_added += 1
             
         if id in self.nodes:
-            raise MNRLDuplicateId('This MNRL id already exists: ' + id)
+            raise mnrlerror.MNRLDuplicateIdError('This MNRL id already exists: ' + id)
         
         return id
     

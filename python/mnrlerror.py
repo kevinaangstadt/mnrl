@@ -15,6 +15,11 @@ class PortIdError(MNRLError):
     def __init__(self, port_id):
         super(PortIdError, self).__init__("port_id is not a string")
         self.port_id = port_id
+        
+class DuplicateIdError(MNRLError):
+    def __init__(self, id):
+        super(DuplicateIdError, self).__init__(id + " is already defined")
+        self.id = id
 
 class DuplicatePortError(MNRLError):
     def __init__(self, port_id):
