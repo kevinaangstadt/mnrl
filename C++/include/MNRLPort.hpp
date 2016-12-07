@@ -18,8 +18,8 @@ namespace MNRL {
 	class MNRLNode;
 	class MNRLPort;
 
-	typedef std::map<std::string, std::shared_ptr<MNRL::MNRLPort>> port_map;
-	typedef std::vector<std::pair<std::shared_ptr<MNRL::MNRLNode>, std::shared_ptr<MNRL::MNRLPort>>> port_conns;
+	typedef std::map<std::string, std::shared_ptr<MNRLPort>> port_map;
+	typedef std::vector<std::pair<std::shared_ptr<MNRLNode>, std::shared_ptr<MNRLPort>>> port_conns;
 
 
     class MNRLPort {
@@ -33,16 +33,16 @@ namespace MNRL {
             // accessor methods
             std::string getId();
             int getWidth();
-            MNRL::port_conns getConnections();
+            port_conns getConnections();
 
-            void addConnection(std::shared_ptr<MNRL::MNRLNode> id, std::shared_ptr<MNRL::MNRLPort> port);
+            void addConnection(std::shared_ptr<MNRLNode> id, std::shared_ptr<MNRLPort> port);
             bool deleteConnection(std::string id, std::string port);
 
 
         private:
             std::string id;
             int width;
-            MNRL::port_conns connections;
+            port_conns connections;
     };
 }
 

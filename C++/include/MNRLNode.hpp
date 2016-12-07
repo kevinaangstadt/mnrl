@@ -16,43 +16,51 @@
 
 
 namespace MNRL {
-	typedef std::vector<std::shared_ptr<MNRL::MNRLPort>> port_def;
+	typedef std::vector<std::shared_ptr<MNRLPort>> port_def;
 
     class MNRLNode {
         public:
 			MNRLNode(
                 std::string id,
-                MNRL::MNRLDefs::EnableType enable,
+                MNRLDefs::EnableType enable,
                 bool report,
-				MNRL::port_def inputDefs,
-				MNRL::port_def outputDefs,
-                std::map<std::string, std::shared_ptr<json11::Json>> attributes
+				port_def inputDefs,
+				port_def outputDefs,
+                std::shared_ptr<json11::Json::object> attributes
             );
             virtual ~MNRLNode();
             virtual json11::Json to_json();
 
-            std::shared_ptr<MNRL::port_map> getOutputConnections();
-            std::shared_ptr<MNRL::port_map> getInputConnections();
+            std::shared_ptr<port_map> getOutputConnections();
+            std::shared_ptr<port_map> getInputConnections();
 
             std::string getId();
             bool getReport();
-            MNRL::MNRLDefs::EnableType getEnable();
+            MNRLDefs::EnableType getEnable();
 
             void setId(std::string new_id);
             void setReport(bool r);
-            void setEnable(MNRL::MNRLDefs::EnableType e);
+            void setEnable(MNRLDefs::EnableType e);
 
 
         protected:
             std::string id;
             bool report;
-            MNRL::MNRLDefs::EnableType enable;
-            port_map inputDefs;
-            port_map outputDefs;
-            std::map<std::string, std::shared_ptr<json11::Json>> attributes;
+            MNRLDefs::EnableType enable;
+            std::shared_ptr<port_map> inputDefs;
+            std::shared_ptr<port_map> outputDefs;
+            std::shared_ptr<json11::Json::object> attributes;
 
         private:
-            std::shared_ptr<MNRL::port_map> validate_ports(MNRL::port_def &portdef);
+            static std::shared_ptr<port_map> validate_ports(port_def &portdef) {
+            	std::shared_ptr<port_map> ports = std::shared_ptr<port_map>(new port_map());
+
+				for (std::shared_ptr<MNRLPort> p : portdef) {
+					ports->insert(port_map::value_type(p->getId(),p));
+				}
+
+				return ports;
+            }
     };
 
 

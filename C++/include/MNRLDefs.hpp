@@ -32,12 +32,13 @@ namespace MNRL {
 				NAND
             };
 
-            const std::string STATE_INPUT = "i";
-            const std::string H_STATE_INPUT = STATE_INPUT;
-
-            const std::string H_STATE_OUTPUT = "o";
-            const std::string UP_COUNTER_OUTPUT = H_STATE_OUTPUT;
-            const std::string BOOLEAN_OUTPUT = H_STATE_OUTPUT;
+            static const std::string STATE_INPUT,
+            						 H_STATE_INPUT,
+									 H_STATE_OUTPUT,
+									 UP_COUNTER_OUTPUT,
+									 BOOLEAN_OUTPUT,
+									 UP_COUNTER_COUNT,
+									 UP_COUNTER_RESET;
 
 
             static unsigned int BooleanToPort(const BooleanMode b);

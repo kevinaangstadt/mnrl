@@ -24,7 +24,7 @@ unsigned int MNRLDefs::BooleanToPort(const BooleanMode b) {
 	}
 }
 
-std::string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
+string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 	switch (e) {
 	case ENABLE_ALWAYS:
 		return "always";
@@ -40,4 +40,12 @@ std::string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 	}
 }
 
+
+const string MNRLDefs::STATE_INPUT = "i";
+const string MNRLDefs::H_STATE_INPUT = "i";
+const string MNRLDefs::H_STATE_OUTPUT = "o";
+const string MNRLDefs::UP_COUNTER_OUTPUT = "o";
+const string MNRLDefs::BOOLEAN_OUTPUT = "o";
+const string MNRLDefs::UP_COUNTER_COUNT = "cnt";
+const string MNRLDefs::UP_COUNTER_RESET = "rst";
 
