@@ -101,6 +101,23 @@ Json MNRLNode::to_json() {
 
 shared_ptr<port_map> MNRLNode::getOutputConnections(){ return outputDefs; }
 shared_ptr<port_map> MNRLNode::getInputConnections(){ return inputDefs; }
+
+shared_ptr<MNRLPort> MNRLNode::getOutputPort(string portId) {
+	port_map::iterator it = outputDefs->find(portId);
+	if (it == outputDefs->end()) {
+		throw MNRLError::UnknownPort(portId);
+	}
+	return (*outputDefs)[portId];
+}
+
+shared_ptr<MNRLPort> MNRLNode::getInputPort(string portId) {
+	port_map::iterator it = inputDefs->find(portId);
+	if (it == inputDefs->end()) {
+		throw MNRLError::UnknownPort(portId);
+	}
+	return (*inputDefs)[portId];
+}
+
 string MNRLNode::getId() { return id; }
 bool MNRLNode::getReport() { return report; }
 MNRLDefs::EnableType MNRLNode::getEnable(){ return enable; }

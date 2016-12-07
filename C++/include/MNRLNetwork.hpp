@@ -6,68 +6,110 @@
 #ifndef MNRLNETWORK_HPP
 #define MNRLNETWORK_HPP
 
-#include <unordered_map>
+#include <memory>
 #include <string>
+#include <utility>
+#include <vector>
+#include <json11.hpp>
+
+#include "MNRLDefs.hpp"
+#include "MNRLError.hpp"
 
 namespace MNRL {
+	class MNRLNode;
+	class MNRLState;
+	class MNRLHState;
+	class MNRLUpCounter;
+	class MNRLBoolean;
     class MNRLNetwork {
         public:
-            MNRLNetwork(string id);
-            ~MNRLNetwork();
-            std::string toJSON();
-            MNRLNode getNodeById(string id);
-            MNRLNode addNode(MNRLNode theNode);
+            MNRLNetwork(std::string id);
+            virtual ~MNRLNetwork();
+            virtual json11::Json toJSON();
+            std::shared_ptr<MNRLNode> getNodeById(std::string id);
+            std::shared_ptr<MNRLNode> addNode(std::shared_ptr<MNRLNode> theNode);
             
-            State addState(
-                FIXME outputSymbols,
-                FIXME enable,
-                string id,
+            std::shared_ptr<MNRLState> addState(
+            	std::vector<std::pair<std::string,std::string>> outputSymbols,
+                MNRLDefs::EnableType enable,
+                std::string id,
                 bool report,
-                string reportId,
+                int reportId,
                 bool latched,
-                FIXME attributes
+                std::shared_ptr<json11::Json::object> attributes
             );
             
-            HState addHState(
-                string symbols,
-                FIXME enable,
-                string id,
+            std::shared_ptr<MNRLState> addState(
+				std::vector<std::pair<std::string,std::string>> outputSymbols,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				int reportId,
+				bool latched
+			);
+
+            std::shared_ptr<MNRLHState> addHState(
+                std::string symbols,
+				MNRLDefs::EnableType enable,
+                std::string id,
                 bool report,
-                string reportId,
+                int reportId,
                 bool latched,
-                FIXME attributes
+				std::shared_ptr<json11::Json::object> attributes
             );
             
-            UpCounter addUpCounter(
-                unsigned long threshold,
-                FIXME mode,
-                string id,
+            std::shared_ptr<MNRLHState> addHState(
+				std::string symbols,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				int reportId,
+				bool latched
+			);
+
+            std::shared_ptr<MNRLUpCounter> addUpCounter(
+                int threshold,
+                MNRLDefs::CounterMode mode,
+                std::string id,
                 bool report,
-                string reportId,
-                FIXME attributes
+                int reportId,
+				std::shared_ptr<json11::Json::object> attributes
             );
             
-            Boolean addBoolean(
-                FIXME booleanType,
-                FIXME enable,
-                string id,
+            std::shared_ptr<MNRLUpCounter> addUpCounter(
+				int threshold,
+				MNRLDefs::CounterMode mode,
+				std::string id,
+				bool report,
+				int reportId
+			);
+
+            std::shared_ptr<MNRLBoolean> addBoolean(
+                MNRLDefs::BooleanMode booleanType,
+				MNRLDefs::EnableType enable,
+                std::string id,
                 bool report,
-                string reportId,
-                FIXME attributes
+                int reportId,
+				std::shared_ptr<json11::Json::object> attributes
             );
             
-            void addConnection(string src, string dest);
-            void addConnection(string src, string src_port, string dest, string dest_port);
-            
-            void removeConnection(string src, string dest);
-            void removeConnection(string src, string src_port, string dest, string dest_port);
+            std::shared_ptr<MNRLBoolean> addBoolean(
+				MNRLDefs::BooleanMode booleanType,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				int reportId
+			);
+
+            void addConnection(std::string src, std::string src_port, std::string dest, std::string dest_port);
+            void removeConnection(std::string src, std::string src_port, std::string dest, std::string dest_port);
         
         protected:
-            string id;
-            unordered_map <string,MNRLNode> nodes;
+            std::string id;
+            std::map <std::string,std::shared_ptr<MNRLNode>> nodes;
             unsigned long nodes_added;
             
-            string getUniqueNodeId(string id);
-    }
+            std::string getUniqueNodeId(std::string id);
+    };
 }
 #endif

@@ -1,10 +1,10 @@
 // Kevin Angstadt
 // angstadt {at} virginia.edu
 //
-// MNRLState Object
+// MNRLUpCounter Object
 
-#ifndef MNRLSTATE_HPP
-#define MNRLSTATE_HPP
+#ifndef MNRLUPCOUNTER_HPP
+#define MNRLUPCOUNTER_HPP
 
 #include <string>
 #include <utility>
@@ -20,24 +20,24 @@ namespace MNRL {
 	class MNRLDefs;
 	class MNRLNode;
 	class MNRLPort;
-	class MNRLState : public MNRLNode {
+	class MNRLUpCounter : public MNRLNode {
 		public:
-			MNRLState(
-				std::vector<std::pair<std::string,std::string>> outputSymbols,
-				MNRLDefs::EnableType enable,
+			MNRLUpCounter(
+				int threshold,
+				MNRLDefs::CounterMode mode,
 				std::string id,
+				MNRLDefs::EnableType enable,
 				bool report,
-				bool latched,
 				int reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);
-			virtual ~MNRLState();
+			virtual ~MNRLUpCounter();
 
 			virtual json11::Json to_json();
 
 		protected:
-			std::vector<std::pair<std::string,std::string>> outputSymbols;
-			bool latched;
+			int threshold;
+			MNRLDefs::CounterMode mode;
 			int reportId;
 
 		private:
@@ -45,20 +45,29 @@ namespace MNRL {
 				port_def in;
 				in.push_back(
 					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::STATE_INPUT,
+							MNRLDefs::UP_COUNTER_COUNT,
+							1
+						)
+					)
+				);
+				in.push_back(
+					std::shared_ptr<MNRLPort>( new MNRLPort(
+							MNRLDefs::UP_COUNTER_RESET,
 							1
 						)
 					)
 				);
 				return in;
 			}
-			static port_def gen_output(std::vector<std::pair<std::string,std::string>> &outputSymbols) {
+			static port_def gen_output() {
 				port_def outs;
-				for(auto &o_s : outputSymbols) {
-					outs.push_back(
-						std::shared_ptr<MNRLPort>(new MNRLPort(o_s.first, 1))
-					);
-				}
+				outs.push_back(
+					std::shared_ptr<MNRLPort>( new MNRLPort(
+							MNRLDefs::UP_COUNTER_OUTPUT,
+							1
+						)
+					)
+				);
 				return outs;
 			}
 	};

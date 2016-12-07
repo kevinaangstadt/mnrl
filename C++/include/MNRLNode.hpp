@@ -12,6 +12,7 @@
 #include <vector>
 #include <json11.hpp>
 #include "MNRLDefs.hpp"
+#include "MNRLError.hpp"
 #include "MNRLPort.hpp"
 
 
@@ -33,6 +34,9 @@ namespace MNRL {
 
             std::shared_ptr<port_map> getOutputConnections();
             std::shared_ptr<port_map> getInputConnections();
+
+            std::shared_ptr<MNRLPort> getOutputPort(std::string portId);
+            std::shared_ptr<MNRLPort> getInputPort(std::string portId);
 
             std::string getId();
             bool getReport();

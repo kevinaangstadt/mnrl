@@ -40,6 +40,39 @@ string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 	}
 }
 
+string MNRLDefs::toMNRLCounterMode(const MNRLDefs::CounterMode c) {
+	switch(c) {
+	case TRIGGER_ON_THRESHOLD:
+		return "trigger";
+	case HIGH_ON_THRESHOLD:
+		return "high";
+	case ROLLOVER_ON_THRESHOLD:
+		return "rollover";
+	default:
+		//should not be reached
+		return "";
+	}
+}
+
+string MNRLDefs::toMNRLBooleanMode(const BooleanMode b) {
+	switch(b){
+	case AND:
+		return "and";
+	case OR:
+		return "or";
+	case NOR:
+		return "nor";
+	case NOT:
+		return "not";
+	case NAND:
+		return "nand";
+	default:
+		// not reached
+		return "";
+	}
+}
+
+
 
 const string MNRLDefs::STATE_INPUT = "i";
 const string MNRLDefs::H_STATE_INPUT = "i";

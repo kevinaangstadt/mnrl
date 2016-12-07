@@ -1,10 +1,10 @@
 // Kevin Angstadt
 // angstadt {at} virginia.edu
 //
-// MNRLState Object
+// MNRLHState Object
 
-#ifndef MNRLSTATE_HPP
-#define MNRLSTATE_HPP
+#ifndef MNRLHSTATE_HPP
+#define MNRLHSTATE_HPP
 
 #include <string>
 #include <utility>
@@ -20,10 +20,10 @@ namespace MNRL {
 	class MNRLDefs;
 	class MNRLNode;
 	class MNRLPort;
-	class MNRLState : public MNRLNode {
+	class MNRLHState : public MNRLNode {
 		public:
-			MNRLState(
-				std::vector<std::pair<std::string,std::string>> outputSymbols,
+			MNRLHState(
+				std::string symbols,
 				MNRLDefs::EnableType enable,
 				std::string id,
 				bool report,
@@ -31,12 +31,12 @@ namespace MNRL {
 				int reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);
-			virtual ~MNRLState();
+			virtual ~MNRLHState();
 
 			virtual json11::Json to_json();
 
 		protected:
-			std::vector<std::pair<std::string,std::string>> outputSymbols;
+			std::string symbols;
 			bool latched;
 			int reportId;
 
@@ -45,20 +45,22 @@ namespace MNRL {
 				port_def in;
 				in.push_back(
 					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::STATE_INPUT,
+							MNRLDefs::H_STATE_INPUT,
 							1
 						)
 					)
 				);
 				return in;
 			}
-			static port_def gen_output(std::vector<std::pair<std::string,std::string>> &outputSymbols) {
+			static port_def gen_output() {
 				port_def outs;
-				for(auto &o_s : outputSymbols) {
-					outs.push_back(
-						std::shared_ptr<MNRLPort>(new MNRLPort(o_s.first, 1))
-					);
-				}
+				outs.push_back(
+					std::shared_ptr<MNRLPort>( new MNRLPort(
+							MNRLDefs::H_STATE_OUTPUT,
+							1
+						)
+					)
+				);
 				return outs;
 			}
 	};
