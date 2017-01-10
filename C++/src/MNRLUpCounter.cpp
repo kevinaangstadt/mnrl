@@ -28,6 +28,8 @@ MNRLUpCounter::MNRLUpCounter(
 		attributes
 ), threshold(threshold), mode(mode), reportId(reportId) {}
 
+MNRLUpCounter::~MNRLUpCounter() {}
+
 Json MNRLUpCounter::to_json() {
 	Json parent = MNRLNode::to_json();
 

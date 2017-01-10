@@ -27,50 +27,50 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 	shared_ptr<MNRLNode> node;
 	if( typ.compare("state") == 0 ) {
 		// create output ports
-		shared_ptr<vector<pair<string,string>>> output = new shared_ptr(new vector<pair<string,string>>());
+		shared_ptr<vector<pair<string,string>>> output = shared_ptr<vector<pair<string,string>>>(new vector<pair<string,string>>());
 		for(auto p : (n["attributes"]["symbolSet"]).object_items()) {
-			output->push_back(p);
+			output->push_back(make_pair(p.first,p.second.string_value()));
 		}
 
-		node = new shared_ptr(new MNRLState(
+		node = shared_ptr<MNRLNode>(new MNRLState(
 				output,
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["id"].string_value(),
 				n["report"].bool_value(),
 				n["attributes"]["latched"].bool_value(),
 				n["attributes"]["reportId"].bool_value(),
-				new shared_ptr<Json::object>(n["attributes"])
+				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("hState") == 0 ) {
-		node = new shared_ptr(new MNRLHState(
+		node = shared_ptr<MNRLNode>(new MNRLHState(
 				n["attributes"]["symbolSet"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["id"].string_value(),
 				n["report"].bool_value(),
 				n["attributes"]["latched"].bool_value(),
 				n["attributes"]["reportId"].bool_value(),
-				new shared_ptr<Json::object>(n["attributes"])
+				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("upCounter") == 0 ) {
-		node = new shared_ptr(new MNRLUpCounter(
+		node = shared_ptr<MNRLNode>(new MNRLUpCounter(
 				n["attributes"]["threshold"].int_value(),
 				MNRLDefs::fromMNRLCounterMode(n["attributes"]["mode"].string_value()),
 				n["id"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
 				n["attributes"]["reportId"].bool_value(),
-				new shared_ptr<Json::object>(n["attributes"])
+				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("Boolean") == 0 ) {
 		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attribute"]["gateType"].string_value());
-		node = new shared_ptr(new MNRLBoolean(
+		node = shared_ptr<MNRLNode>(new MNRLBoolean(
 				mode,
 				MNRLDefs::BooleanToPort(mode),
 				n["id"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
 				n["attributes"]["reportId"].bool_value(),
-				new shared_ptr<Json::object>(n["attributes"])
+				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else {
 		// convert input defs into format needed for constructor
@@ -85,13 +85,13 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 			outs.push_back(shared_ptr<MNRLPort>(new MNRLPort(k.second["portId"].string_value(), k.second["width"].int_value())));
 		}
 
-		node = new shared_ptr(new MNRLNode(
+		node = shared_ptr<MNRLNode>(new MNRLNode(
 				n["id"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
 				ins,
 				outs,
-				new shared_ptr<Json::object>(n["attributes"])
+				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	}
 	return node;
@@ -127,7 +127,7 @@ shared_ptr<MNRLNetwork> loadMNRL(string filename) {
 
 	// parse into MNRL
 	// create the MNRLNetwork object, including the ID
-	shared_ptr<MNRLNetwork> mnrl_obj = new shared_ptr<MNRLNetwork>(new MNRLNetwork(mnrlDoc["id"].string_value()));
+	shared_ptr<MNRLNetwork> mnrl_obj = shared_ptr<MNRLNetwork>(new MNRLNetwork(mnrlDoc["id"].string_value()));
 
 	/*
 	 * Now build up the network in two steps

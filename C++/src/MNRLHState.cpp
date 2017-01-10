@@ -28,6 +28,8 @@ MNRLHState::MNRLHState(
 		attributes
 ), symbols(symbols), reportId(reportId), latched(latched) {}
 
+MNRLHState::~MNRLHState() {}
+
 Json MNRLHState::to_json() {
 	Json parent = MNRLNode::to_json();
 

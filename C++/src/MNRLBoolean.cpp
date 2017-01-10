@@ -28,6 +28,8 @@ MNRLBoolean::MNRLBoolean(
 		attributes
 ),  mode(mode), reportId(reportId) {}
 
+MNRLBoolean::~MNRLBoolean() {}
+
 Json MNRLBoolean::to_json() {
 	Json parent = MNRLNode::to_json();
 

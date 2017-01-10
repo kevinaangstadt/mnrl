@@ -12,6 +12,7 @@
 
 #include "MNRLDefs.hpp"
 #include "MNRLError.hpp"
+#include "MNRLNetwork.hpp"
 #include "MNRLNode.hpp"
 #include "MNRLPort.hpp"
 #include "MNRLState.hpp"
@@ -20,9 +21,11 @@
 #include "MNRLBoolean.hpp"
 
 namespace MNRL {
+	namespace MNRLError {
+		class MNRLError;
+	}
 	class MNRLNetwork;
 	class MNRLDefs;
-	class MNRLError;
 	class MNRLNode;
 	class MNRLPort;
 	class MNRLState;
