@@ -49,7 +49,7 @@
         "attributes": {
             "type": "object",
             "properties": {
-                "reportId": { "type": [ "string", "number" ] }
+                "reportId": { "type": "number" }
             }
         },
         "state": {
@@ -74,7 +74,10 @@
                                             "type": "boolean"
                                         },
                                         "symbolSet" : {
-                                            "type": "object"
+                                            "type": "object",
+                                            "additionalProperties" : {
+                                                "type": "string"
+                                            }
                                         }
                                     },
                                     "required": ["symbolSet"]
