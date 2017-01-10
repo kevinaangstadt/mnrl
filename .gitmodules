@@ -4,3 +4,6 @@
 [submodule "C++/lib/json11"]
 	path = C++/lib/json11
 	url = https://github.com/dropbox/json11.git
+[submodule "C++/test/jq"]
+	path = tests/jq
+	url = https://github.com/stedolan/jq
