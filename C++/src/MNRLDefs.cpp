@@ -6,6 +6,7 @@
  */
 
 #include "MNRLDefs.hpp"
+#include "MNRLError.hpp"
 
 using namespace std;
 using namespace MNRL;
@@ -40,6 +41,19 @@ string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 	}
 }
 
+MNRLDefs::EnableType MNRLDefs::fromMNRLEnable(const string e) {
+	if(e.compare("onActivateIN") == 0 )
+		return MNRLDefs::EnableType::ENABLE_ON_ACTIVATE_IN;
+	else if(e.compare("onStartAndActivateIn") == 0 )
+		return MNRLDefs::EnableType::ENABLE_ON_START_AND_ACTIVATE_IN;
+	else if(e.compare("onLast") == 0)
+		return MNRLDefs::EnableType::ENABLE_ON_LAST;
+	else if(e.compare("always") == 0)
+		return MNRLDefs::EnableType::ENABLE_ALWAYS;
+	else
+		throw MNRLError::EnableError(e);
+}
+
 string MNRLDefs::toMNRLCounterMode(const MNRLDefs::CounterMode c) {
 	switch(c) {
 	case TRIGGER_ON_THRESHOLD:
@@ -52,6 +66,17 @@ string MNRLDefs::toMNRLCounterMode(const MNRLDefs::CounterMode c) {
 		//should not be reached
 		return "";
 	}
+}
+
+MNRLDefs::CounterMode MNRLDefs::fromMNRLCounterMode(const string c) {
+	if(c.compare("trigger") == 0)
+		return MNRLDefs::CounterMode::TRIGGER_ON_THRESHOLD;
+	else if(c.compare("high") == 0)
+		return MNRLDefs::CounterMode::HIGH_ON_THRESHOLD;
+	else if(c.compare("rollover") == 0)
+		return MNRLDefs::CounterMode::ROLLOVER_ON_THRESHOLD;
+	else
+		throw MNRLError::UpCounterModeError(c);
 }
 
 string MNRLDefs::toMNRLBooleanMode(const BooleanMode b) {
@@ -70,6 +95,21 @@ string MNRLDefs::toMNRLBooleanMode(const BooleanMode b) {
 		// not reached
 		return "";
 	}
+}
+
+MNRLDefs::BooleanMode MNRLDefs::fromMNRLBooleanMode(const string b) {
+	if(b.compare("and") == 0)
+		return MNRLDefs::BooleanMode::AND;
+	else if(b.compare("or") == 0)
+		return MNRLDefs::BooleanMode::OR;
+	else if(b.compare("nor") == 0)
+		return MNRLDefs::BooleanMode::NOR;
+	else if(b.compare("not") == 0)
+		return MNRLDefs::BooleanMode::NOT;
+	else if(b.compare("nand") == 0)
+		return MNRLDefs::BooleanMode::NAND;
+	else
+		throw MNRLError::InvalidGateType(b);
 }
 
 

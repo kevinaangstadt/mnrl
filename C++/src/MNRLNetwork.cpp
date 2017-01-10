@@ -32,6 +32,12 @@ Json MNRLNetwork::toJSON() {
 	};
 }
 
+void MNRLNetwork::exportToFile(string filename) {
+	ofstream out(filename);
+	out << toJSON().dump();
+	out.close();
+}
+
 shared_ptr<MNRLNode> MNRLNetwork::getNodeById(string id){
 	map<string,shared_ptr<MNRLNode>>::iterator it = nodes.find(id);
 
@@ -49,7 +55,7 @@ shared_ptr<MNRLNode> MNRLNetwork::addNode(shared_ptr<MNRLNode> theNode) {
 }
 
 shared_ptr<MNRLState> MNRLNetwork::addState(
-	vector<pair<string,string>> outputSymbols,
+	shared_ptr<vector<pair<string,string>>> outputSymbols,
 	MNRLDefs::EnableType enable,
 	string id,
 	bool report,
@@ -64,7 +70,7 @@ shared_ptr<MNRLState> MNRLNetwork::addState(
 }
 
 shared_ptr<MNRLState> MNRLNetwork::addState(
-	vector<pair<string,string>> outputSymbols,
+	shared_ptr<vector<pair<string,string>>> outputSymbols,
 	MNRLDefs::EnableType enable,
 	std::string id,
 	bool report,

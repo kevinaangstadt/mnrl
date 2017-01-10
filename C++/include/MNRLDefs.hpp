@@ -43,8 +43,11 @@ namespace MNRL {
 
             static unsigned int BooleanToPort(const BooleanMode b);
             static std::string toMNRLEnable(const EnableType e);
+            static EnableType fromMNRLEnable(const std::string e);
             static std::string toMNRLCounterMode(const CounterMode c);
+            static CounterMode fromMNRLCounterMode(const std::string c);
             static std::string toMNRLBooleanMode(const BooleanMode b);
+            static BooleanMode fromMNRLBooleanMode(const std::string b);
     };
 }
 

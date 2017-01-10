@@ -31,20 +31,7 @@ namespace MNRL {
 	class MNRLBoolean;
 
 	std::shared_ptr<MNRLNetwork> loadMNRL(std::string filename);
-	    with open("mnrl-schema.json", "r") as s:
-	        schema = json.load(s)
-	    with open(filename, "r") as f:
-	        json_string = f.read()
 
-	        try:
-	            jsonschema.validate(json.loads(json_string),schema)
-	        except jsonschema.exceptions.ValidationError as e:
-	            print "ERROR:", e
-	            return None
-
-	        # parse into MNRL
-	        d = MNRLDecoder()
-	        return d.decode(json_string)
 }
 
 #endif

@@ -23,7 +23,7 @@ namespace MNRL {
 	class MNRLState : public MNRLNode {
 		public:
 			MNRLState(
-				std::vector<std::pair<std::string,std::string>> outputSymbols,
+				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
 				MNRLDefs::EnableType enable,
 				std::string id,
 				bool report,
@@ -36,7 +36,7 @@ namespace MNRL {
 			virtual json11::Json to_json();
 
 		protected:
-			std::vector<std::pair<std::string,std::string>> outputSymbols;
+			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols;
 			bool latched;
 			int reportId;
 
@@ -52,9 +52,9 @@ namespace MNRL {
 				);
 				return in;
 			}
-			static port_def gen_output(std::vector<std::pair<std::string,std::string>> &outputSymbols) {
+			static port_def gen_output(std::shared_ptr<std::vector<std::pair<std::string,std::string>>> &outputSymbols) {
 				port_def outs;
-				for(auto &o_s : outputSymbols) {
+				for(auto &o_s : *outputSymbols) {
 					outs.push_back(
 						std::shared_ptr<MNRLPort>(new MNRLPort(o_s.first, 1))
 					);

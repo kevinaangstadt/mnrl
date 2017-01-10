@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 #include <json11.hpp>
+#include <fstream>
 
 #include "MNRLDefs.hpp"
 #include "MNRLError.hpp"
@@ -26,11 +27,12 @@ namespace MNRL {
             MNRLNetwork(std::string id);
             virtual ~MNRLNetwork();
             virtual json11::Json toJSON();
+            virtual void exportToFile(std::string filename);
             std::shared_ptr<MNRLNode> getNodeById(std::string id);
             std::shared_ptr<MNRLNode> addNode(std::shared_ptr<MNRLNode> theNode);
             
             std::shared_ptr<MNRLState> addState(
-            	std::vector<std::pair<std::string,std::string>> outputSymbols,
+            	std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -40,7 +42,7 @@ namespace MNRL {
             );
             
             std::shared_ptr<MNRLState> addState(
-				std::vector<std::pair<std::string,std::string>> outputSymbols,
+				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
 				MNRLDefs::EnableType enable,
 				std::string id,
 				bool report,

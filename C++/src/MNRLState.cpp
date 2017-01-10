@@ -12,7 +12,7 @@ using namespace MNRL;
 using namespace json11;
 
 MNRLState::MNRLState(
-	vector<pair<string,string>> outputSymbols,
+	shared_ptr<vector<pair<string,string>>> outputSymbols,
 	MNRLDefs::EnableType enable,
 	string id,
 	bool report,
@@ -41,7 +41,7 @@ Json MNRLState::to_json() {
 	map<string, Json> attrs = mapping["attributes"].object_items();
 
 	map<string, Json> symbolSet;
-	for(auto &s : outputSymbols) {
+	for(auto &s : *outputSymbols) {
 		// add the symbolSet for the given port
 		symbolSet.insert(map<string,Json>::value_type(s.first, Json(s.second)));
 	}

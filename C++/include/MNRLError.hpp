@@ -6,6 +6,8 @@
 #ifndef MNRLERROR_HPP
 #define MNRLERROR_HPP
 
+#include <stdexcept>
+
 namespace MNRL{
 	namespace MNRLError {
 		class MNRLError : public std::runtime_error {
@@ -30,6 +32,14 @@ namespace MNRL{
 			std::string port_id;
 		};
 
+		class EnableError : public MNRLError {
+		public:
+			EnableError(std::string enable) : MNRLError("unknown enable code " + enable), enable(enable) {}
+			std::string get_enable() { return enable; }
+		private:
+			std::string enable;
+		};
+
 		class UpCounterThresholdError : public MNRLError {
 		public:
 			UpCounterThresholdError(int threshold) : MNRLError("threshold must be a non-negative integer"), threshold(threshold) {}
@@ -38,12 +48,28 @@ namespace MNRL{
 			int threshold;
 		};
 
+		class UpCounterModeError : public MNRLError {
+		public:
+			UpCounterModeError(std::string mode) : MNRLError("invalid mode " + mode), mode(mode) {}
+			std::string get_mode() { return mode; }
+		private:
+			std::string mode;
+		};
+
 		class InvalidGatePortCount : public MNRLError {
 		public:
 			InvalidGatePortCount(int port_count) : MNRLError("gate port count must be a positive integer"), port_count(port_count) {}
 			int get_port_count() { return port_count; }
 		private:
 			int port_count;
+		};
+
+		class InvalidGateType : public MNRLError {
+		public:
+			InvalidGateType(std::string gate) : MNRLError("unknown gate type " + gate), gate(gate) {}
+			std::string get_gate() { return gate; }
+		private:
+			std::string gate;
 		};
 
 		class UnknownNode : public MNRLError{
