@@ -28,10 +28,10 @@ OBJ_MNRL = $(patsubst %,$(ODIR)/%,$(_OBJ_MNRL)) $(ODIR)/json11.o
 
 UNAME_S := $(shell uname -s)
 ifeq ($(UNAME_S),Linux)
-	NASMFLAGS = -felf64
+	AS = as
 endif
 ifeq ($(UNAME_S),Darwin)
-	NASMFLAGS = -fmacho64
+	AS = nasm -fmacho64
 endif
 
 ###########
@@ -64,8 +64,7 @@ $(ODIR)/json11.o: $(JSON11)/json11.cpp
 	$(CC) $(CXXFLAGS) -c -o $@ $< 
 
 $(ODIR)/%.o: $(SRCDIR)/%.asm
-	nasm $(NASMFLAGS) -o $@ $<
-	
+	$(AS) -o $@ $<
 	#$(OBJCPY) -B i386 -I binary -O mach-o-x86-64 --rename-section .data=.const mnrl-schema.json $(ODIR)/mnrl_schema.o
 
 test: libmnrl readwrite
