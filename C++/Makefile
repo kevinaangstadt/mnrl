@@ -34,6 +34,12 @@ ifeq ($(UNAME_S),Darwin)
 	NASMFLAGS = -fmacho64
 endif
 
+###########
+# Testing
+TESTDIR = tests
+TESTLDFLAGS = -lmnrl
+###########
+
 all: validate libmnrl
 
 libmnrl: $(SNAME) $(DNAME)
@@ -61,7 +67,12 @@ $(ODIR)/%.o: $(SRCDIR)/%.asm
 	nasm $(NASMFLAGS) -o $@ $<
 	
 	#$(OBJCPY) -B i386 -I binary -O mach-o-x86-64 --rename-section .data=.const mnrl-schema.json $(ODIR)/mnrl_schema.o
-	
+
+test: libmnrl readwrite
+
+readwrite: $(TESTDIR)/readwrite.cpp
+	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@ 
+
 .PHONY: clean
 
 clean:
