@@ -97,12 +97,33 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 	return node;
 }
 
+/**
+ * Helper function to read in the schema that's embedded in the library
+ */
+string MNRLSchema() {
+	extern const char* binary_mnrl_schema_json_start;
+	extern const char* binary_mnrl_schema_json_end;
+	extern const int binary_mnrl_schema_json_size;
+
+	string s;
+
+	for(const char *byte=binary_mnrl_schema_json_start; byte<binary_mnrl_schema_json_end; ++byte) {
+		s.push_back((char) *byte);
+	}
+
+	return s;
+}
+
 shared_ptr<MNRLNetwork> loadMNRL(string filename) {
 	// Load JSON schema using JSON11 with Valijson helper function
-	Json mySchemaDoc;
-	if (!valijson::utils::loadDocument("mnrl-schema.json", mySchemaDoc)) {
-		throw std::runtime_error("Failed to load schema document");
+	string err;
+	Json mySchemaDoc = Json::parse(MNRLSchema(),err);
+	if(err.length() != 0) {
+		throw std::runtime_error("Failed to load the MNRL Schema");
 	}
+//	if (!valijson::utils::loadDocument("mnrl-schema.json", mySchemaDoc)) {
+//		throw std::runtime_error("Failed to load schema document");
+//	}
 
 	// Parse JSON schema content using valijson
 	Schema mySchema;
