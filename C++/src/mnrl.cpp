@@ -102,9 +102,9 @@ shared_ptr<MNRLNode> parse_node(Json n) {
  * Helper function to read in the schema that's embedded in the library
  */
 string MNRLSchema() {
-	extern const char binary_mnrl_schema_json_start;
-	extern const char binary_mnrl_schema_json_end;
-	extern const int binary_mnrl_schema_json_size;
+	extern const char binary_mnrl_schema_json_start asm("_binary_mnrl_schema_json_start");
+	extern const char binary_mnrl_schema_json_end asm("_binary_mnrl_schema_json_end");
+	extern const int binary_mnrl_schema_json_size asm("_binary_mnrl_schema_json_size");
 
 	string s;
 
