@@ -49,7 +49,7 @@
         "attributes": {
             "type": "object",
             "properties": {
-                "reportId": { "type": "number", "string" }
+                "reportId": { "type": ["number", "string"] }
             }
         },
         "state": {
