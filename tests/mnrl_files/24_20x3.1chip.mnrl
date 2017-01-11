@@ -292,7 +292,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -1059,7 +1059,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -2807,7 +2807,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -3061,7 +3061,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -4914,7 +4914,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -6276,7 +6276,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -7235,7 +7235,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -7936,7 +7936,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -10279,7 +10279,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -10455,7 +10455,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -12459,7 +12459,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -12866,7 +12866,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -13667,7 +13667,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -14011,7 +14011,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -16789,7 +16789,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -17814,7 +17814,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -17838,7 +17838,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -19098,7 +19098,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -19644,7 +19644,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -20197,7 +20197,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -21384,7 +21384,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -21552,7 +21552,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -25195,7 +25195,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -26148,7 +26148,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -27429,7 +27429,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -28245,7 +28245,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -30537,7 +30537,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -31049,7 +31049,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -31192,7 +31192,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -32625,7 +32625,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -33467,7 +33467,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -33586,7 +33586,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -34559,7 +34559,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -35598,7 +35598,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -35815,7 +35815,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -36213,7 +36213,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -36664,7 +36664,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -37000,7 +37000,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -38281,7 +38281,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -39967,7 +39967,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -40409,7 +40409,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -40974,7 +40974,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -41236,7 +41236,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -42090,7 +42090,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -42419,7 +42419,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -43089,7 +43089,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -44046,7 +44046,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -44786,7 +44786,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -45951,7 +45951,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -46783,7 +46783,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -50359,7 +50359,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -51635,7 +51635,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -53797,7 +53797,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -54166,7 +54166,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -54469,7 +54469,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -54945,7 +54945,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -55622,7 +55622,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -55802,7 +55802,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -58120,7 +58120,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -59200,7 +59200,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -61588,7 +61588,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -62337,7 +62337,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -62693,7 +62693,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -65587,7 +65587,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -65984,7 +65984,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -67495,7 +67495,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -67605,7 +67605,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -68357,7 +68357,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -69071,7 +69071,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -69440,7 +69440,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -70158,7 +70158,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -70182,7 +70182,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -71566,7 +71566,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -72161,7 +72161,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -73424,7 +73424,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -77889,7 +77889,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -79729,7 +79729,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -80550,7 +80550,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -80767,7 +80767,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -87192,7 +87192,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -89300,7 +89300,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -90072,7 +90072,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[a]"
       }, 
@@ -91053,7 +91053,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -93289,7 +93289,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -94348,7 +94348,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -94705,7 +94705,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -96667,7 +96667,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -96736,7 +96736,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -97806,7 +97806,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -98886,7 +98886,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -100198,7 +100198,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -100444,7 +100444,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[g]"
       }, 
@@ -103088,7 +103088,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -104506,7 +104506,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[t]"
       }, 
@@ -104780,7 +104780,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
@@ -105376,7 +105376,7 @@
       ], 
       "report": true, 
       "attributes": {
-        "reportId": "1", 
+        "reportId": 1, 
         "latched": false, 
         "symbolSet": "[c]"
       }, 
