@@ -441,7 +441,7 @@ class State(MNRLNode):
         j = json.loads(super(State, self).toJSON())
         j.update({'type' : 'state'})
         j['attributes'].update({
-            'reportId' : self.reportId,
+            'reportId' : int(self.reportId),
             'latched' : self.latched,
             'symbolSet' : self.outputSymbols
         })
@@ -477,7 +477,7 @@ class HState(MNRLNode):
         j = json.loads(super(HState, self).toJSON())
         j.update({'type' : 'hState'})
         j['attributes'].update({
-            'reportId' : self.reportId,
+            'reportId' : int(self.reportId),
             'latched' : self.latched,
             'symbolSet' : self.symbols
         })
@@ -529,7 +529,7 @@ class UpCounter(MNRLNode):
         j['attributes'].update({
             'mode' : MNRLDefs.toMNRLCounterMode(j['attributes']['mode']),
             'threshold' : self.threshold,
-            'reportId' : self.reportId
+            'reportId' : int(self.reportId)
         })
         return json.dumps(j)
 
@@ -571,7 +571,7 @@ class Boolean(MNRLNode):
         j.update({'type' : 'boolean'})
         j['attributes'].update({
             'gateType' : self.gateType,
-            'reportId' : self.reportId
+            'reportId' : int(self.reportId)
         })
         return json.dumps(j)
 
