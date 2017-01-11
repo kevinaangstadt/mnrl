@@ -74,6 +74,7 @@ test: libmnrl $(TESTDIR)/readwrite
 
 $(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@ 
+	../tests/readwrite_test.sh tests/readwrite tests/
 
 .PHONY: clean
 
