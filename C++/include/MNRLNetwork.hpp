@@ -11,6 +11,7 @@
 #include <utility>
 #include <vector>
 #include <json11.hpp>
+#include <json.hpp>
 #include <fstream>
 
 #include "MNRLDefs.hpp"

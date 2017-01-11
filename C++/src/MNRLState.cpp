@@ -58,7 +58,7 @@ Json MNRLState::to_json() {
 	attrs.insert(map<string, Json>::value_type("latched", Json(latched)));
 
 	// update the attributes
-	mapping["attribute"] = Json(attrs);
+	mapping["attributes"] = Json(attrs);
 
 	return Json(mapping);
 }

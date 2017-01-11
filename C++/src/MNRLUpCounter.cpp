@@ -52,7 +52,7 @@ Json MNRLUpCounter::to_json() {
 	attrs.insert(map<string, Json>::value_type("mode", Json(MNRLDefs::toMNRLCounterMode(mode))));
 
 	// update the attributes
-	mapping["attribute"] = Json(attrs);
+	mapping["attributes"] = Json(attrs);
 
 	return Json(mapping);
 }

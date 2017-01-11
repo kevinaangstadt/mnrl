@@ -42,7 +42,7 @@ string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 }
 
 MNRLDefs::EnableType MNRLDefs::fromMNRLEnable(const string e) {
-	if(e.compare("onActivateIN") == 0 )
+	if(e.compare("onActivateIn") == 0 )
 		return MNRLDefs::EnableType::ENABLE_ON_ACTIVATE_IN;
 	else if(e.compare("onStartAndActivateIn") == 0 )
 		return MNRLDefs::EnableType::ENABLE_ON_START_AND_ACTIVATE_IN;

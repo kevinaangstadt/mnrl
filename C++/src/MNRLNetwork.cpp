@@ -28,13 +28,13 @@ Json MNRLNetwork::toJSON() {
 
 	return Json::object {
 		{"id", id},
-		{"node", n}
+		{"nodes", n}
 	};
 }
 
 void MNRLNetwork::exportToFile(string filename) {
 	ofstream out(filename);
-	out << toJSON().dump();
+	out << nlohmann::json::parse(toJSON().dump()).dump(4) << endl;
 	out.close();
 }
 
@@ -200,7 +200,7 @@ void MNRLNetwork::addConnection(string src, string src_port, string dest, string
 
 	string d_id = dest;
 	shared_ptr<MNRLNode> d_node = getNodeById(dest);
-	shared_ptr<MNRLPort> d_port = d_node->getInputPort(src_port);
+	shared_ptr<MNRLPort> d_port = d_node->getInputPort(dest_port);
 	int d_input_width = d_port->getWidth();
 
 	if(s_output_width != d_input_width)
@@ -232,7 +232,7 @@ string MNRLNetwork::getUniqueNodeId(string id) {
 	}
 
 	map<string,shared_ptr<MNRLNode>>::iterator it = nodes.find(id);
-	if(it == nodes.end())
+	if(it != nodes.end())
 		throw MNRLError::DuplicateIdError(id);
 
 	return id;

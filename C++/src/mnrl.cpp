@@ -22,6 +22,7 @@ using valijson::Validator;
 using valijson::ValidationResults;
 using valijson::adapters::Json11Adapter;
 
+
 shared_ptr<MNRLNode> parse_node(Json n) {
 	string typ = n["type"].string_value();
 	shared_ptr<MNRLNode> node;
@@ -62,7 +63,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("Boolean") == 0 ) {
-		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attribute"]["gateType"].string_value());
+		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attributes"]["gateType"].string_value());
 		node = shared_ptr<MNRLNode>(new MNRLBoolean(
 				mode,
 				MNRLDefs::BooleanToPort(mode),
@@ -101,20 +102,20 @@ shared_ptr<MNRLNode> parse_node(Json n) {
  * Helper function to read in the schema that's embedded in the library
  */
 string MNRLSchema() {
-	extern const char* binary_mnrl_schema_json_start;
-	extern const char* binary_mnrl_schema_json_end;
+	extern const char binary_mnrl_schema_json_start;
+	extern const char binary_mnrl_schema_json_end;
 	extern const int binary_mnrl_schema_json_size;
 
 	string s;
 
-	for(const char *byte=binary_mnrl_schema_json_start; byte<binary_mnrl_schema_json_end; ++byte) {
-		s.push_back((char) *byte);
+	for(const char* i = &(binary_mnrl_schema_json_start); i<&(binary_mnrl_schema_json_end); ++i) {
+		s.push_back(*i);
 	}
 
 	return s;
 }
 
-shared_ptr<MNRLNetwork> loadMNRL(string filename) {
+shared_ptr<MNRLNetwork> MNRL::loadMNRL(string filename) {
 	// Load JSON schema using JSON11 with Valijson helper function
 	string err;
 	Json mySchemaDoc = Json::parse(MNRLSchema(),err);
@@ -157,19 +158,19 @@ shared_ptr<MNRLNetwork> loadMNRL(string filename) {
 	 * 2. add all the connections
 	 */
 
-	for(auto n : mnrlDoc["nodes"].object_items()) {
-		shared_ptr<MNRLNode> node = parse_node(n.second);
+	for(auto n : mnrlDoc["nodes"].array_items()) {
+		shared_ptr<MNRLNode> node = parse_node(n);
 		mnrl_obj->addNode(node);
 	}
 
-	for(auto n : mnrlDoc["nodes"].object_items()) {
-		for(auto k : n.second["outputDefs"].object_items()) {
-			for(auto c : k.second["activate"].object_items()) {
+	for(auto n : mnrlDoc["nodes"].array_items()) {
+		for(auto k : n["outputDefs"].array_items()) {
+			for(auto c : k["activate"].array_items()) {
 				mnrl_obj->addConnection(
-						n.second["id"].string_value(),
-						k.second["portId"].string_value(),
-						c.second["portId"].string_value(),
-						c.second["portId"].string_value()
+						n["id"].string_value(),
+						k["portId"].string_value(),
+						c["id"].string_value(),
+						c["portId"].string_value()
 				);
 			}
 		}

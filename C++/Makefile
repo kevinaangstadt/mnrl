@@ -7,13 +7,15 @@ LD = ld
 OBJCPY = gobjcopy
 
 JSON11 = ./lib/json11
+VALIJSON = ./lib/valijson/include
+JSON = ./lib/valijson/thirdparty/nlohmann-json-1.1.0
 
 
 NAME = libmnrl
 SNAME = $(NAME).a
 DNAME = $(NAME).so
 
-CXXFLAGS = -I$(IDIR) -I./lib/valijson/include -I$(JSON11) --std=c++11 -fPIC
+CXXFLAGS = -I$(IDIR) -I$(VALIJSON) -I$(JSON) -I$(JSON11) --std=c++11 -fPIC
 LDFLAGS = -L.
 ARFLAGS = rcs
 
@@ -68,13 +70,13 @@ $(ODIR)/%.o: $(SRCDIR)/%.asm
 	
 	#$(OBJCPY) -B i386 -I binary -O mach-o-x86-64 --rename-section .data=.const mnrl-schema.json $(ODIR)/mnrl_schema.o
 
-test: libmnrl readwrite
+test: libmnrl $(TESTDIR)/readwrite
 
-readwrite: $(TESTDIR)/readwrite.cpp
+$(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@ 
 
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o validate $(SNAME) $(DNAME)
+	rm -f $(ODIR)/*.o validate $(SNAME) $(DNAME) tests/readwrite
 	rmdir $(ODIR)

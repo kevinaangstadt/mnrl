@@ -49,7 +49,7 @@ Json MNRLBoolean::to_json() {
 	attrs.insert(map<string, Json>::value_type("mode", Json(MNRLDefs::toMNRLBooleanMode(mode))));
 
 	// update the attributes
-	mapping["attribute"] = Json(attrs);
+	mapping["attributes"] = Json(attrs);
 
 	return Json(mapping);
 }

@@ -7,6 +7,8 @@
 
 #include "MNRLNode.hpp"
 
+#include <iostream>
+
 using namespace std;
 using namespace MNRL;
 using namespace json11;
@@ -51,7 +53,7 @@ Json MNRLNode::to_json() {
 			});
 		}
 
-		iDefs.push_back(Json::object {
+		oDefs.push_back(Json::object {
 			{ "portId", kv.first },
 			{ "width", kv.second->getWidth() },
 			{ "activate", mnrl_conn }
