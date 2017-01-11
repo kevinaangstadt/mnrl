@@ -409,12 +409,7 @@ class State(MNRLNode):
                  attributes = {}
                 ):
         
-        stateAttributes = {
-            'reportId': reportId,
-            'latched': latched,
-            'symbolSet': dict()
-        }
-        stateAttributes.update(attributes)
+        symbolSet = dict()
         
         # outputSymbols is a tuple:
         # ("outputId","symbolSet")
@@ -422,7 +417,7 @@ class State(MNRLNode):
         try:
             for output_id, symbol_set in outputSymbols:
                 if isinstance(output_id, basestring):
-                    stateAttributes['symbolSet'][output_id] = symbol_set
+                    symbolSet[output_id] = symbol_set
                     outputDefs.append((output_id,1))
                 else:
                     raise mnrlerror.PortDefError("output")
@@ -435,12 +430,21 @@ class State(MNRLNode):
             report = report,
             inputDefs = [(MNRLDefs.H_STATE_INPUT,1)],
             outputDefs = outputDefs,
-            attributes = stateAttributes
+            attributes = attributes
         )
+        
+        self.reportId = reportId
+        self.latched = latched
+        self.outputSymbols = symbolSet
     
     def toJSON(self):
         j = json.loads(super(State, self).toJSON())
         j.update({'type' : 'state'})
+        j['attributes'].update({
+            'reportId' : self.reportId,
+            'latched' : self.latched,
+            'symbolSet' : self.outputSymbols
+        })
         return json.dumps(j)
 
 class HState(MNRLNode):
@@ -456,25 +460,27 @@ class HState(MNRLNode):
                   attributes = {}
                 ):
         
-        hStateAttributes = {
-            'latched': latched,
-            'reportId': reportId,
-            'symbolSet': symbols
-        }
-        hStateAttributes.update(attributes)
-        
         super(HState, self).__init__(
             id = id,
             enable = enable,
             report = report,
             inputDefs = [(MNRLDefs.H_STATE_INPUT,1)],
             outputDefs = [(MNRLDefs.H_STATE_OUTPUT,1)],
-            attributes = hStateAttributes
+            attributes = attributes
         )
+        
+        self.latched = latched
+        self.reportId = reportId
+        self.symbols = symbols
     
     def toJSON(self):
         j = json.loads(super(HState, self).toJSON())
         j.update({'type' : 'hState'})
+        j['attributes'].update({
+            'reportId' : self.reportId,
+            'latched' : self.latched,
+            'symbolSet' : self.symbols
+        })
         return json.dumps(j)
         
 class UpCounter(MNRLNode):
@@ -486,13 +492,6 @@ class UpCounter(MNRLNode):
                  reportId = None,
                  attributes = {}
                 ):
-        
-        counterAttributes = {
-            'reportId': reportId,
-            'threshold': threshold,
-            'mode': mode
-        }
-        counterAttributes.update(attributes)
         
         #validate that the threshold is a non-negative int
         if not (isinstance(threshold, int) and threshold >= 0):
@@ -517,13 +516,21 @@ class UpCounter(MNRLNode):
             outputDefs = [
                 (MNRLDefs.UP_COUNTER_OUTPUT, 1)
             ],
-            attributes = counterAttributes
+            attributes = attributes
         )
+        
+        self.reportId = reportId
+        self.threshold = threshold
+        self.mode = mode
     
     def toJSON(self):
         j = json.loads(super(UpCounter, self).toJSON())
         j.update({'type' : 'upCounter'})
-        j['attributes'].update({'mode' : MNRLDefs.toMNRLCounterMode(j['attributes']['mode'])})
+        j['attributes'].update({
+            'mode' : MNRLDefs.toMNRLCounterMode(j['attributes']['mode']),
+            'threshold' : self.threshold,
+            'reportId' : self.reportId
+        })
         return json.dumps(j)
 
 class Boolean(MNRLNode):
@@ -541,13 +548,7 @@ class Boolean(MNRLNode):
             if not (isinstance(portCount, int) and portCount > 0):
                 raise mnrlerror.InvalidGatePortCount(portCount)
             
-            # seems semi-valid, let's create it
-            booleanAttributes = {
-                'gateType': gateType,
-                'reportId': reportId
-            }
-            booleanAttributes.update(attributes)
-            
+            # seems semi-valid, let's create it            
             inputDefs = []
             for i in range(portCount):
                 inputDefs.append(("b" + str(i),1))
@@ -558,13 +559,20 @@ class Boolean(MNRLNode):
                 report = report,
                 inputDefs = inputDefs,
                 outputDefs = [(MNRLDefs.BOOLEAN_OUTPUT, 1)],
-                attributes = booleanAttributes
+                attributes = attributes
             )
+            
+            self.gateType = gateType,
+            self.reportId = reportId
         else:
             raise mnrlerror.InvalidGateFormat()
     def toJSON(self):
         j = json.loads(super(Boolean, self).toJSON())
         j.update({'type' : 'boolean'})
+        j['attributes'].update({
+            'gateType' : self.gateType,
+            'reportId' : self.reportId
+        })
         return json.dumps(j)
 
 class MNRLDecoder(json.JSONDecoder):
