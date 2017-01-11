@@ -26,7 +26,41 @@ MNRLHState::MNRLHState(
 		gen_input(),
 		gen_output(),
 		attributes
-), symbols(symbols), reportId(reportId), latched(latched) {}
+), symbols(symbols), reportId(MNRLReportIdInt(reportId)), latched(latched) {}
+
+MNRLHState::MNRLHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	bool latched,
+	string reportId,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(),
+		gen_output(),
+		attributes
+), symbols(symbols), reportId(MNRLReportIdString(reportId)), latched(latched) {}
+
+
+MNRLHState::MNRLHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	bool latched,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(),
+		gen_output(),
+		attributes
+), symbols(symbols), reportId(MNRLReportId()), latched(latched) {}
 
 MNRLHState::~MNRLHState() {}
 

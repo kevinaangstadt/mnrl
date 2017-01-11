@@ -15,6 +15,7 @@
 #include "MNRLDefs.hpp"
 #include "MNRLNode.hpp"
 #include "MNRLPort.hpp"
+#include "MNRLReportId.hpp"
 
 namespace MNRL {
 	class MNRLDefs;
@@ -31,6 +32,23 @@ namespace MNRL {
 				int reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);
+			MNRLUpCounter(
+				int threshold,
+				MNRLDefs::CounterMode mode,
+				std::string id,
+				MNRLDefs::EnableType enable,
+				bool report,
+				std::string reportId,
+				std::shared_ptr<json11::Json::object> attributes
+			);
+			MNRLUpCounter(
+				int threshold,
+				MNRLDefs::CounterMode mode,
+				std::string id,
+				MNRLDefs::EnableType enable,
+				bool report,
+				std::shared_ptr<json11::Json::object> attributes
+			);
 			virtual ~MNRLUpCounter();
 
 			virtual json11::Json to_json();
@@ -38,7 +56,7 @@ namespace MNRL {
 		protected:
 			int threshold;
 			MNRLDefs::CounterMode mode;
-			int reportId;
+			MNRLReportId reportId;
 
 		private:
 			static port_def gen_input() {

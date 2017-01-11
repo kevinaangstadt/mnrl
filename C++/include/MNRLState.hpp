@@ -15,6 +15,7 @@
 #include "MNRLDefs.hpp"
 #include "MNRLNode.hpp"
 #include "MNRLPort.hpp"
+#include "MNRLReportId.hpp"
 
 namespace MNRL {
 	class MNRLDefs;
@@ -31,6 +32,24 @@ namespace MNRL {
 				int reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);
+			MNRLState(
+				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				bool latched,
+				std::string reportId,
+				std::shared_ptr<json11::Json::object> attributes
+			);
+			MNRLState(
+				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				bool latched,
+				std::shared_ptr<json11::Json::object> attributes
+			);
+
 			virtual ~MNRLState();
 
 			virtual json11::Json to_json();
@@ -38,7 +57,7 @@ namespace MNRL {
 		protected:
 			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols;
 			bool latched;
-			int reportId;
+			MNRLReportId reportId;
 
 		private:
 			static port_def gen_input() {

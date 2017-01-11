@@ -26,7 +26,40 @@ MNRLUpCounter::MNRLUpCounter(
 		gen_input(),
 		gen_output(),
 		attributes
-), threshold(threshold), mode(mode), reportId(reportId) {}
+), threshold(threshold), mode(mode), reportId(MNRLReportIdInt(reportId)) {}
+
+MNRLUpCounter::MNRLUpCounter(
+	int threshold,
+	MNRLDefs::CounterMode mode,
+	string id,
+	MNRLDefs::EnableType enable,
+	bool report,
+	string reportId,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(),
+		gen_output(),
+		attributes
+), threshold(threshold), mode(mode), reportId(MNRLReportIdString(reportId)) {}
+
+MNRLUpCounter::MNRLUpCounter(
+	int threshold,
+	MNRLDefs::CounterMode mode,
+	string id,
+	MNRLDefs::EnableType enable,
+	bool report,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(),
+		gen_output(),
+		attributes
+), threshold(threshold), mode(mode), reportId(MNRLReportId()) {}
 
 MNRLUpCounter::~MNRLUpCounter() {}
 
