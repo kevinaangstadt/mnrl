@@ -32,6 +32,8 @@ namespace MNRL {
             virtual ~MNRLNode();
             virtual json11::Json to_json();
 
+            virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::NODE; }
+
             std::shared_ptr<port_map> getOutputConnections();
             std::shared_ptr<port_map> getInputConnections();
 
@@ -45,7 +47,6 @@ namespace MNRL {
             void setId(std::string new_id);
             void setReport(bool r);
             void setEnable(MNRLDefs::EnableType e);
-
 
         protected:
             std::string id;

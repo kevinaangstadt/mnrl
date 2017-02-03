@@ -53,6 +53,8 @@ namespace MNRL {
 
 			virtual json11::Json to_json();
 
+			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::BOOLEAN; }
+
 		protected:
 			int threshold;
 			MNRLDefs::BooleanMode mode;

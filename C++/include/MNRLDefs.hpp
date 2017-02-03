@@ -32,6 +32,14 @@ namespace MNRL {
 				NAND
             };
 
+            enum NodeType {
+            	NODE,
+				STATE,
+				HSTATE,
+				BOOLEAN,
+				UPCOUNTER
+            };
+
             static const std::string STATE_INPUT,
             						 H_STATE_INPUT,
 									 H_STATE_OUTPUT,

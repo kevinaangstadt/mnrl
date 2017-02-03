@@ -90,3 +90,14 @@ Json MNRLHState::to_json() {
 
 	return Json(mapping);
 }
+
+MNRLReportId MNRLHState::getReportId() { return reportId; }
+void MNRLHState::setReportId(string id) { reportId = MNRLReportIdString(id); }
+void MNRLHState::setReportId(int id) { reportId = MNRLReportIdInt(id); }
+void MNRLHState::setReportId(MNRLReportId id) { reportId = id; }
+
+bool MNRLHState::getLatched() { return latched; }
+void MNRLHState::setLatched(bool l) { latched = l; }
+
+string MNRLHState::getSymbolSet() { return symbols; }
+void MNRLHState::setSymbolSet(string set) { symbols = set; }

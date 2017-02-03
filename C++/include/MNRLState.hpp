@@ -54,6 +54,16 @@ namespace MNRL {
 
 			virtual json11::Json to_json();
 
+			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::STATE; }
+
+			MNRLReportId getReportId();
+			void setReportId(std::string id);
+			void setReportId(int id);
+			void setReportId(MNRLReportId id);
+
+			bool getLatched();
+			void setLatched(bool l);
+
 		protected:
 			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols;
 			bool latched;

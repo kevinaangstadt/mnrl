@@ -53,6 +53,19 @@ namespace MNRL {
 
 			virtual json11::Json to_json();
 
+			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::HSTATE; }
+
+			MNRLReportId getReportId();
+			void setReportId(std::string id);
+			void setReportId(int id);
+			void setReportId(MNRLReportId id);
+
+			bool getLatched();
+			void setLatched(bool l);
+
+			std::string getSymbolSet();
+			void setSymbolSet(std::string set);
+
 		protected:
 			std::string symbols;
 			bool latched;

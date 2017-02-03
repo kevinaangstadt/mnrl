@@ -95,3 +95,11 @@ Json MNRLState::to_json() {
 
 	return Json(mapping);
 }
+
+MNRLReportId MNRLState::getReportId() { return reportId; }
+void MNRLState::setReportId(string id) { reportId = MNRLReportIdString(id); }
+void MNRLState::setReportId(int id) { reportId = MNRLReportIdInt(id); }
+void MNRLState::setReportId(MNRLReportId id) { reportId = id; }
+
+bool MNRLState::getLatched() { return latched; }
+void MNRLState::setLatched(bool l) { latched = l; }
