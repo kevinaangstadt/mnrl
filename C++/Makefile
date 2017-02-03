@@ -76,8 +76,11 @@ $(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@ 
 	../tests/readwrite_test.sh tests/readwrite tests/
 
+$(TESTDIR)/readandprint: $(TESTDIR)/readandprint.cpp
+	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
+
 .PHONY: clean
 
 clean:
-	rm -f $(ODIR)/*.o validate $(SNAME) $(DNAME) tests/readwrite
+	rm -f $(ODIR)/*.o validate $(SNAME) $(DNAME) tests/readwrite tests/readandprint
 	rmdir $(ODIR)

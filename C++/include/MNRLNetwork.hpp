@@ -16,6 +16,7 @@
 
 #include "MNRLDefs.hpp"
 #include "MNRLError.hpp"
+#include "MapIterator.hpp"
 
 namespace MNRL {
 	class MNRLNode;
@@ -29,6 +30,10 @@ namespace MNRL {
             virtual ~MNRLNetwork();
             virtual json11::Json toJSON();
             virtual void exportToFile(std::string filename);
+
+            MapIterator<std::map<std::string,std::shared_ptr<MNRLNode>>> getNodeIterator();
+            std::map<std::string,std::shared_ptr<MNRLNode>> getNodes();
+
             std::shared_ptr<MNRLNode> getNodeById(std::string id);
             std::shared_ptr<MNRLNode> addNode(std::shared_ptr<MNRLNode> theNode);
             

@@ -38,6 +38,14 @@ void MNRLNetwork::exportToFile(string filename) {
 	out.close();
 }
 
+MapIterator<map<string,shared_ptr<MNRLNode>>> MNRLNetwork::getNodeIterator() {
+	return MapIterator<map<string,shared_ptr<MNRLNode>>>(nodes);
+}
+
+map<string,shared_ptr<MNRLNode>> MNRLNetwork::getNodes() {
+	return nodes;
+}
+
 shared_ptr<MNRLNode> MNRLNetwork::getNodeById(string id){
 	map<string,shared_ptr<MNRLNode>>::iterator it = nodes.find(id);
 
