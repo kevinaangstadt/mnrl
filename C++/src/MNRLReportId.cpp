@@ -17,6 +17,7 @@ Json MNRLReportId::to_json() const {
 	return Json();
 }
 MNRLDefs::ReportIdType MNRLReportId::get_type() { return MNRLDefs::ReportIdType::NONE; }
+string MNRLReportId::toString() { return "None"; }
 
 MNRLReportIdInt::MNRLReportIdInt(int id) : MNRLReportId(), id(id) {}
 MNRLReportIdInt::~MNRLReportIdInt() {}
@@ -25,6 +26,7 @@ Json MNRLReportIdInt::to_json() const {
 	return Json(id);
 }
 MNRLDefs::ReportIdType MNRLReportIdInt::get_type() { return MNRLDefs::ReportIdType::INT; }
+string MNRLReportIdInt::toString() { return std::to_string(id); }
 
 
 MNRLReportIdString::MNRLReportIdString(string id) : MNRLReportId(), id(id) {}
@@ -34,3 +36,4 @@ Json MNRLReportIdString::to_json() const {
 	return Json(id);
 }
 MNRLDefs::ReportIdType MNRLReportIdString::get_type() { return MNRLDefs::ReportIdType::STRING; }
+string MNRLReportIdString::toString() { return id; }

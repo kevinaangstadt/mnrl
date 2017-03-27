@@ -17,6 +17,7 @@ namespace MNRL {
 			virtual ~MNRLReportId();
 			virtual json11::Json to_json() const;
 			virtual MNRLDefs::ReportIdType get_type();
+			virtual std::string toString();
 	};
 
 	class MNRLReportIdInt : public MNRLReportId {
@@ -26,6 +27,7 @@ namespace MNRL {
 			virtual json11::Json to_json() const;
 			int getId();
 			virtual MNRLDefs::ReportIdType get_type();
+			virtual std::string toString();
 		private:
 			int id;
 	};
@@ -37,6 +39,7 @@ namespace MNRL {
 				virtual json11::Json to_json() const;
 				std::string getId();
 				virtual MNRLDefs::ReportIdType get_type();
+				virtual std::string toString();
 			private:
 				std::string id;
 	};
