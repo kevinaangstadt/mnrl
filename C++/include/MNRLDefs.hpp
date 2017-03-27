@@ -40,6 +40,12 @@ namespace MNRL {
 				UPCOUNTER
             };
 
+            enum ReportIdType {
+            	NONE,
+				INT,
+				STRING
+            };
+
             static const std::string STATE_INPUT,
             						 H_STATE_INPUT,
 									 H_STATE_OUTPUT,

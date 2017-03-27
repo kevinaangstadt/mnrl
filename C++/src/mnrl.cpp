@@ -5,6 +5,8 @@
  * mnrl.cpp
  */
 
+#include <json11.hpp>
+
 #include <valijson/adapters/json11_adapter.hpp>
 #include <valijson/utils/json11_utils.hpp>
 #include <valijson/schema.hpp>
