@@ -24,6 +24,14 @@ using valijson::Validator;
 using valijson::ValidationResults;
 using valijson::adapters::Json11Adapter;
 
+MNRLReportId parseReportId(Json rid) {
+	if(rid.is_number()) {
+		return MNRLReportIdInt(rid.number_value());
+	} else if (rid.is_string()) {
+		return MNRLReportIdString(rid.string_value());
+	} else
+		return MNRLReportId();
+}
 
 shared_ptr<MNRLNode> parse_node(Json n) {
 	string typ = n["type"].string_value();
@@ -41,7 +49,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["id"].string_value(),
 				n["report"].bool_value(),
 				n["attributes"]["latched"].bool_value(),
-				n["attributes"]["reportId"].bool_value(),
+				parseReportId(n["attributes"]["reportId"]),
 				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("hState") == 0 ) {
@@ -51,7 +59,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["id"].string_value(),
 				n["report"].bool_value(),
 				n["attributes"]["latched"].bool_value(),
-				n["attributes"]["reportId"].bool_value(),
+				parseReportId(n["attributes"]["reportId"]),
 				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("upCounter") == 0 ) {
@@ -61,7 +69,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["id"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
-				n["attributes"]["reportId"].bool_value(),
+				parseReportId(n["attributes"]["reportId"]),
 				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else if( typ.compare("Boolean") == 0 ) {
@@ -72,7 +80,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["id"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
-				n["attributes"]["reportId"].bool_value(),
+				parseReportId(n["attributes"]["reportId"]),
 				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
 	} else {

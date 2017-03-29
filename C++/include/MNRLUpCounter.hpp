@@ -29,6 +29,15 @@ namespace MNRL {
 				std::string id,
 				MNRLDefs::EnableType enable,
 				bool report,
+				MNRLReportId reportId,
+				std::shared_ptr<json11::Json::object> attributes
+			);
+			MNRLUpCounter(
+				int threshold,
+				MNRLDefs::CounterMode mode,
+				std::string id,
+				MNRLDefs::EnableType enable,
+				bool report,
 				int reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);

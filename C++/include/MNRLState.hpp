@@ -29,6 +29,15 @@ namespace MNRL {
 				std::string id,
 				bool report,
 				bool latched,
+				MNRLReportId reportId,
+				std::shared_ptr<json11::Json::object> attributes
+			);
+			MNRLState(
+				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				bool latched,
 				int reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);

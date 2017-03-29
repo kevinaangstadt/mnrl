@@ -17,6 +17,23 @@ MNRLBoolean::MNRLBoolean(
 	string id,
 	MNRLDefs::EnableType enable,
 	bool report,
+	MNRLReportId reportId,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(portCount),
+		gen_output(),
+		attributes
+),  mode(mode), reportId(reportId) {}
+
+MNRLBoolean::MNRLBoolean(
+	MNRLDefs::BooleanMode mode,
+	int portCount,
+	string id,
+	MNRLDefs::EnableType enable,
+	bool report,
 	int reportId,
 	shared_ptr<Json::object> attributes
 ) : MNRLNode (

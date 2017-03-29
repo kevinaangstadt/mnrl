@@ -17,6 +17,23 @@ MNRLUpCounter::MNRLUpCounter(
 	string id,
 	MNRLDefs::EnableType enable,
 	bool report,
+	MNRLReportId reportId,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(),
+		gen_output(),
+		attributes
+), threshold(threshold), mode(mode), reportId(reportId) {}
+
+MNRLUpCounter::MNRLUpCounter(
+	int threshold,
+	MNRLDefs::CounterMode mode,
+	string id,
+	MNRLDefs::EnableType enable,
+	bool report,
 	int reportId,
 	shared_ptr<Json::object> attributes
 ) : MNRLNode (

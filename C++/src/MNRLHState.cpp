@@ -17,6 +17,23 @@ MNRLHState::MNRLHState(
 	string id,
 	bool report,
 	bool latched,
+	MNRLReportId reportId,
+	shared_ptr<Json::object> attributes
+) : MNRLNode (
+		id,
+		enable,
+		report,
+		gen_input(),
+		gen_output(),
+		attributes
+), symbols(symbols), reportId(reportId), latched(latched) {}
+
+MNRLHState::MNRLHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	bool latched,
 	int reportId,
 	shared_ptr<Json::object> attributes
 ) : MNRLNode (
