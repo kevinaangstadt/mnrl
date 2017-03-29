@@ -43,7 +43,7 @@ MNRLBoolean::MNRLBoolean(
 		gen_input(portCount),
 		gen_output(),
 		attributes
-),  mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdInt(reportId))) {}
+),  mode(mode), reportId(shared_ptr<MNRLReportIdInt>(new MNRLReportIdInt(reportId))) {}
 
 MNRLBoolean::MNRLBoolean(
 	MNRLDefs::BooleanMode mode,
@@ -105,6 +105,6 @@ Json MNRLBoolean::to_json() {
 }
 
 shared_ptr<MNRLReportId> MNRLBoolean::getReportId() { return reportId; }
-void MNRLBoolean::setReportId(string id) { reportId = shared_ptr<MNRLReportId>(new MNRLReportIdString(id)); }
-void MNRLBoolean::setReportId(int id) { reportId = shared_ptr<MNRLReportId>(new MNRLReportIdInt(id)); }
+void MNRLBoolean::setReportId(string id) { reportId = shared_ptr<MNRLReportIdString>(new MNRLReportIdString(id)); }
+void MNRLBoolean::setReportId(int id) { reportId = shared_ptr<MNRLReportIdInt>(new MNRLReportIdInt(id)); }
 void MNRLBoolean::setReportId(shared_ptr<MNRLReportId> id) { reportId = id; }

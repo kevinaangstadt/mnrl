@@ -43,7 +43,7 @@ MNRLUpCounter::MNRLUpCounter(
 		gen_input(),
 		gen_output(),
 		attributes
-), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdInt(reportId))) {}
+), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportIdInt>(new MNRLReportIdInt(reportId))) {}
 
 MNRLUpCounter::MNRLUpCounter(
 	int threshold,
@@ -60,7 +60,7 @@ MNRLUpCounter::MNRLUpCounter(
 		gen_input(),
 		gen_output(),
 		attributes
-), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdString(reportId))) {}
+), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportIdString>(new MNRLReportIdString(reportId))) {}
 
 MNRLUpCounter::MNRLUpCounter(
 	int threshold,
@@ -108,6 +108,6 @@ Json MNRLUpCounter::to_json() {
 }
 
 shared_ptr<MNRLReportId> MNRLUpCounter::getReportId() { return reportId; }
-void MNRLUpCounter::setReportId(string id) { reportId = shared_ptr<MNRLReportId>( new MNRLReportIdString(id)); }
-void MNRLUpCounter::setReportId(int id) { reportId = shared_ptr<MNRLReportId>( new MNRLReportIdInt(id)); }
+void MNRLUpCounter::setReportId(string id) { reportId = shared_ptr<MNRLReportIdString>( new MNRLReportIdString(id)); }
+void MNRLUpCounter::setReportId(int id) { reportId = shared_ptr<MNRLReportIdInt>( new MNRLReportIdInt(id)); }
 void MNRLUpCounter::setReportId(shared_ptr<MNRLReportId> id) { reportId = id; }

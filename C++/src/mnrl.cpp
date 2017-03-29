@@ -26,9 +26,9 @@ using valijson::adapters::Json11Adapter;
 
 shared_ptr<MNRLReportId> parseReportId(Json rid) {
 	if(rid.is_number()) {
-		return shared_ptr<MNRLReportId>( new MNRLReportIdInt(rid.number_value()) );
+		return shared_ptr<MNRLReportIdInt>( new MNRLReportIdInt(rid.number_value()) );
 	} else if (rid.is_string()) {
-		return shared_ptr<MNRLReportId>( new MNRLReportIdString(rid.string_value()) );
+		return shared_ptr<MNRLReportIdString>( new MNRLReportIdString(rid.string_value()) );
 	} else
 		return shared_ptr<MNRLReportId>( new MNRLReportId() );
 }

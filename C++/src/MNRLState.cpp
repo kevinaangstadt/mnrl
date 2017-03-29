@@ -43,7 +43,7 @@ MNRLState::MNRLState(
 		gen_input(),
 		gen_output(outputSymbols),
 		attributes
-), outputSymbols(outputSymbols), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdInt(reportId))), latched(latched) {}
+), outputSymbols(outputSymbols), reportId(shared_ptr<MNRLReportIdInt>(new MNRLReportIdInt(reportId))), latched(latched) {}
 
 MNRLState::MNRLState(
 	shared_ptr<vector<pair<string,string>>> outputSymbols,
@@ -60,7 +60,7 @@ MNRLState::MNRLState(
 		gen_input(),
 		gen_output(outputSymbols),
 		attributes
-), outputSymbols(outputSymbols), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdString(reportId))), latched(latched) {}
+), outputSymbols(outputSymbols), reportId(shared_ptr<MNRLReportIdString>(new MNRLReportIdString(reportId))), latched(latched) {}
 
 MNRLState::MNRLState(
 	shared_ptr<vector<pair<string,string>>> outputSymbols,
@@ -114,8 +114,8 @@ Json MNRLState::to_json() {
 }
 
 shared_ptr<MNRLReportId> MNRLState::getReportId() { return reportId; }
-void MNRLState::setReportId(string id) { reportId = shared_ptr<MNRLReportId>(new MNRLReportIdString(id)); }
-void MNRLState::setReportId(int id) { reportId = shared_ptr<MNRLReportId>(new MNRLReportIdInt(id)); }
+void MNRLState::setReportId(string id) { reportId = shared_ptr<MNRLReportIdString>(new MNRLReportIdString(id)); }
+void MNRLState::setReportId(int id) { reportId = shared_ptr<MNRLReportIdInt>(new MNRLReportIdInt(id)); }
 void MNRLState::setReportId(shared_ptr<MNRLReportId> id) { reportId = id; }
 
 bool MNRLState::getLatched() { return latched; }
