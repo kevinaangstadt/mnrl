@@ -17,7 +17,7 @@ Json MNRLReportId::to_json() const {
 	return Json();
 }
 MNRLDefs::ReportIdType MNRLReportId::get_type() { return MNRLDefs::ReportIdType::NONE; }
-string MNRLReportId::toString() { return "None"; }
+string MNRLReportId::toString() { return ""; }
 
 MNRLReportIdInt::MNRLReportIdInt(int id) : MNRLReportId(), id(id) {}
 MNRLReportIdInt::~MNRLReportIdInt() {}
