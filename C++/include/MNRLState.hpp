@@ -29,7 +29,7 @@ namespace MNRL {
 				std::string id,
 				bool report,
 				bool latched,
-				MNRLReportId reportId,
+				std::shared_ptr<MNRLReportId> reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);
 			MNRLState(
@@ -65,10 +65,10 @@ namespace MNRL {
 
 			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::STATE; }
 
-			MNRLReportId getReportId();
+			std::shared_ptr<MNRLReportId> getReportId();
 			void setReportId(std::string id);
 			void setReportId(int id);
-			void setReportId(MNRLReportId id);
+			void setReportId(std::shared_ptr<MNRLReportId> id);
 
 			bool getLatched();
 			void setLatched(bool l);
@@ -76,7 +76,7 @@ namespace MNRL {
 		protected:
 			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols;
 			bool latched;
-			MNRLReportId reportId;
+			std::shared_ptr<MNRLReportId> reportId;
 
 		private:
 			static port_def gen_input() {

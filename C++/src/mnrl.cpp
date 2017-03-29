@@ -24,13 +24,13 @@ using valijson::Validator;
 using valijson::ValidationResults;
 using valijson::adapters::Json11Adapter;
 
-MNRLReportId parseReportId(Json rid) {
+shared_ptr<MNRLReportId> parseReportId(Json rid) {
 	if(rid.is_number()) {
-		return MNRLReportIdInt(rid.number_value());
+		return shared_ptr<MNRLReportId>( new MNRLReportIdInt(rid.number_value()) );
 	} else if (rid.is_string()) {
-		return MNRLReportIdString(rid.string_value());
+		return shared_ptr<MNRLReportId>( new MNRLReportIdString(rid.string_value()) );
 	} else
-		return MNRLReportId();
+		return shared_ptr<MNRLReportId>( new MNRLReportId() );
 }
 
 shared_ptr<MNRLNode> parse_node(Json n) {

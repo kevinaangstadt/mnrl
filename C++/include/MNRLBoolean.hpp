@@ -29,7 +29,7 @@ namespace MNRL {
 				std::string id,
 				MNRLDefs::EnableType enable,
 				bool report,
-				MNRLReportId reportId,
+				std::shared_ptr<MNRLReportId> reportId,
 				std::shared_ptr<json11::Json::object> attributes
 			);
 			MNRLBoolean (
@@ -64,10 +64,15 @@ namespace MNRL {
 
 			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::BOOLEAN; }
 
+			std::shared_ptr<MNRLReportId> getReportId();
+			void setReportId(std::string id);
+			void setReportId(int id);
+			void setReportId(std::shared_ptr<MNRLReportId> id);
+
 		protected:
 			int threshold;
 			MNRLDefs::BooleanMode mode;
-			MNRLReportId reportId;
+			std::shared_ptr<MNRLReportId> reportId;
 
 		private:
 			static port_def gen_input(int port_count) {

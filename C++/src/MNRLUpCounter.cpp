@@ -17,7 +17,7 @@ MNRLUpCounter::MNRLUpCounter(
 	string id,
 	MNRLDefs::EnableType enable,
 	bool report,
-	MNRLReportId reportId,
+	shared_ptr<MNRLReportId> reportId,
 	shared_ptr<Json::object> attributes
 ) : MNRLNode (
 		id,
@@ -43,7 +43,7 @@ MNRLUpCounter::MNRLUpCounter(
 		gen_input(),
 		gen_output(),
 		attributes
-), threshold(threshold), mode(mode), reportId(MNRLReportIdInt(reportId)) {}
+), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdInt(reportId))) {}
 
 MNRLUpCounter::MNRLUpCounter(
 	int threshold,
@@ -60,7 +60,7 @@ MNRLUpCounter::MNRLUpCounter(
 		gen_input(),
 		gen_output(),
 		attributes
-), threshold(threshold), mode(mode), reportId(MNRLReportIdString(reportId)) {}
+), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdString(reportId))) {}
 
 MNRLUpCounter::MNRLUpCounter(
 	int threshold,
@@ -76,7 +76,7 @@ MNRLUpCounter::MNRLUpCounter(
 		gen_input(),
 		gen_output(),
 		attributes
-), threshold(threshold), mode(mode), reportId(MNRLReportId()) {}
+), threshold(threshold), mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportId())) {}
 
 MNRLUpCounter::~MNRLUpCounter() {}
 
@@ -96,7 +96,7 @@ Json MNRLUpCounter::to_json() {
 	attrs.insert(map<string, Json>::value_type("threshold", Json(threshold)));
 
 	// insert reportId
-	attrs.insert(map<string, Json>::value_type("reportId", Json(reportId)));
+	attrs.insert(map<string, Json>::value_type("reportId", Json(*reportId)));
 
 	// insert latched
 	attrs.insert(map<string, Json>::value_type("mode", Json(MNRLDefs::toMNRLCounterMode(mode))));
@@ -106,3 +106,8 @@ Json MNRLUpCounter::to_json() {
 
 	return Json(mapping);
 }
+
+shared_ptr<MNRLReportId> MNRLUpCounter::getReportId() { return reportId; }
+void MNRLUpCounter::setReportId(string id) { reportId = shared_ptr<MNRLReportId>( new MNRLReportIdString(id)); }
+void MNRLUpCounter::setReportId(int id) { reportId = shared_ptr<MNRLReportId>( new MNRLReportIdInt(id)); }
+void MNRLUpCounter::setReportId(shared_ptr<MNRLReportId> id) { reportId = id; }

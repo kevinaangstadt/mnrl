@@ -17,7 +17,7 @@ MNRLBoolean::MNRLBoolean(
 	string id,
 	MNRLDefs::EnableType enable,
 	bool report,
-	MNRLReportId reportId,
+	shared_ptr<MNRLReportId> reportId,
 	shared_ptr<Json::object> attributes
 ) : MNRLNode (
 		id,
@@ -43,7 +43,7 @@ MNRLBoolean::MNRLBoolean(
 		gen_input(portCount),
 		gen_output(),
 		attributes
-),  mode(mode), reportId(MNRLReportIdInt(reportId)) {}
+),  mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportIdInt(reportId))) {}
 
 MNRLBoolean::MNRLBoolean(
 	MNRLDefs::BooleanMode mode,
@@ -60,7 +60,7 @@ MNRLBoolean::MNRLBoolean(
 		gen_input(portCount),
 		gen_output(),
 		attributes
-),  mode(mode), reportId(MNRLReportIdString(reportId)) {}
+),  mode(mode), reportId(shared_ptr<MNRLReportIdString>(new MNRLReportIdString(reportId))) {}
 
 MNRLBoolean::MNRLBoolean(
 	MNRLDefs::BooleanMode mode,
@@ -76,7 +76,7 @@ MNRLBoolean::MNRLBoolean(
 		gen_input(portCount),
 		gen_output(),
 		attributes
-),  mode(mode), reportId(MNRLReportId()) {}
+),  mode(mode), reportId(shared_ptr<MNRLReportId>(new MNRLReportId())) {}
 
 MNRLBoolean::~MNRLBoolean() {}
 
@@ -93,7 +93,7 @@ Json MNRLBoolean::to_json() {
 	map<string, Json> attrs = mapping["attributes"].object_items();
 
 	// insert reportId
-	attrs.insert(map<string, Json>::value_type("reportId", Json(reportId)));
+	attrs.insert(map<string, Json>::value_type("reportId", Json(*reportId)));
 
 	// insert latched
 	attrs.insert(map<string, Json>::value_type("mode", Json(MNRLDefs::toMNRLBooleanMode(mode))));
@@ -103,3 +103,8 @@ Json MNRLBoolean::to_json() {
 
 	return Json(mapping);
 }
+
+shared_ptr<MNRLReportId> MNRLBoolean::getReportId() { return reportId; }
+void MNRLBoolean::setReportId(string id) { reportId = shared_ptr<MNRLReportId>(new MNRLReportIdString(id)); }
+void MNRLBoolean::setReportId(int id) { reportId = shared_ptr<MNRLReportId>(new MNRLReportIdInt(id)); }
+void MNRLBoolean::setReportId(shared_ptr<MNRLReportId> id) { reportId = id; }
