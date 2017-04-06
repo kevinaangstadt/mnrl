@@ -65,6 +65,24 @@ namespace MNRL {
                 bool latched,
 				std::shared_ptr<json11::Json::object> attributes
             );
+            std::shared_ptr<MNRLHState> addHState(
+            		std::string symbols,
+					MNRLDefs::EnableType enable,
+					std::string id,
+					bool report,
+					std::string reportId,
+					bool latched,
+					std::shared_ptr<json11::Json::object> attributes
+            );
+
+            std::shared_ptr<MNRLHState> addHState(
+            		std::string symbols,
+					MNRLDefs::EnableType enable,
+					std::string id,
+					bool report,
+					bool latched,
+					std::shared_ptr<json11::Json::object> attributes
+            );
             
             std::shared_ptr<MNRLHState> addHState(
 				std::string symbols,
@@ -74,6 +92,22 @@ namespace MNRL {
 				int reportId,
 				bool latched
 			);
+            std::shared_ptr<MNRLHState> addHState(
+            		std::string symbols,
+					MNRLDefs::EnableType enable,
+					std::string id,
+					bool report,
+					std::string reportId,
+					bool latched
+            );
+
+            std::shared_ptr<MNRLHState> addHState(
+            		std::string symbols,
+					MNRLDefs::EnableType enable,
+					std::string id,
+					bool report,
+					bool latched
+            );
 
             std::shared_ptr<MNRLUpCounter> addUpCounter(
                 int threshold,

@@ -107,7 +107,36 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	shared_ptr<Json::object> attributes
 ) {
 	string new_id = getUniqueNodeId(id);
-	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, reportId, latched, attributes));
+	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, latched, reportId, attributes));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+
+shared_ptr<MNRLHState> MNRLNetwork::addHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	string reportId,
+	bool latched,
+	shared_ptr<Json::object> attributes
+) {
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, latched, reportId, attributes));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+
+shared_ptr<MNRLHState> MNRLNetwork::addHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	bool latched,
+	shared_ptr<Json::object> attributes
+) {
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, latched, attributes));
 	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
 	return state;
 }
@@ -132,6 +161,43 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	);
 }
 
+shared_ptr<MNRLHState> MNRLNetwork::addHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	string reportId,
+	bool latched
+){
+	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	return addHState(
+		symbols,
+		enable,
+		id,
+		report,
+		reportId,
+		latched,
+		attr
+	);
+}
+
+shared_ptr<MNRLHState> MNRLNetwork::addHState(
+	string symbols,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	bool latched
+){
+	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	return addHState(
+		symbols,
+		enable,
+		id,
+		report,
+		latched,
+		attr
+	);
+}
 
 shared_ptr<MNRLUpCounter> MNRLNetwork::addUpCounter(
 	int threshold,
