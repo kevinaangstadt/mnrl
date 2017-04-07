@@ -82,7 +82,7 @@ namespace MNRL{
 
 		class UnknownPort : public MNRLError {
 		public:
-			UnknownPort(std::string id) : MNRLError("port not found"), id(id) {}
+			UnknownPort(std::string id) : MNRLError("port not found: " + id), id(id) {}
 			std::string get_id() { return id; }
 		private:
 			std::string id;
