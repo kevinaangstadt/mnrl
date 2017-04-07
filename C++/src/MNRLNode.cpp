@@ -115,6 +115,10 @@ shared_ptr<MNRLPort> MNRLNode::getOutputPort(string portId) {
 shared_ptr<MNRLPort> MNRLNode::getInputPort(string portId) {
 	port_map::iterator it = inputDefs->find(portId);
 	if (it == inputDefs->end()) {
+		cerr << "Valid ports are:" << endl;
+		for (const auto p : *inputDefs){
+			cerr << "    " << p.second->getId() << endl;
+		}
 		throw MNRLError::UnknownPort(portId);
 	}
 	return (*inputDefs)[portId];
