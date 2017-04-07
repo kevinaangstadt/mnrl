@@ -72,7 +72,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				parseReportId(n["attributes"]["reportId"]),
 				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
 		));
-	} else if( typ.compare("Boolean") == 0 ) {
+	} else if( typ.compare("boolean") == 0 ) {
 		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attributes"]["gateType"].string_value());
 		node = shared_ptr<MNRLNode>(new MNRLBoolean(
 				mode,
