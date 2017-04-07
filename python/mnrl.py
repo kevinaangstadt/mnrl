@@ -562,8 +562,9 @@ class Boolean(MNRLNode):
                 attributes = attributes
             )
             
-            self.gateType = gateType,
+            self.gateType = gateType
             self.reportId = reportId
+
         else:
             raise mnrlerror.InvalidGateFormat()
     def toJSON(self):
