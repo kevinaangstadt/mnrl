@@ -10,6 +10,8 @@ JSON11 = ./lib/json11
 VALIJSON = ./lib/valijson/include
 JSON = ./lib/valijson/thirdparty/nlohmann-json-1.1.0
 
+JSON11_HPP = $(JSON11)/json11.hpp
+
 
 NAME = libmnrl
 SNAME = $(NAME).a
@@ -44,7 +46,7 @@ TESTLDFLAGS = -lmnrl
 
 all: validate libmnrl
 
-libmnrl: $(SNAME) $(DNAME)
+libmnrl: $(JSON11_HPP) $(SNAME) $(DNAME)
 
 $(DNAME): LDFLAGS += -shared
 $(DNAME): $(OBJ_MNRL)
@@ -68,7 +70,7 @@ $(ODIR)/json11.o: $(JSON11)/json11.cpp
 $(ODIR)/%.o: $(SRCDIR)/%.asm
 	nasm $(NASMFLAGS) -o $@ $<
 
-$(JSON11)/json11.hpp:
+$(JSON11_HPP):
 	git submodule init
 	git submodule update	
 
