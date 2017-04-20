@@ -67,6 +67,11 @@ $(ODIR)/json11.o: $(JSON11)/json11.cpp
 
 $(ODIR)/%.o: $(SRCDIR)/%.asm
 	nasm $(NASMFLAGS) -o $@ $<
+
+$(JSON11)/json11.hpp:
+	git submodule init
+	git submodule update	
+
 	
 	#$(OBJCPY) -B i386 -I binary -O mach-o-x86-64 --rename-section .data=.const mnrl-schema.json $(ODIR)/mnrl_schema.o
 
