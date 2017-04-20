@@ -44,7 +44,7 @@ TESTDIR = tests
 TESTLDFLAGS = -lmnrl
 ###########
 
-all: validate libmnrl
+all: libmnrl validate
 
 libmnrl: $(JSON11_HPP) $(SNAME) $(DNAME)
 
