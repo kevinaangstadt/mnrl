@@ -112,7 +112,8 @@
                                         "symbolSet" : {
                                             "type": "string"
                                         }
-                                    }
+                                    },
+                                    "required": ["symbolSet"]
                                 }
                             ]
                         }
