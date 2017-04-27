@@ -5,6 +5,9 @@
  * MNRLNetwork.cpp
  */
 
+#include <json11.hpp>
+#include <json.hpp>
+
 #include "MNRLNetwork.hpp"
 #include "MNRLState.hpp"
 #include "MNRLHState.hpp"
