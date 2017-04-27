@@ -8,7 +8,6 @@
 
 #include "MNRLDefs.hpp"
 #include <string>
-#include <json11.hpp>
 
 namespace MNRL {
 	class MNRLReportId {

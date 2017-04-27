@@ -5,6 +5,8 @@
  * MNRLReportId.cpp
  */
 
+#include <json11.hpp>
+
 #include "MNRLReportId.hpp"
 
 using namespace std;
