@@ -60,8 +60,6 @@ namespace MNRL {
 
 			virtual ~MNRLState();
 
-			virtual json11::Json to_json();
-
 			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::STATE; }
 
 			std::shared_ptr<MNRLReportId> getReportId();
@@ -71,6 +69,8 @@ namespace MNRL {
 
 			bool getLatched();
 			void setLatched(bool l);
+
+			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> getOutputSymbols();
 
 		protected:
 			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols;

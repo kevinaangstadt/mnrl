@@ -13,6 +13,7 @@
 #include "MNRLHState.hpp"
 #include "MNRLUpCounter.hpp"
 #include "MNRLBoolean.hpp"
+#include "JSONWriter.hpp"
 
 using namespace std;
 using namespace MNRL;
@@ -23,21 +24,9 @@ MNRLNetwork::MNRLNetwork(string id) : id(id) {
 }
 MNRLNetwork::~MNRLNetwork() {}
 
-Json MNRLNetwork::toJSON() {
-	vector<Json> n;
-	for(auto &kv : nodes) {
-		n.push_back(kv.second->to_json());
-	}
-
-	return Json::object {
-		{"id", id},
-		{"nodes", n}
-	};
-}
-
 void MNRLNetwork::exportToFile(string filename) {
 	ofstream out(filename);
-	out << nlohmann::json::parse(toJSON().dump()).dump(4) << endl;
+	out << nlohmann::json::parse(JSONWriter::toJSON(*this).dump()).dump(4) << endl;
 	out.close();
 }
 
@@ -312,5 +301,9 @@ string MNRLNetwork::getUniqueNodeId(string id) {
 	if(it != nodes.end())
 		throw MNRLError::DuplicateIdError(id);
 
+	return id;
+}
+
+string MNRLNetwork::getId() {
 	return id;
 }

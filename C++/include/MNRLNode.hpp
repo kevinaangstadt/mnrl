@@ -29,7 +29,6 @@ namespace MNRL {
                 std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             virtual ~MNRLNode();
-            virtual json11::Json to_json();
 
             virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::NODE; }
 
@@ -42,6 +41,7 @@ namespace MNRL {
             std::string getId();
             bool getReport();
             MNRLDefs::EnableType getEnable();
+            std::shared_ptr<std::map<std::string,std::string>> getAttributes();
 
             void setId(std::string new_id);
             void setReport(bool r);

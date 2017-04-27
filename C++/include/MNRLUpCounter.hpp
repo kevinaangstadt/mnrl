@@ -59,14 +59,18 @@ namespace MNRL {
 			);
 			virtual ~MNRLUpCounter();
 
-			virtual json11::Json to_json();
-
 			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::UPCOUNTER; }
 
 			std::shared_ptr<MNRLReportId> getReportId();
 			void setReportId(std::string id);
 			void setReportId(int id);
 			void setReportId(std::shared_ptr<MNRLReportId> id);
+
+			MNRLDefs::CounterMode getMode();
+			void setMode(MNRLDefs::CounterMode m);
+
+			int getThreshold();
+			void setThreshold(int t);
 
 		protected:
 			int threshold;

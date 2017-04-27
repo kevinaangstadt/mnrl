@@ -5,28 +5,19 @@
  * MNRLReportId.cpp
  */
 
-#include <json11.hpp>
-
 #include "MNRLReportId.hpp"
 
 using namespace std;
 using namespace MNRL;
-using namespace json11;
 
 MNRLReportId::MNRLReportId() {}
 MNRLReportId::~MNRLReportId() {}
-Json MNRLReportId::to_json() const {
-	return Json();
-}
 MNRLDefs::ReportIdType MNRLReportId::get_type() { return MNRLDefs::ReportIdType::NONE; }
 string MNRLReportId::toString() { return ""; }
 
 MNRLReportIdInt::MNRLReportIdInt(int id) : MNRLReportId(), id(id) {}
 MNRLReportIdInt::~MNRLReportIdInt() {}
 int MNRLReportIdInt::getId() { return id; }
-Json MNRLReportIdInt::to_json() const {
-	return Json(id);
-}
 MNRLDefs::ReportIdType MNRLReportIdInt::get_type() { return MNRLDefs::ReportIdType::INT; }
 string MNRLReportIdInt::toString() { return std::to_string(id); }
 
@@ -34,8 +25,5 @@ string MNRLReportIdInt::toString() { return std::to_string(id); }
 MNRLReportIdString::MNRLReportIdString(string id) : MNRLReportId(), id(id) {}
 MNRLReportIdString::~MNRLReportIdString() {}
 string MNRLReportIdString::getId() { return id; }
-Json MNRLReportIdString::to_json() const {
-	return Json(id);
-}
 MNRLDefs::ReportIdType MNRLReportIdString::get_type() { return MNRLDefs::ReportIdType::STRING; }
 string MNRLReportIdString::toString() { return id; }

@@ -59,14 +59,15 @@ namespace MNRL {
 			);
 			virtual ~MNRLBoolean();
 
-			virtual json11::Json to_json();
-
 			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::BOOLEAN; }
 
 			std::shared_ptr<MNRLReportId> getReportId();
 			void setReportId(std::string id);
 			void setReportId(int id);
 			void setReportId(std::shared_ptr<MNRLReportId> id);
+
+			MNRLDefs::BooleanMode getMode();
+			void setMode(MNRLDefs::BooleanMode m);
 
 		protected:
 			int threshold;

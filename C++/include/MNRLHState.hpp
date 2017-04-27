@@ -59,8 +59,6 @@ namespace MNRL {
 			);
 			virtual ~MNRLHState();
 
-			virtual json11::Json to_json();
-
 			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::HSTATE; }
 
 			std::shared_ptr<MNRLReportId> getReportId();

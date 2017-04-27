@@ -26,7 +26,6 @@ namespace MNRL {
         public:
             MNRLNetwork(std::string id);
             virtual ~MNRLNetwork();
-            virtual json11::Json toJSON();
             virtual void exportToFile(std::string filename);
 
             MapIterator<std::map<std::string,std::shared_ptr<MNRLNode>>> getNodeIterator();
@@ -143,6 +142,8 @@ namespace MNRL {
 
             void addConnection(std::string src, std::string src_port, std::string dest, std::string dest_port);
             void removeConnection(std::string src, std::string src_port, std::string dest, std::string dest_port);
+
+            std::string getId();
         
         protected:
             std::string id;

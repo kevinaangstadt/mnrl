@@ -37,7 +37,7 @@ shared_ptr<MNRLReportId> parseReportId(Json rid) {
 static shared_ptr<map<string,string>> getAttrs(Json jattr, set<string>exclude=set<string>()) {
 	// get the items out of the map
 	shared_ptr<map<string,string>> attrs = shared_ptr<map<string,string>>(new map<string,string>());
-	for(auto a : jattr.object_items()) {
+	for(auto &a : jattr.object_items()) {
 		if(exclude.find(a.first) != exclude.end() && a.second.is_string()) {
 			string name = a.first;
 			string value = a.second.string_value();

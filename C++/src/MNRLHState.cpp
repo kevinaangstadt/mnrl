@@ -5,13 +5,10 @@
  * MNRLHState.cpp
  */
 
-#include<json11.hpp>
-
 #include "MNRLHState.hpp"
 
 using namespace std;
 using namespace MNRL;
-using namespace json11;
 
 MNRLHState::MNRLHState(
 	string symbols,
@@ -82,33 +79,6 @@ MNRLHState::MNRLHState(
 ), symbols(symbols), reportId(shared_ptr<MNRLReportId>(new MNRLReportId())), latched(latched) {}
 
 MNRLHState::~MNRLHState() {}
-
-Json MNRLHState::to_json() {
-	Json parent = MNRLNode::to_json();
-
-	// we know that this is an obj
-	map<string, Json> mapping = parent.object_items();
-
-	// insert the type
-	mapping.insert(map<string, Json>::value_type("type", Json("hState")));
-
-	// get the attributes
-	map<string, Json> attrs = mapping["attributes"].object_items();
-
-	// insert the symbolSets
-	attrs.insert(map<string, Json>::value_type("symbolSet", Json(symbols)));
-
-	// insert reportId
-	attrs.insert(map<string, Json>::value_type("reportId", Json(*reportId)));
-
-	// insert latched
-	attrs.insert(map<string, Json>::value_type("latched", Json(latched)));
-
-	// update the attributes
-	mapping["attributes"] = Json(attrs);
-
-	return Json(mapping);
-}
 
 shared_ptr<MNRLReportId> MNRLHState::getReportId() { return reportId; }
 void MNRLHState::setReportId(string id) { reportId = shared_ptr<MNRLReportIdString>(new MNRLReportIdString(id)); }
