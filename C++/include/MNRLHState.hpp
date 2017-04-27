@@ -10,7 +10,6 @@
 #include <utility>
 #include <vector>
 #include <map>
-#include <json11.hpp>
 
 #include "MNRLDefs.hpp"
 #include "MNRLNode.hpp"
