@@ -30,7 +30,7 @@ namespace MNRL {
 				MNRLDefs::EnableType enable,
 				bool report,
 				std::shared_ptr<MNRLReportId> reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			MNRLUpCounter(
 				int threshold,
@@ -39,7 +39,7 @@ namespace MNRL {
 				MNRLDefs::EnableType enable,
 				bool report,
 				int reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			MNRLUpCounter(
 				int threshold,
@@ -48,7 +48,7 @@ namespace MNRL {
 				MNRLDefs::EnableType enable,
 				bool report,
 				std::string reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			MNRLUpCounter(
 				int threshold,
@@ -56,7 +56,7 @@ namespace MNRL {
 				std::string id,
 				MNRLDefs::EnableType enable,
 				bool report,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			virtual ~MNRLUpCounter();
 

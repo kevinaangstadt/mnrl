@@ -44,7 +44,7 @@ namespace MNRL {
                 bool report,
                 int reportId,
                 bool latched,
-                std::shared_ptr<json11::Json::object> attributes
+                std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             
             std::shared_ptr<MNRLState> addState(
@@ -63,7 +63,7 @@ namespace MNRL {
                 bool report,
                 int reportId,
                 bool latched,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             std::shared_ptr<MNRLHState> addHState(
             		std::string symbols,
@@ -72,7 +72,7 @@ namespace MNRL {
 					bool report,
 					std::string reportId,
 					bool latched,
-					std::shared_ptr<json11::Json::object> attributes
+					std::shared_ptr<std::map<std::string,std::string>> attributes
             );
 
             std::shared_ptr<MNRLHState> addHState(
@@ -81,7 +81,7 @@ namespace MNRL {
 					std::string id,
 					bool report,
 					bool latched,
-					std::shared_ptr<json11::Json::object> attributes
+					std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             
             std::shared_ptr<MNRLHState> addHState(
@@ -115,7 +115,7 @@ namespace MNRL {
                 std::string id,
                 bool report,
                 int reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             
             std::shared_ptr<MNRLUpCounter> addUpCounter(
@@ -132,7 +132,7 @@ namespace MNRL {
                 std::string id,
                 bool report,
                 int reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             
             std::shared_ptr<MNRLBoolean> addBoolean(

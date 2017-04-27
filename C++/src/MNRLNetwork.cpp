@@ -69,7 +69,7 @@ shared_ptr<MNRLState> MNRLNetwork::addState(
 	bool report,
 	int reportId,
 	bool latched,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) {
 	string new_id = getUniqueNodeId(id);
 	shared_ptr<MNRLState> state = shared_ptr<MNRLState>(new MNRLState(outputSymbols, enable, new_id, report, reportId, latched, attributes));
@@ -85,7 +85,7 @@ shared_ptr<MNRLState> MNRLNetwork::addState(
 	int reportId,
 	bool latched
 ) {
-	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
 	return addState(
 		outputSymbols,
 		enable,
@@ -104,7 +104,7 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	bool report,
 	int reportId,
 	bool latched,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) {
 	string new_id = getUniqueNodeId(id);
 	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, latched, reportId, attributes));
@@ -119,7 +119,7 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	bool report,
 	string reportId,
 	bool latched,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) {
 	string new_id = getUniqueNodeId(id);
 	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, latched, reportId, attributes));
@@ -133,7 +133,7 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	string id,
 	bool report,
 	bool latched,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) {
 	string new_id = getUniqueNodeId(id);
 	shared_ptr<MNRLHState> state = shared_ptr<MNRLHState>(new MNRLHState(symbols, enable, new_id, report, latched, attributes));
@@ -149,7 +149,7 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	int reportId,
 	bool latched
 ){
-	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
 	return addHState(
 		symbols,
 		enable,
@@ -169,7 +169,7 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	string reportId,
 	bool latched
 ){
-	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
 	return addHState(
 		symbols,
 		enable,
@@ -188,7 +188,7 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 	bool report,
 	bool latched
 ){
-	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
 	return addHState(
 		symbols,
 		enable,
@@ -205,7 +205,7 @@ shared_ptr<MNRLUpCounter> MNRLNetwork::addUpCounter(
 	string id,
 	bool report,
 	int reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) {
 	if(threshold < 0) {
 		throw MNRLError::UpCounterThresholdError(threshold);
@@ -223,7 +223,7 @@ shared_ptr<MNRLUpCounter> MNRLNetwork::addUpCounter(
 	bool report,
 	int reportId
 ) {
-	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
 	return addUpCounter(
 		threshold,
 		mode,
@@ -240,7 +240,7 @@ shared_ptr<MNRLBoolean> MNRLNetwork::addBoolean(
 	string id,
 	bool report,
 	int reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) {
 	string new_id = getUniqueNodeId(id);
 	shared_ptr<MNRLBoolean> b = shared_ptr<MNRLBoolean>(new MNRLBoolean(booleanType, MNRLDefs::BooleanToPort(booleanType), new_id, enable, report, reportId, attributes));
@@ -255,7 +255,7 @@ shared_ptr<MNRLBoolean> MNRLNetwork::addBoolean(
 	bool report,
 	int reportId
 ) {
-	shared_ptr<Json::object> attr = shared_ptr<Json::object>(new Json::object {});
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
 	return addBoolean(
 		booleanType,
 		enable,

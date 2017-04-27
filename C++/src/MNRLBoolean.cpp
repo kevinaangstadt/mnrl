@@ -18,7 +18,7 @@ MNRLBoolean::MNRLBoolean(
 	MNRLDefs::EnableType enable,
 	bool report,
 	shared_ptr<MNRLReportId> reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,
@@ -35,7 +35,7 @@ MNRLBoolean::MNRLBoolean(
 	MNRLDefs::EnableType enable,
 	bool report,
 	int reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,
@@ -52,7 +52,7 @@ MNRLBoolean::MNRLBoolean(
 	MNRLDefs::EnableType enable,
 	bool report,
 	string reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,
@@ -68,7 +68,7 @@ MNRLBoolean::MNRLBoolean(
 	string id,
 	MNRLDefs::EnableType enable,
 	bool report,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,

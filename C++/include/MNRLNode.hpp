@@ -27,7 +27,7 @@ namespace MNRL {
                 bool report,
 				port_def inputDefs,
 				port_def outputDefs,
-                std::shared_ptr<json11::Json::object> attributes
+                std::shared_ptr<std::map<std::string,std::string>> attributes
             );
             virtual ~MNRLNode();
             virtual json11::Json to_json();
@@ -54,7 +54,7 @@ namespace MNRL {
             MNRLDefs::EnableType enable;
             std::shared_ptr<port_map> inputDefs;
             std::shared_ptr<port_map> outputDefs;
-            std::shared_ptr<json11::Json::object> attributes;
+            std::shared_ptr<std::map<std::string,std::string>> attributes;
 
         private:
             static std::shared_ptr<port_map> validate_ports(port_def &portdef) {

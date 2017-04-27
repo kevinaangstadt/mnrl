@@ -30,7 +30,7 @@ namespace MNRL {
 				bool report,
 				bool latched,
 				std::shared_ptr<MNRLReportId> reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			MNRLHState(
 				std::string symbols,
@@ -39,7 +39,7 @@ namespace MNRL {
 				bool report,
 				bool latched,
 				int reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			MNRLHState(
 				std::string symbols,
@@ -48,7 +48,7 @@ namespace MNRL {
 				bool report,
 				bool latched,
 				std::string reportId,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			MNRLHState(
 				std::string symbols,
@@ -56,7 +56,7 @@ namespace MNRL {
 				std::string id,
 				bool report,
 				bool latched,
-				std::shared_ptr<json11::Json::object> attributes
+				std::shared_ptr<std::map<std::string,std::string>> attributes
 			);
 			virtual ~MNRLHState();
 

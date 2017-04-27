@@ -8,7 +8,6 @@
 #define MNRL_HPP
 
 #include <memory>
-#include <json11.hpp>
 
 #include "MNRLDefs.hpp"
 #include "MNRLError.hpp"

@@ -5,6 +5,7 @@
  * mnrl.cpp
  */
 
+#include <set>
 #include <json11.hpp>
 
 #include <valijson/adapters/json11_adapter.hpp>
@@ -33,6 +34,19 @@ shared_ptr<MNRLReportId> parseReportId(Json rid) {
 		return shared_ptr<MNRLReportId>( new MNRLReportId() );
 }
 
+static shared_ptr<map<string,string>> getAttrs(Json jattr, set<string>exclude=set<string>()) {
+	// get the items out of the map
+	shared_ptr<map<string,string>> attrs = shared_ptr<map<string,string>>(new map<string,string>());
+	for(auto a : jattr.object_items()) {
+		if(exclude.find(a.first) != exclude.end() && a.second.is_string()) {
+			string name = a.first;
+			string value = a.second.string_value();
+			attrs->insert(map<string,string>::value_type(name, value));
+		}
+	}
+	return attrs;
+}
+
 shared_ptr<MNRLNode> parse_node(Json n) {
 	string typ = n["type"].string_value();
 	shared_ptr<MNRLNode> node;
@@ -43,6 +57,8 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 			output->push_back(make_pair(p.first,p.second.string_value()));
 		}
 
+		set<string> excludes = {"symbolSet", "latched", "reportId"};
+
 		node = shared_ptr<MNRLNode>(new MNRLState(
 				output,
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
@@ -50,9 +66,10 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["report"].bool_value(),
 				n["attributes"]["latched"].bool_value(),
 				parseReportId(n["attributes"]["reportId"]),
-				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
+				getAttrs(n["attributes"], excludes)
 		));
 	} else if( typ.compare("hState") == 0 ) {
+		set<string> excludes = {"symbolSet", "latched", "reportId"};
 		node = shared_ptr<MNRLNode>(new MNRLHState(
 				n["attributes"]["symbolSet"].string_value(),
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
@@ -60,9 +77,10 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["report"].bool_value(),
 				n["attributes"]["latched"].bool_value(),
 				parseReportId(n["attributes"]["reportId"]),
-				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
+				getAttrs(n["attributes"], excludes)
 		));
 	} else if( typ.compare("upCounter") == 0 ) {
+		set<string> excludes = {"mode", "threshold", "reportId"};
 		node = shared_ptr<MNRLNode>(new MNRLUpCounter(
 				n["attributes"]["threshold"].int_value(),
 				MNRLDefs::fromMNRLCounterMode(n["attributes"]["mode"].string_value()),
@@ -70,9 +88,12 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
 				parseReportId(n["attributes"]["reportId"]),
-				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
+				getAttrs(n["attributes"], excludes)
 		));
 	} else if( typ.compare("boolean") == 0 ) {
+
+		set<string> excludes = {"gateType", "reportId"};
+
 		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attributes"]["gateType"].string_value());
 		node = shared_ptr<MNRLNode>(new MNRLBoolean(
 				mode,
@@ -81,7 +102,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
 				n["report"].bool_value(),
 				parseReportId(n["attributes"]["reportId"]),
-				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
+				getAttrs(n["attributes"], excludes)
 		));
 	} else {
 		// convert input defs into format needed for constructor
@@ -102,7 +123,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				n["report"].bool_value(),
 				ins,
 				outs,
-				shared_ptr<Json::object>(new Json::object(n["attributes"].object_items()))
+				getAttrs(n["attributes"])
 		));
 	}
 	return node;

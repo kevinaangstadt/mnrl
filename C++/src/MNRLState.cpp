@@ -18,7 +18,7 @@ MNRLState::MNRLState(
 	bool report,
 	bool latched,
 	shared_ptr<MNRLReportId> reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,
@@ -35,7 +35,7 @@ MNRLState::MNRLState(
 	bool report,
 	bool latched,
 	int reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,
@@ -52,7 +52,7 @@ MNRLState::MNRLState(
 	bool report,
 	bool latched,
 	string reportId,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,
@@ -68,7 +68,7 @@ MNRLState::MNRLState(
 	string id,
 	bool report,
 	bool latched,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : MNRLNode (
 		id,
 		enable,

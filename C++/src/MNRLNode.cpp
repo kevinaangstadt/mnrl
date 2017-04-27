@@ -19,7 +19,7 @@ MNRLNode::MNRLNode(
 	bool report,
 	port_def inputDefs,
 	port_def outputDefs,
-	shared_ptr<Json::object> attributes
+	shared_ptr<map<string,string>> attributes
 ) : id(id),
 	enable(enable),
 	report(report),
