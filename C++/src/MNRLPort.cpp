@@ -5,6 +5,9 @@
  * MNRLPort.cpp
  */
 
+
+#include <json11.hpp>
+
 #include "MNRLPort.hpp"
 #include "MNRLNode.hpp"
 

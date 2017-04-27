@@ -5,6 +5,8 @@
  * MNRLNode.cpp
  */
 
+#include <json11.hpp>
+
 #include "MNRLNode.hpp"
 
 #include <iostream>

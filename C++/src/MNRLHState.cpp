@@ -5,6 +5,8 @@
  * MNRLHState.cpp
  */
 
+#include<json11.hpp>
+
 #include "MNRLHState.hpp"
 
 using namespace std;

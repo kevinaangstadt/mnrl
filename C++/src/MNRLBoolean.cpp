@@ -5,6 +5,8 @@
  * MNRLUpCounter.cpp
  */
 
+#include <json11.hpp>
+
 #include "MNRLBoolean.hpp"
 
 using namespace std;

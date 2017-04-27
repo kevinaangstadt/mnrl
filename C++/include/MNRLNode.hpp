@@ -10,7 +10,6 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include <json11.hpp>
 #include "MNRLDefs.hpp"
 #include "MNRLError.hpp"
 #include "MNRLPort.hpp"

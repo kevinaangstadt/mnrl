@@ -5,6 +5,8 @@
  * MNRLUpCounter.cpp
  */
 
+#include <json11.hpp>
+
 #include "MNRLUpCounter.hpp"
 
 using namespace std;
