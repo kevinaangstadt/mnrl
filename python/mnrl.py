@@ -268,7 +268,7 @@ class MNRLNetwork(object):
         """return a unique ID for the MNRL network. If an ID is passed in and is
         unique, it will be returned."""
         if id is None:
-            id = "_" + self._nodes_added
+            id = "_" + str(self._nodes_added)
             self._nodes_added += 1
             
         if id in self.nodes:
