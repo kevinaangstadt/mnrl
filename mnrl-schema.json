@@ -121,6 +121,42 @@
                 }
             ]
         },
+        "pfpState": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["pfpState"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "threshold": {
+                                            "type": "number"
+                                        },
+                                        "feature": {
+                                            "type": "number"
+                                        },
+                                        "greaterThan": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "required": ["threshold", "feature", "greaterThan"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
         "upCounter": {
             "type": "object",
             "allOf": [

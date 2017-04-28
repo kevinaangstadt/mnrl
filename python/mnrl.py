@@ -33,8 +33,8 @@ class MNRLDefs(object):
     HIGH_ON_THRESHOLD,
     ROLLOVER_ON_THRESHOLD) = range(7)
     
-    H_STATE_INPUT = STATE_INPUT = "i"
-    H_STATE_OUTPUT = UP_COUNTER_OUTPUT = BOOLEAN_OUTPUT = "o"
+    H_STATE_INPUT = STATE_INPUT = PFP_STATE_INPUT = "i"
+    H_STATE_OUTPUT = UP_COUNTER_OUTPUT = BOOLEAN_OUTPUT = PFP_STATE_OUTPUT = "o"
     
     UP_COUNTER_COUNT = "cnt"
     UP_COUNTER_RESET = "rst"
@@ -166,6 +166,26 @@ class MNRLNetwork(object):
         self.nodes[id] = hState
         
         return hState
+    
+    def addPFPState(self,
+                    feature,
+                    threshold,
+                    greaterThan = True,
+                    enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
+                    id = None,
+                    report = False,
+                    reportId = None,
+                    attributes = {}
+                   ):
+        """Create a packet floating point state, add it to the network, and return it"""
+        
+        id = self._getUniqueNodeId(id)
+        
+        pfpState = PFPState(feature,threshold,greaterThan=greaterThan,enable=enable,id=id,report=report,reportId=reportId,attributes=attributes)
+        
+        self.nodes[id] = pfpState
+        
+        return pfpState
     
     def addUpCounter(self,
                      threshold,
@@ -482,6 +502,47 @@ class HState(MNRLNode):
             'symbolSet' : self.symbols
         })
         return json.dumps(j)
+    
+class PFPState(MNRLNode):
+    """Object representation of a packet floating point state. A pfp state only has
+    one input port and one output port. It also contains a feautre offset in the
+    packet, a threshold, and whether the state activates when the value is
+    grater than the threshold."""
+    def __init__(self,
+                  feature,
+                  threshold,
+                  greaterThan = True,
+                  enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
+                  id = None,
+                  report = False,
+                  reportId = None,
+                  attributes = {}
+                ):
+        
+        super(PFPState, self).__init__(
+            id = id,
+            enable = enable,
+            report = report,
+            inputDefs = [(MNRLDefs.PFP_STATE_INPUT,1)],
+            outputDefs = [(MNRLDefs.PFP_STATE_OUTPUT,1)],
+            attributes = attributes
+        )
+        
+        self.reportId = reportId
+        self.feature = feature
+        self.threshold = threshold
+        self.greaterThan = greaterThan
+    
+    def toJSON(self):
+        j = json.loads(super(PFPState, self).toJSON())
+        j.update({'type' : 'pfpState'})
+        j['attributes'].update({
+            'reportId' : self.reportId,
+            'feature' : self.feature,
+            'threshold' : self.threshold,
+            'greaterThan' : self.greaterThan
+        })
+        return json.dumps(j)
         
 class UpCounter(MNRLNode):
     def __init__(self,
@@ -606,6 +667,17 @@ class MNRLDecoder(json.JSONDecoder):
                     id = n['id'],
                     report = n['report'],
                     latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
+                    reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
+                    attributes = n['attributes']
+                )
+            elif n['type'] == "pfpState" :
+                node = PFPState(
+                    n['attributes']['feature'],
+                    n['attributes']['threshold'],
+                    greaterThan = n['attributes']['greaterThan'],
+                    enable = MNRLDefs.fromMNRLEnable(n['enable']),
+                    id = n['id'],
+                    report = n['report'],
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
