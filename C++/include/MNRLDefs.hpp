@@ -36,6 +36,7 @@ namespace MNRL {
             	NODE,
 				STATE,
 				HSTATE,
+                PFPSTATE,
 				BOOLEAN,
 				UPCOUNTER
             };
@@ -49,6 +50,8 @@ namespace MNRL {
             static const std::string STATE_INPUT,
             						 H_STATE_INPUT,
 									 H_STATE_OUTPUT,
+                                     PFP_STATE_INPUT,
+                                     PFP_STATE_OUTPUT,
 									 UP_COUNTER_OUTPUT,
 									 BOOLEAN_OUTPUT,
 									 UP_COUNTER_COUNT,

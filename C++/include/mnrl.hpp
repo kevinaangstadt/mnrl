@@ -16,6 +16,7 @@
 #include "MNRLPort.hpp"
 #include "MNRLState.hpp"
 #include "MNRLHState.hpp"
+#include "MNRLPFPState.hpp"
 #include "MNRLUpCounter.hpp"
 #include "MNRLBoolean.hpp"
 
@@ -29,6 +30,7 @@ namespace MNRL {
 	class MNRLPort;
 	class MNRLState;
 	class MNRLHState;
+    class MNRLPFPState;
 	class MNRLUpCounter;
 	class MNRLBoolean;
 

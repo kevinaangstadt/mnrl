@@ -20,6 +20,7 @@ namespace MNRL {
 	class MNRLNode;
 	class MNRLState;
 	class MNRLHState;
+    class MNRLPFPState;
 	class MNRLUpCounter;
 	class MNRLBoolean;
     class MNRLNetwork {
@@ -104,6 +105,65 @@ namespace MNRL {
 					std::string id,
 					bool report,
 					bool latched
+            );
+			
+			std::shared_ptr<MNRLPFPState> addPFPState(
+                int feature,
+				double threshold,
+				bool greaterThan,
+				MNRLDefs::EnableType enable,
+                std::string id,
+                bool report,
+                int reportId,
+				std::shared_ptr<std::map<std::string,std::string>> attributes
+            );
+            std::shared_ptr<MNRLPFPState> addPFPState(
+            	int feature,
+				double threshold,
+				bool greaterThan,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				std::string reportId,
+				std::shared_ptr<std::map<std::string,std::string>> attributes
+            );
+
+            std::shared_ptr<MNRLPFPState> addPFPState(
+            	int feature,
+				double threshold,
+				bool greaterThan,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				std::shared_ptr<std::map<std::string,std::string>> attributes
+            );
+            
+            std::shared_ptr<MNRLPFPState> addPFPState(
+				int feature,
+				double threshold,
+				bool greaterThan,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				int reportId
+			);
+            std::shared_ptr<MNRLPFPState> addPFPState(
+				int feature,
+				double threshold,
+				bool greaterThan,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report,
+				std::string reportId
+            );
+
+            std::shared_ptr<MNRLPFPState> addPFPState(
+				int feature,
+				double threshold,
+				bool greaterThan,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report
             );
 
             std::shared_ptr<MNRLUpCounter> addUpCounter(

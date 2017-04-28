@@ -32,6 +32,9 @@ public:
 			case MNRLDefs::NodeType::HSTATE:
 				j = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLHState>(kv.second));
 				break;
+            case MNRLDefs::NodeType::PFPSTATE:
+                j = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLPFPState>(kv.second));
+                break;
 			case MNRLDefs::NodeType::BOOLEAN:
 				j = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLBoolean>(kv.second));
 				break;
@@ -145,6 +148,35 @@ private:
 
 		return json11::Json(mapping);
 	}
+    static json11::Json toJSON(std::shared_ptr<MNRLPFPState> s) {
+        json11::Json parent = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLNode>(s));
+        
+        // we know that this is an obj
+        std::map<std::string, json11::Json> mapping = parent.object_items();
+        
+        // insert the type
+        mapping.insert(std::map<std::string, json11::Json>::value_type("type", json11::Json("pfpState")));
+        
+        // get the attributes
+        std::map<std::string, json11::Json> attrs = mapping["attributes"].object_items();
+        
+        // insert the feature
+        attrs.insert(std::map<std::string, json11::Json>::value_type("feature", json11::Json(s->getFeature())));
+        
+        // insert the threshold
+        attrs.insert(std::map<std::string, json11::Json>::value_type("threshold", json11::Json(s->getThreshold())));
+        
+        // insert the greaterThan
+        attrs.insert(std::map<std::string, json11::Json>::value_type("greaterThan", json11::Json(s->getGreaterThan())));
+        
+        // insert reportId
+        attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(s->getReportId())));
+        
+        // update the attributes
+        mapping["attributes"] = json11::Json(attrs);
+        
+        return json11::Json(mapping);
+    }
 	static json11::Json toJSON(std::shared_ptr<MNRLBoolean> b) {
 		json11::Json parent = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLNode>(b));
 

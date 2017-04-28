@@ -11,6 +11,7 @@
 #include "MNRLNetwork.hpp"
 #include "MNRLState.hpp"
 #include "MNRLHState.hpp"
+#include "MNRLPFPState.hpp"
 #include "MNRLUpCounter.hpp"
 #include "MNRLBoolean.hpp"
 #include "JSONWriter.hpp"
@@ -72,7 +73,7 @@ shared_ptr<MNRLState> MNRLNetwork::addState(
 shared_ptr<MNRLState> MNRLNetwork::addState(
 	shared_ptr<vector<pair<string,string>>> outputSymbols,
 	MNRLDefs::EnableType enable,
-	std::string id,
+	string id,
 	bool report,
 	int reportId,
 	bool latched
@@ -187,6 +188,121 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 		id,
 		report,
 		latched,
+		attr
+	);
+}
+
+/**
+ * Code here is for PFP States
+ */
+
+shared_ptr<MNRLPFPState> MNRLNetwork::addPFPState(
+	int feature,
+	double threshold,
+	bool greaterThan,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	int reportId,
+	shared_ptr<map<string,string>> attributes
+) {
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLPFPState> state = shared_ptr<MNRLPFPState>(new MNRLPFPState(feature, threshold, greaterThan, enable, new_id, report, reportId, attributes));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+
+shared_ptr<MNRLPFPState> MNRLNetwork::addPFPState(
+	int feature,
+	double threshold,
+	bool greaterThan,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	string reportId,
+	shared_ptr<map<string,string>> attributes
+) {
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLPFPState> state = shared_ptr<MNRLPFPState>(new MNRLPFPState(feature, threshold, greaterThan, enable, new_id, report, reportId, attributes));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+
+shared_ptr<MNRLPFPState> MNRLNetwork::addPFPState(
+	int feature,
+	double threshold,
+	bool greaterThan,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	shared_ptr<map<string,string>> attributes
+) {
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLPFPState> state = shared_ptr<MNRLPFPState>(new MNRLPFPState(feature, threshold, greaterThan, enable, new_id, report, attributes));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+
+shared_ptr<MNRLPFPState> MNRLNetwork::addPFPState(
+	int feature,
+	double threshold,
+	bool greaterThan,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	int reportId
+){
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	return addPFPState(
+		feature,
+		threshold,
+		greaterThan,
+		enable,
+		id,
+		report,
+		reportId,
+		attr
+	);
+}
+
+shared_ptr<MNRLPFPState> MNRLNetwork::addPFPState(
+	int feature,
+	double threshold,
+	bool greaterThan,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report,
+	string reportId
+){
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	return addPFPState(
+		feature,
+		threshold,
+		greaterThan,
+		enable,
+		id,
+		report,
+		reportId,
+		attr
+	);
+}
+
+shared_ptr<MNRLPFPState> MNRLNetwork::addPFPState(
+	int feature,
+	double threshold,
+	bool greaterThan,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report
+){
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	return addPFPState(
+		feature,
+		threshold,
+		greaterThan,
+		enable,
+		id,
+		report,
 		attr
 	);
 }
