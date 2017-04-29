@@ -79,6 +79,18 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				parseReportId(n["attributes"]["reportId"]),
 				getAttrs(n["attributes"], excludes)
 		));
+	} else if( typ.compare("pfpState") == 0 ) {
+		set<string> excludes = {"feature", "threshold", "greaterThan", "reportId"};
+		node = shared_ptr<MNRLNode>(new MNRLPFPState(
+				n["attributes"]["feature"].int_value(),
+				n["attributes"]["threshold"].number_value(),
+				n["attributes"]["greaterThan"].bool_value(),
+				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
+				n["id"].string_value(),
+				n["report"].bool_value(),
+				parseReportId(n["attributes"]["reportId"]),
+				getAttrs(n["attributes"], excludes)
+		));
 	} else if( typ.compare("upCounter") == 0 ) {
 		set<string> excludes = {"mode", "threshold", "reportId"};
 		node = shared_ptr<MNRLNode>(new MNRLUpCounter(
