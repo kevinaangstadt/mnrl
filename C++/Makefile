@@ -1,7 +1,7 @@
 IDIR = ./include
 SRCDIR = ./src
 
-CC = g++-5
+CC = g++
 AR = ar
 LD = ld
 OBJCPY = gobjcopy
@@ -73,9 +73,6 @@ $(ODIR)/%.o: $(SRCDIR)/%.asm
 $(JSON11_HPP):
 	git submodule init
 	git submodule update	
-
-	
-	#$(OBJCPY) -B i386 -I binary -O mach-o-x86-64 --rename-section .data=.const mnrl-schema.json $(ODIR)/mnrl_schema.o
 
 test: libmnrl $(TESTDIR)/readwrite
 
