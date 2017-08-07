@@ -37,6 +37,9 @@ endif
 ifeq ($(UNAME_S),Darwin)
 	NASMFLAGS = -fmacho64
 endif
+ifeq ($(OS),Windows_NT)
+	NASMFLAGS = -fwin64
+endif
 
 ###########
 # Testing
