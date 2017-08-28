@@ -527,7 +527,7 @@ class UpCounter(MNRLNode):
         j = json.loads(super(UpCounter, self).toJSON())
         j.update({'type' : 'upCounter'})
         j['attributes'].update({
-            'mode' : MNRLDefs.toMNRLCounterMode(j['attributes']['mode']),
+            'mode' : MNRLDefs.toMNRLCounterMode(self.mode),
             'threshold' : self.threshold,
             'reportId' : self.reportId
         })
