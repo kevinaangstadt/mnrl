@@ -18,6 +18,7 @@
 #include "MNRLHState.hpp"
 #include "MNRLUpCounter.hpp"
 #include "MNRLBoolean.hpp"
+#include "MNRLHPDState.hpp"
 
 namespace MNRL {
 	namespace MNRLError {
@@ -31,6 +32,7 @@ namespace MNRL {
 	class MNRLHState;
 	class MNRLUpCounter;
 	class MNRLBoolean;
+	class MNRLHPDState;
 
 	std::shared_ptr<MNRLNetwork> loadMNRL(std::string filename);
 

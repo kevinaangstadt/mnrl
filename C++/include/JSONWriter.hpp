@@ -13,6 +13,7 @@
 #include "MNRLHState.hpp"
 #include "MNRLBoolean.hpp"
 #include "MNRLUpCounter.hpp"
+#include "MNRLHPDState.hpp"
 
 namespace MNRL {
 class JSONWriter {
@@ -38,6 +39,8 @@ public:
 			case MNRLDefs::NodeType::UPCOUNTER:
 				j = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLUpCounter>(kv.second));
 				break;
+			case MNRLDefs::NodeType::HPDSTATE:
+				j = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLHPDState>(kv.second));
 			}
 			n.push_back(j);
 		}
@@ -188,6 +191,40 @@ private:
 
 		// insert latched
 		attrs.insert(std::map<std::string, json11::Json>::value_type("mode", json11::Json(MNRLDefs::toMNRLCounterMode(c->getMode()))));
+
+		// update the attributes
+		mapping["attributes"] = json11::Json(attrs);
+
+		return json11::Json(mapping);
+	}
+	static json11::Json toJSON(std::shared_ptr<MNRLHPDState> s) {
+		json11::Json parent = JSONWriter::toJSON(std::dynamic_pointer_cast<MNRLNode>(s));
+
+		// we know that this is an obj
+		std::map<std::string, json11::Json> mapping = parent.object_items();
+
+		// insert the type
+		mapping.insert(std::map<std::string, json11::Json>::value_type("type", json11::Json("hPDState")));
+
+		// get the attributes
+		std::map<std::string, json11::Json> attrs = mapping["attributes"].object_items();
+
+		// insert the symbolSets
+		if(!(s->isEpsilonInput()))
+			attrs.insert(std::map<std::string, json11::Json>::value_type("symbolSet", json11::Json(s->getSymbolSet())));
+
+		// insert the stackSet
+		attrs.insert(std::map<std::string, json11::Json>::value_type("stackSet", json11::Json(s->getStackSet())));
+		
+		// insert the stackPush
+		if(s->doesStackPush())
+			attrs.insert(std::map<std::string, json11::Json>::value_type("stackPush", json11::Json(s->getPushSymbol())));
+		
+		// insert the stackPop
+		attrs.insert(std::map<std::string, json11::Json>::value_type("stackPop", json11::Json(s->getPop())));
+
+		// insert reportId
+		attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(s->getReportId())));
 
 		// update the attributes
 		mapping["attributes"] = json11::Json(attrs);

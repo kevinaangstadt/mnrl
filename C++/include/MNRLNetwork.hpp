@@ -22,6 +22,7 @@ namespace MNRL {
 	class MNRLHState;
 	class MNRLUpCounter;
 	class MNRLBoolean;
+	class MNRLHPDState;
     class MNRLNetwork {
         public:
             MNRLNetwork(std::string id);
@@ -105,6 +106,47 @@ namespace MNRL {
 					bool report,
 					bool latched
             );
+			
+			/*
+			 * H PD States
+			 */
+			
+			// all stack actions
+			std::shared_ptr<MNRLHPDState> addHPDState(
+				std::string symbolSet,
+				std::string stackSet,
+				bool popStack,
+				char pushStack,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report
+			);
+			// no stack push
+			std::shared_ptr<MNRLHPDState> addHPDState(
+				std::string symbolSet,
+				std::string stackSet,
+				bool popStack,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report
+			);
+			// input epsilon
+			std::shared_ptr<MNRLHPDState> addHPDState(
+				std::string stackSet,
+				bool popStack,
+				char pushStack,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report
+			);
+			// epsilon, no stack push
+			std::shared_ptr<MNRLHPDState> addHPDState(
+				std::string stackSet,
+				bool popStack,
+				MNRLDefs::EnableType enable,
+				std::string id,
+				bool report
+			);
 
             std::shared_ptr<MNRLUpCounter> addUpCounter(
                 int threshold,

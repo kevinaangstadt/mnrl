@@ -23,7 +23,7 @@ ARFLAGS = rcs
 
 _DEPS = *.hpp
 _OBJ_VALIDATE = validate.o 
-_OBJ_MNRL = mnrl.o mnrl_schema.o MNRLDefs.o MNRLReportId.o MNRLPort.o MNRLNode.o MNRLState.o MNRLHState.o MNRLUpCounter.o MNRLBoolean.o MNRLNetwork.o
+_OBJ_MNRL = mnrl.o mnrl_schema.o MNRLDefs.o MNRLReportId.o MNRLPort.o MNRLNode.o MNRLState.o MNRLHState.o MNRLUpCounter.o MNRLBoolean.o MNRLHPDState.o MNRLNetwork.o
 
 ODIR = $(SRCDIR)/obj
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))

@@ -72,7 +72,7 @@ shared_ptr<MNRLState> MNRLNetwork::addState(
 shared_ptr<MNRLState> MNRLNetwork::addState(
 	shared_ptr<vector<pair<string,string>>> outputSymbols,
 	MNRLDefs::EnableType enable,
-	std::string id,
+	string id,
 	bool report,
 	int reportId,
 	bool latched
@@ -189,6 +189,71 @@ shared_ptr<MNRLHState> MNRLNetwork::addHState(
 		latched,
 		attr
 	);
+}
+
+// all stack actions
+std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
+	string symbolSet,
+	string stackSet,
+	bool popStack,
+	char pushStack,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report
+){
+	shared_ptr<MNRLReportId> rID = shared_ptr<MNRLReportId>(new MNRLReportId());
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLHPDState> state = shared_ptr<MNRLHPDState>(new MNRLHPDState(symbolSet,stackSet,popStack,pushStack,enable,new_id,report,rID,attr));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+// no stack push
+std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
+	string symbolSet,
+	string stackSet,
+	bool popStack,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report
+){
+	shared_ptr<MNRLReportId> rID = shared_ptr<MNRLReportId>(new MNRLReportId());
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLHPDState> state = shared_ptr<MNRLHPDState>(new MNRLHPDState(symbolSet,stackSet,popStack,enable,new_id,report,rID,attr));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+// input epsilon
+std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
+	string stackSet,
+	bool popStack,
+	char pushStack,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report
+){
+	shared_ptr<MNRLReportId> rID = shared_ptr<MNRLReportId>(new MNRLReportId());
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLHPDState> state = shared_ptr<MNRLHPDState>(new MNRLHPDState(stackSet,popStack,pushStack,enable,new_id,report,rID,attr));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
+}
+// epsilon, no stack push
+std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
+	string stackSet,
+	bool popStack,
+	MNRLDefs::EnableType enable,
+	string id,
+	bool report
+){
+	shared_ptr<MNRLReportId> rID = shared_ptr<MNRLReportId>(new MNRLReportId());
+	shared_ptr<map<string,string>> attr = shared_ptr<map<string,string>>(new map<string,string>());
+	string new_id = getUniqueNodeId(id);
+	shared_ptr<MNRLHPDState> state = shared_ptr<MNRLHPDState>(new MNRLHPDState(stackSet,popStack,enable,new_id,report,rID,attr));
+	nodes.insert(map<string,shared_ptr<MNRLNode>>::value_type(new_id,state));
+	return state;
 }
 
 shared_ptr<MNRLUpCounter> MNRLNetwork::addUpCounter(

@@ -121,6 +121,45 @@
                 }
             ]
         },
+        "hPDState": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["hPDState"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "symbolSet": {
+                                            "type": "string"
+                                        },
+                                        "stackSet": {
+                                            "type": "string"
+                                        },
+                                        "stackPush": {
+                                            "type": "string"
+                                        },
+                                        "stackPop": {
+                                            "type": "boolean"
+                                        }
+                                    },
+                                    "required": ["stackSet", "stackPop"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
         "upCounter": {
             "type": "object",
             "allOf": [

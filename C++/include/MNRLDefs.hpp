@@ -37,7 +37,8 @@ namespace MNRL {
 				STATE,
 				HSTATE,
 				BOOLEAN,
-				UPCOUNTER
+				UPCOUNTER,
+                HPDSTATE
             };
 
             enum ReportIdType {
@@ -52,7 +53,9 @@ namespace MNRL {
 									 UP_COUNTER_OUTPUT,
 									 BOOLEAN_OUTPUT,
 									 UP_COUNTER_COUNT,
-									 UP_COUNTER_RESET;
+									 UP_COUNTER_RESET,
+                                     H_PD_STATE_INPUT,
+                                     H_PD_STATE_OUTPUT;
 
 
             static unsigned int BooleanToPort(const BooleanMode b);

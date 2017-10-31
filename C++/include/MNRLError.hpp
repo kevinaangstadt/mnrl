@@ -39,6 +39,14 @@ namespace MNRL{
 		private:
 			std::string enable;
 		};
+		
+		class InvalidEnableError : public MNRLError {
+		public:
+			InvalidEnableError(MNRLDefs::EnableType enable) : MNRLError("invalid enable type " + MNRLDefs::toMNRLEnable(enable)), enable(enable) {}
+			MNRLDefs::EnableType get_enable() { return enable; }
+		private:
+			MNRLDefs::EnableType enable;
+		};
 
 		class UpCounterThresholdError : public MNRLError {
 		public:
@@ -95,6 +103,14 @@ namespace MNRL{
 			int get_destination() { return destination; }
 		private:
 			int source, destination;
+		};
+		
+		class InvalidStackPush : public MNRLError {
+		public:
+			InvalidStackPush(std::string push) : MNRLError("invalid stack push: " + push), push(push) {}
+			std::string get_push() { return push; }
+		private:
+			std::string push;
 		};
 	}
 }
