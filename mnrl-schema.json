@@ -243,7 +243,8 @@
                     { "$ref": "#/definitions/state" },
                     { "$ref": "#/definitions/hState" },
                     { "$ref": "#/definitions/upCounter" },
-                    { "$ref": "#/definitions/boolean" }
+                    { "$ref": "#/definitions/boolean" },
+                    { "$ref": "#/definitions/hPDState"}
                 ]
             }
         },
