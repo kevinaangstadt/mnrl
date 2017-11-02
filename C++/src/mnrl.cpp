@@ -125,23 +125,19 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 		if(n["attributes"].has_shape(input_check, err)) {
 			
 			if(n["attributes"].has_shape(push_check, err)) {
-				string sp = n["attributes"]["stackPush"].string_value();
-				if(sp.length() > 1) {
-					throw MNRLError::InvalidStackPush(sp);
-				} else {
-					// do everything
-					node = shared_ptr<MNRLNode>(new MNRLHPDState(
-						n["attributes"]["symbolSet"].string_value(),
-						n["attributes"]["stackSet"].string_value(),
-						n["attributes"]["stackPop"].bool_value(),
-						sp[0],
-						en,
-						n["id"].string_value(),
-						n["report"].bool_value(),
-						rID,
-						getAttrs(n["attributes"],excludes)
-					));
-				}
+				// do everything
+				node = shared_ptr<MNRLNode>(new MNRLHPDState(
+					n["attributes"]["symbolSet"].string_value(),
+					n["attributes"]["stackSet"].string_value(),
+					n["attributes"]["stackPop"].bool_value(),
+					n["attributes"]["stackPush"].string_value(),
+					en,
+					n["id"].string_value(),
+					n["report"].bool_value(),
+					rID,
+					getAttrs(n["attributes"],excludes)
+				));
+				
 			} else {
 				// no stack push
 				node = shared_ptr<MNRLNode>(new MNRLHPDState(
@@ -157,22 +153,19 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 			}
 		} else {
 			if(n["attributes"].has_shape(push_check,err)) {
-				string sp = n["attributes"]["stackPush"].string_value();
-				if(sp.length() > 1) {
-					throw MNRLError::InvalidStackPush(sp);
-				} else {
-					// epsilon input
-					node = shared_ptr<MNRLNode>(new MNRLHPDState(
-						n["attributes"]["stackSet"].string_value(),
-						n["attributes"]["stackPop"].bool_value(),
-						sp[0],
-						en,
-						n["id"].string_value(),
-						n["report"].bool_value(),
-						rID,
-						getAttrs(n["attributes"],excludes)
-					));
-				}
+				
+				// epsilon input
+				node = shared_ptr<MNRLNode>(new MNRLHPDState(
+					n["attributes"]["stackSet"].string_value(),
+					n["attributes"]["stackPop"].bool_value(),
+					n["attributes"]["stackPush"].string_value(),
+					en,
+					n["id"].string_value(),
+					n["report"].bool_value(),
+					rID,
+					getAttrs(n["attributes"],excludes)
+				));
+				
 			} else {
 				// epsilon, no stack push
 				node = shared_ptr<MNRLNode>(new MNRLHPDState(

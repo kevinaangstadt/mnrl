@@ -196,7 +196,7 @@ std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
 	string symbolSet,
 	string stackSet,
 	bool popStack,
-	char pushStack,
+	string pushStack,
 	MNRLDefs::EnableType enable,
 	string id,
 	bool report
@@ -228,7 +228,7 @@ std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
 std::shared_ptr<MNRLHPDState> MNRLNetwork::addHPDState(
 	string stackSet,
 	bool popStack,
-	char pushStack,
+	string pushStack,
 	MNRLDefs::EnableType enable,
 	string id,
 	bool report

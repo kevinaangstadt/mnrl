@@ -116,7 +116,7 @@ namespace MNRL {
 				std::string symbolSet,
 				std::string stackSet,
 				bool popStack,
-				char pushStack,
+				std::string pushStack,
 				MNRLDefs::EnableType enable,
 				std::string id,
 				bool report
@@ -134,7 +134,7 @@ namespace MNRL {
 			std::shared_ptr<MNRLHPDState> addHPDState(
 				std::string stackSet,
 				bool popStack,
-				char pushStack,
+				std::string pushStack,
 				MNRLDefs::EnableType enable,
 				std::string id,
 				bool report

@@ -30,7 +30,7 @@ MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
     bool popStack,
-    char pushStack,
+    string pushStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -74,7 +74,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string stackSet,
     bool popStack,
-    char pushStack,
+    string pushStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -124,7 +124,7 @@ MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
     bool popStack,
-    char pushStack,
+    string pushStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -170,7 +170,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string stackSet,
     bool popStack,
-    char pushStack,
+    string pushStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -220,7 +220,7 @@ MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
     bool popStack,
-    char pushStack,
+    string pushStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -266,7 +266,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string stackSet,
     bool popStack,
-    char pushStack,
+    string pushStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -321,8 +321,8 @@ void MNRLHPDState::removeSymbolSet() { compareInput = false; }
 string MNRLHPDState::getStackSet() { return stackSet; }
 void MNRLHPDState::setStackSet(string set) { stackSet = set; }
 
-char MNRLHPDState::getPushSymbol() { return pushStack; }
-void MNRLHPDState::setPushSymbol(char sym) { pushStack = sym; enablePush = true; }
+string MNRLHPDState::getPushSymbol() { return pushStack; }
+void MNRLHPDState::setPushSymbol(string sym) { pushStack = sym; enablePush = true; }
 void MNRLHPDState::removePushSymbol() { enablePush = false; }
 
 bool MNRLHPDState::getPop() { return popStack; }

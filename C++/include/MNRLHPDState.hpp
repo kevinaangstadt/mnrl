@@ -32,7 +32,7 @@ namespace MNRL{
                 std::string symbolSet,
                 std::string stackSet,
                 bool popStack,
-                char pushStack,
+                std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -56,7 +56,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string stackSet,
                 bool popStack,
-                char pushStack,
+                std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -84,7 +84,7 @@ namespace MNRL{
                 std::string symbolSet,
                 std::string stackSet,
                 bool popStack,
-                char pushStack,
+                std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -108,7 +108,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string stackSet,
                 bool popStack,
-                char pushStack,
+                std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -136,7 +136,7 @@ namespace MNRL{
                 std::string symbolSet,
                 std::string stackSet,
                 bool popStack,
-                char pushStack,
+                std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -160,7 +160,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string stackSet,
                 bool popStack,
-                char pushStack,
+                std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -195,8 +195,8 @@ namespace MNRL{
             std::string getStackSet();
             void setStackSet(std::string set);
             
-            char getPushSymbol();
-            void setPushSymbol(char sym);
+            std::string getPushSymbol();
+            void setPushSymbol(std::string sym);
             void removePushSymbol();
             
             bool getPop();
@@ -208,7 +208,7 @@ namespace MNRL{
         protected:
             std::string symbolSet = "";
             std::string stackSet;
-            char pushStack = 0;
+            std::string pushStack = 0;
             bool popStack;
             
             bool compareInput;
