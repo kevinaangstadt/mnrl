@@ -208,7 +208,7 @@ namespace MNRL{
         protected:
             std::string symbolSet = "";
             std::string stackSet;
-            std::string pushStack = 0;
+            std::string pushStack = "";
             bool popStack;
             
             bool compareInput;
