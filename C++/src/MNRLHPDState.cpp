@@ -45,6 +45,8 @@ MNRLHPDState::MNRLHPDState(
     attributes
 ), symbolSet(symbolSet), stackSet(stackSet), popStack(popStack), pushStack(pushStack), reportId(reportId) {
     validateEnable(enable);
+    compareInput = true;
+    enablePush = true;
 }
 
 // No stack push
