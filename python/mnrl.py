@@ -441,8 +441,9 @@ class State(MNRLNode):
     def toJSON(self):
         j = json.loads(super(State, self).toJSON())
         j.update({'type' : 'state'})
+        if self.reportId is not None:
+            j['attributes'].update({'reportId':self.reportId})
         j['attributes'].update({
-            'reportId' : self.reportId,
             'latched' : self.latched,
             'symbolSet' : self.outputSymbols
         })
@@ -477,8 +478,9 @@ class HState(MNRLNode):
     def toJSON(self):
         j = json.loads(super(HState, self).toJSON())
         j.update({'type' : 'hState'})
+        if self.reportId is not None:
+            j['attributes'].update({'reportId':self.reportId})
         j['attributes'].update({
-            'reportId' : self.reportId,
             'latched' : self.latched,
             'symbolSet' : self.symbols
         })
@@ -527,10 +529,11 @@ class UpCounter(MNRLNode):
     def toJSON(self):
         j = json.loads(super(UpCounter, self).toJSON())
         j.update({'type' : 'upCounter'})
+        if self.reportId is not None:
+            j['attributes'].update({'reportId':self.reportId})
         j['attributes'].update({
             'mode' : MNRLDefs.toMNRLCounterMode(self.mode),
             'threshold' : self.threshold,
-            'reportId' : self.reportId
         })
         return json.dumps(j)
 
@@ -571,9 +574,10 @@ class Boolean(MNRLNode):
     def toJSON(self):
         j = json.loads(super(Boolean, self).toJSON())
         j.update({'type' : 'boolean'})
+        if self.reportId is not None:
+            j['attributes'].update({'reportId':self.reportId})
         j['attributes'].update({
             'gateType' : self.gateType,
-            'reportId' : self.reportId
         })
         return json.dumps(j)
 
