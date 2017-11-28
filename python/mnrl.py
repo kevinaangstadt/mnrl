@@ -34,8 +34,8 @@ class MNRLDefs(object):
     HIGH_ON_THRESHOLD,
     ROLLOVER_ON_THRESHOLD) = range(7)
 
-    H_STATE_INPUT = STATE_INPUT = "i"
-    H_STATE_OUTPUT = UP_COUNTER_OUTPUT = BOOLEAN_OUTPUT = "o"
+    H_PD_STATE_INPUT = H_STATE_INPUT = STATE_INPUT = "i"
+    H_PD_STATE_OUTPUT = H_STATE_OUTPUT = UP_COUNTER_OUTPUT = BOOLEAN_OUTPUT = "o"
 
     UP_COUNTER_COUNT = "cnt"
     UP_COUNTER_RESET = "rst"
@@ -167,6 +167,27 @@ class MNRLNetwork(object):
         self.nodes[id] = hState
 
         return hState
+
+    def addHPDState(self,
+                    stackSet,
+                    popStack,
+                    symbolSet = None,
+                    pushStack = None,
+                    enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
+                    id = None,
+                    report = False,
+                    reportId = None,
+                    attributes = {}
+                    ):
+        """Create a homogeneous pd state, add it to the network and return it"""
+
+        id = self._getUniqueNodeId(id)
+
+        pdState = HPDState(stackSet, popStack, symbolSet=symbolSet, pushStack=pushStack, enable=enable, id=id, report=report, reportId=reportId, attributes=attributes)
+        
+        self.nodes[id] = pdState
+        
+        return pdState
 
     def addUpCounter(self,
                      threshold,
@@ -483,6 +504,50 @@ class HState(MNRLNode):
         j['attributes'].update({
             'latched' : self.latched,
             'symbolSet' : self.symbols
+        })
+        return json.dumps(j)
+
+class HPDState(MNRLNode):
+    """Object represntation of a homogeneous pushdown state.  There is only
+    one input and one output"""
+    def __init__(self,
+                 stackSet,
+                 popStack,
+                 symbolSet = None,
+                 pushStack = None,
+                 enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
+                 id = None,
+                 report = False,
+                 reportId = None,
+                 attributes = {}):
+        
+        super(HPDState, self).__init__(
+            id = id,
+            enable = enable,
+            report = report,
+            inputDefs = [(MNRLDefs.H_PD_STATE_INPUT, 1)],
+            outputDefs = [(MNRLDefs.H_PD_STATE_OUTPUT, 1)],
+            attributes = attributes
+        )
+
+        self.stackSet = stackSet
+        self.symbolSet = symbolSet
+        self.popStack = popStack
+        self.pushStack = pushStack
+        self.reportId = reportId
+
+    def toJSON(self):
+        j = json.loads(super(HPDState, self).toJSON())
+        j.update({'type': 'hPDState'})
+        if self.reportId is not None:
+            j['attributes'].update({'reportId': self.reportId})
+        if self.symbolSet is not None:
+            j['attributes'].update({'symbolSet': self.symbolSet})
+        if self.pushStack is not None:
+            j['attributes'].update({'pushStack': self.pushStack})
+        j['attributes'].update({
+            'stackSet': self.stackSet,
+            'popStack': self.popStack
         })
         return json.dumps(j)
 
