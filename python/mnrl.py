@@ -544,10 +544,10 @@ class HPDState(MNRLNode):
         if self.symbolSet is not None:
             j['attributes'].update({'symbolSet': self.symbolSet})
         if self.pushStack is not None:
-            j['attributes'].update({'pushStack': self.pushStack})
+            j['attributes'].update({'stackPush': self.pushStack})
         j['attributes'].update({
             'stackSet': self.stackSet,
-            'popStack': self.popStack
+            'stackPop': self.popStack
         })
         return json.dumps(j)
 
