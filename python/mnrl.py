@@ -679,6 +679,18 @@ class MNRLDecoder(json.JSONDecoder):
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
+            elif n['type'] == "hPDState":
+                node = HPDState(
+                    n['attributes']['stackSet'],
+                    n['attributes']['stackPop'],
+                    enable = MNRLDefs.fromMNRLEnable(n['enable']),
+                    pushStack=n['attributes']['stackPush'] if 'stackPush' in n['attributes'] else None,
+                    symbolSet=n['attributes']['symbolSet'] if 'symbolSet' in n['attributes'] else None,
+                    id = n['id'],
+                    report = n['report'],
+                    reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
+                    attributes = n['attributes']
+                )
             elif n['type'] == "upCounter":
                 node = UpCounter(
                     n['attributes']['threshold'],
