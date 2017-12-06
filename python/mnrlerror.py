@@ -60,7 +60,7 @@ class InvalidConnection(MNRLError):
 
 class UnknownNode(MNRLError):
     def __init__(self,id):
-        super(UnknownNode, self).__init__("node not found")
+        super(UnknownNode, self).__init__("node not found: %s" % (id))
         self.id = id
 
 class UnknownPort(MNRLError):

@@ -122,6 +122,31 @@ class MNRLNetwork(object):
             return self.nodes[id]
         except KeyError:
             raise mnrlerror.UnknownNode(id)
+    
+    def removeNode(self, id):
+        """Remove a MNRL node based on the ID of the node.  This will go through
+        and delete connections to this node, too.  Do nothing is the id does not 
+        match"""
+        if id in self.nodes:
+            # we have such a node
+            theNode = self.nodes[id]
+            i_ports = theNode.getInputConnections()
+            o_ports = theNode.getOutputConnections()
+
+            for p in i_ports:
+                _, inputs = i_ports[p]
+                for i in list(inputs):
+                    self.removeConnection(
+                        (i["id"], i["portId"]), 
+                        (id, p))
+            for p in o_ports:
+                _, outputs = o_ports[p]
+                for o in list(outputs):
+                    self.removeConnection(
+                        (id, p), 
+                        (o["id"], o["portId"]))
+
+        self.nodes.pop(id, None)
 
     def addNode(self,theNode):
         """Add a MNRL Node object to the Network. Note that this may assign an
