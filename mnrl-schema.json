@@ -149,7 +149,7 @@
                                             "type": "string"
                                         },
                                         "stackPop": {
-                                            "type": "boolean"
+                                            "type": "number"
                                         }
                                     },
                                     "required": ["stackSet", "stackPop"]

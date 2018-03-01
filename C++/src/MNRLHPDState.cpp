@@ -29,7 +29,7 @@ static void validateEnable(MNRLDefs::EnableType en) {
 MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     string pushStack,
     MNRLDefs::EnableType enable,
     string id,
@@ -53,7 +53,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -75,7 +75,7 @@ MNRLHPDState::MNRLHPDState(
 // Epsilon input matching
 MNRLHPDState::MNRLHPDState(
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     string pushStack,
     MNRLDefs::EnableType enable,
     string id,
@@ -98,7 +98,7 @@ MNRLHPDState::MNRLHPDState(
 // Epsilon input matching, no stack push
 MNRLHPDState::MNRLHPDState(
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -125,7 +125,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     string pushStack,
     MNRLDefs::EnableType enable,
     string id,
@@ -149,7 +149,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -171,7 +171,7 @@ MNRLHPDState::MNRLHPDState(
 // Epsilon input matching
 MNRLHPDState::MNRLHPDState(
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     string pushStack,
     MNRLDefs::EnableType enable,
     string id,
@@ -194,7 +194,7 @@ MNRLHPDState::MNRLHPDState(
 // Epsilon input matching, no stack push
 MNRLHPDState::MNRLHPDState(
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -221,7 +221,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     string pushStack,
     MNRLDefs::EnableType enable,
     string id,
@@ -245,7 +245,7 @@ MNRLHPDState::MNRLHPDState(
 MNRLHPDState::MNRLHPDState(
     string symbolSet,
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -267,7 +267,7 @@ MNRLHPDState::MNRLHPDState(
 // Epsilon input matching
 MNRLHPDState::MNRLHPDState(
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     string pushStack,
     MNRLDefs::EnableType enable,
     string id,
@@ -290,7 +290,7 @@ MNRLHPDState::MNRLHPDState(
 // Epsilon input matching, no stack push
 MNRLHPDState::MNRLHPDState(
     string stackSet,
-    bool popStack,
+    uint64_t popStack,
     MNRLDefs::EnableType enable,
     string id,
     bool report,
@@ -327,8 +327,8 @@ string MNRLHPDState::getPushSymbol() { return pushStack; }
 void MNRLHPDState::setPushSymbol(string sym) { pushStack = sym; enablePush = true; }
 void MNRLHPDState::removePushSymbol() { enablePush = false; }
 
-bool MNRLHPDState::getPop() { return popStack; }
-void MNRLHPDState::setPop(bool p) { popStack = p; }
+uint64_t MNRLHPDState::getPop() { return popStack; }
+void MNRLHPDState::setPop(uint64_t p) { popStack = p; }
 
 bool MNRLHPDState::doesStackPush() { return enablePush; }
 bool MNRLHPDState::isEpsilonInput() { return !compareInput; }

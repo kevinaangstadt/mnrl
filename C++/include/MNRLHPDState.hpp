@@ -31,7 +31,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string symbolSet,
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
@@ -44,7 +44,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string symbolSet,
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -55,7 +55,7 @@ namespace MNRL{
             // Epsilon input matching
             MNRLHPDState(
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
@@ -67,7 +67,7 @@ namespace MNRL{
             // Epsilon input matching, no stack push
             MNRLHPDState(
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -83,7 +83,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string symbolSet,
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
@@ -96,7 +96,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string symbolSet,
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -107,7 +107,7 @@ namespace MNRL{
             // Epsilon input matching
             MNRLHPDState(
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
@@ -119,7 +119,7 @@ namespace MNRL{
             // Epsilon input matching, no stack push
             MNRLHPDState(
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -135,7 +135,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string symbolSet,
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
@@ -148,7 +148,7 @@ namespace MNRL{
             MNRLHPDState(
                 std::string symbolSet,
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -159,7 +159,7 @@ namespace MNRL{
             // Epsilon input matching
             MNRLHPDState(
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 std::string pushStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
@@ -171,7 +171,7 @@ namespace MNRL{
             // Epsilon input matching, no stack push
             MNRLHPDState(
                 std::string stackSet,
-                bool popStack,
+                uint64_t popStack,
                 MNRLDefs::EnableType enable,
                 std::string id,
                 bool report,
@@ -185,8 +185,8 @@ namespace MNRL{
             
             std::shared_ptr<MNRLReportId> getReportId();
             void setReportId(std::string id);
-			void setReportId(int id);
-			void setReportId(std::shared_ptr<MNRLReportId> id);
+      			void setReportId(int id);
+      			void setReportId(std::shared_ptr<MNRLReportId> id);
             
             std::string getSymbolSet();
             void setSymbolSet(std::string set);
@@ -199,8 +199,8 @@ namespace MNRL{
             void setPushSymbol(std::string sym);
             void removePushSymbol();
             
-            bool getPop();
-            void setPop(bool p);
+            uint64_t getPop();
+            void setPop(uint64_t p);
             
             bool doesStackPush();
             bool isEpsilonInput();
@@ -209,7 +209,7 @@ namespace MNRL{
             std::string symbolSet = "";
             std::string stackSet;
             std::string pushStack = "";
-            bool popStack;
+            uint64_t popStack;
             
             bool compareInput;
             bool enablePush;
@@ -217,29 +217,29 @@ namespace MNRL{
             std::shared_ptr<MNRLReportId> reportId;
         
         private:
-			static port_def gen_input() {
-				port_def in;
-				in.push_back(
-					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::H_PD_STATE_INPUT,
-							1
-						)
-					)
-				);
-				return in;
-			}
-			static port_def gen_output() {
-				port_def outs;
-				outs.push_back(
-					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::H_PD_STATE_OUTPUT,
-							1
-						)
-					)
-				);
-				return outs;
-			}
-    };
+      			static port_def gen_input() {
+      				port_def in;
+      				in.push_back(
+      					std::shared_ptr<MNRLPort>( new MNRLPort(
+      							MNRLDefs::H_PD_STATE_INPUT,
+      							1
+      						)
+      					)
+      				);
+      				return in;
+      			}
+      			static port_def gen_output() {
+      				port_def outs;
+      				outs.push_back(
+      					std::shared_ptr<MNRLPort>( new MNRLPort(
+      							MNRLDefs::H_PD_STATE_OUTPUT,
+      							1
+      						)
+      					)
+      				);
+      				return outs;
+      			}
+          };
 }
 
 #endif 

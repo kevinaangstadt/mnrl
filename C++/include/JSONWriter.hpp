@@ -221,7 +221,7 @@ private:
 			attrs.insert(std::map<std::string, json11::Json>::value_type("stackPush", json11::Json(s->getPushSymbol())));
 		
 		// insert the stackPop
-		attrs.insert(std::map<std::string, json11::Json>::value_type("stackPop", json11::Json(s->getPop())));
+		attrs.insert(std::map<std::string, json11::Json>::value_type("stackPop", json11::Json((int)s->getPop())));
 
 		// insert reportId
 		attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(s->getReportId())));
