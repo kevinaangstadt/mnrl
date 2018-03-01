@@ -129,7 +129,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				node = shared_ptr<MNRLNode>(new MNRLHPDState(
 					n["attributes"]["symbolSet"].string_value(),
 					n["attributes"]["stackSet"].string_value(),
-					n["attributes"]["stackPop"].bool_value(),
+					n["attributes"]["stackPop"].int_value(),
 					n["attributes"]["stackPush"].string_value(),
 					en,
 					n["id"].string_value(),
@@ -143,7 +143,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				node = shared_ptr<MNRLNode>(new MNRLHPDState(
 					n["attributes"]["symbolSet"].string_value(),
 					n["attributes"]["stackSet"].string_value(),
-					n["attributes"]["stackPop"].bool_value(),
+					n["attributes"]["stackPop"].int_value(),
 					en,
 					n["id"].string_value(),
 					n["report"].bool_value(),
@@ -157,7 +157,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				// epsilon input
 				node = shared_ptr<MNRLNode>(new MNRLHPDState(
 					n["attributes"]["stackSet"].string_value(),
-					n["attributes"]["stackPop"].bool_value(),
+					n["attributes"]["stackPop"].int_value(),
 					n["attributes"]["stackPush"].string_value(),
 					en,
 					n["id"].string_value(),
@@ -170,7 +170,7 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 				// epsilon, no stack push
 				node = shared_ptr<MNRLNode>(new MNRLHPDState(
 					n["attributes"]["stackSet"].string_value(),
-					n["attributes"]["stackPop"].bool_value(),
+					n["attributes"]["stackPop"].int_value(),
 					en,
 					n["id"].string_value(),
 					n["report"].bool_value(),
