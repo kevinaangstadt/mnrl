@@ -77,15 +77,25 @@ private:
 				{ "activate", mnrl_conn }
 			});
 		}
-
-		return json11::Json::object {
+		
+		std::map<std::string, json11::Json> mapping({
 			{ "id", n->getId() },
 			{ "report", n->getReport() },
 			{ "enable", MNRLDefs::toMNRLEnable(n->getEnable()) },
 			{ "outputDefs", json11::Json(oDefs) },
 			{ "inputDefs", json11::Json(iDefs) },
 			{ "attributes", json11::Json(*(n->getAttributes())) }
-		};
+		});
+		
+		switch(n->getReportEnable()) {
+			case MNRLDefs::ReportEnableType::ENABLE_ON_LAST:
+				mapping["reportEnable"] = "onLast";
+				break;
+			default:
+				break;
+		}
+
+		return json11::Json(mapping);
 	}
 	static json11::Json toJSON(std::shared_ptr<MNRLState> s) {
 		json11::Json parent = toJSON(std::dynamic_pointer_cast<MNRLNode>(s));

@@ -24,9 +24,10 @@ namespace MNRL {
                 std::string id,
                 MNRLDefs::EnableType enable,
                 bool report,
-				port_def inputDefs,
-				port_def outputDefs,
-                std::shared_ptr<std::map<std::string,std::string>> attributes
+								port_def inputDefs,
+								port_def outputDefs,
+                std::shared_ptr<std::map<std::string,std::string>> attributes,
+								MNRLDefs::ReportEnableType report_enable = MNRLDefs::ReportEnableType::ENABLE_ALWAYS
             );
             virtual ~MNRLNode();
 
@@ -41,15 +42,18 @@ namespace MNRL {
             std::string getId();
             bool getReport();
             MNRLDefs::EnableType getEnable();
+						MNRLDefs::ReportEnableType getReportEnable();
             std::shared_ptr<std::map<std::string,std::string>> getAttributes();
 
             void setId(std::string new_id);
             void setReport(bool r);
             void setEnable(MNRLDefs::EnableType e);
+						void setReportEnable(MNRLDefs::ReportEnableType r);
 
         protected:
             std::string id;
             bool report;
+						MNRLDefs::ReportEnableType reportEnable;
             MNRLDefs::EnableType enable;
             std::shared_ptr<port_map> inputDefs;
             std::shared_ptr<port_map> outputDefs;

@@ -18,13 +18,15 @@ MNRLNode::MNRLNode(
 	bool report,
 	port_def inputDefs,
 	port_def outputDefs,
-	shared_ptr<map<string,string>> attributes
+	shared_ptr<map<string,string>> attributes,
+	MNRLDefs::ReportEnableType report_enable
 ) : id(id),
 	enable(enable),
 	report(report),
 	inputDefs( MNRLNode::validate_ports(inputDefs) ),
 	outputDefs( MNRLNode::validate_ports(outputDefs) ),
-	attributes(attributes) {}
+	attributes(attributes),
+	reportEnable(report_enable) {}
 
 MNRLNode::~MNRLNode() {}
 
@@ -54,6 +56,7 @@ shared_ptr<MNRLPort> MNRLNode::getInputPort(string portId) {
 string MNRLNode::getId() { return id; }
 bool MNRLNode::getReport() { return report; }
 MNRLDefs::EnableType MNRLNode::getEnable(){ return enable; }
+MNRLDefs::ReportEnableType MNRLNode::getReportEnable(){ return reportEnable; }
 
 shared_ptr<map<string,string>> MNRLNode::getAttributes() { return attributes; }
 
@@ -69,4 +72,7 @@ void MNRLNode::setReport(bool b) {
 	report = b;
 }
 
+void MNRLNode::setReportEnable(MNRLDefs::ReportEnableType r) {
+	reportEnable = r;
+}
 

@@ -13,11 +13,11 @@ using namespace MNRL;
 
 unsigned int MNRLDefs::BooleanToPort(const BooleanMode b) {
 	switch(b){
-	case AND:
-	case OR:
-	case NOR:
-	case NOT:
-	case NAND:
+	case BooleanMode::AND:
+	case BooleanMode::OR:
+	case BooleanMode::NOR:
+	case BooleanMode::NOT:
+	case BooleanMode::NAND:
 		return 1;
 	default:
 		// not reached
@@ -27,13 +27,13 @@ unsigned int MNRLDefs::BooleanToPort(const BooleanMode b) {
 
 string MNRLDefs::toMNRLEnable(const MNRLDefs::EnableType e) {
 	switch (e) {
-	case ENABLE_ALWAYS:
+	case EnableType::ENABLE_ALWAYS:
 		return "always";
-	case ENABLE_ON_ACTIVATE_IN:
+	case EnableType::ENABLE_ON_ACTIVATE_IN:
 		return "onActivateIn";
-	case ENABLE_ON_START_AND_ACTIVATE_IN:
+	case EnableType::ENABLE_ON_START_AND_ACTIVATE_IN:
 		return "onStartAndActivateIn";
-	case ENABLE_ON_LAST:
+	case EnableType::ENABLE_ON_LAST:
 		return "onLast";
 	default:
 		// should not be reached
@@ -54,13 +54,22 @@ MNRLDefs::EnableType MNRLDefs::fromMNRLEnable(const string e) {
 		throw MNRLError::EnableError(e);
 }
 
+MNRLDefs::ReportEnableType MNRLDefs::fromMNRLReportEnable(const string r) {
+	if(r.compare("always") == 0) 
+		return MNRLDefs::ReportEnableType::ENABLE_ALWAYS;
+	else if(r.compare("onLast") == 0) 
+		return MNRLDefs::ReportEnableType::ENABLE_ON_LAST;
+	else
+		throw MNRLError::ReportEnableError(r);
+}
+
 string MNRLDefs::toMNRLCounterMode(const MNRLDefs::CounterMode c) {
 	switch(c) {
-	case TRIGGER_ON_THRESHOLD:
+	case CounterMode::TRIGGER_ON_THRESHOLD:
 		return "trigger";
-	case HIGH_ON_THRESHOLD:
+	case CounterMode::HIGH_ON_THRESHOLD:
 		return "high";
-	case ROLLOVER_ON_THRESHOLD:
+	case CounterMode::ROLLOVER_ON_THRESHOLD:
 		return "rollover";
 	default:
 		//should not be reached
@@ -81,15 +90,15 @@ MNRLDefs::CounterMode MNRLDefs::fromMNRLCounterMode(const string c) {
 
 string MNRLDefs::toMNRLBooleanMode(const BooleanMode b) {
 	switch(b){
-	case AND:
+	case BooleanMode::AND:
 		return "and";
-	case OR:
+	case BooleanMode::OR:
 		return "or";
-	case NOR:
+	case BooleanMode::NOR:
 		return "nor";
-	case NOT:
+	case BooleanMode::NOT:
 		return "not";
-	case NAND:
+	case BooleanMode::NAND:
 		return "nand";
 	default:
 		// not reached

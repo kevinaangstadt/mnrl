@@ -39,6 +39,14 @@ namespace MNRL{
 		private:
 			std::string enable;
 		};
+		
+		class ReportEnableError : public MNRLError {
+		public:
+			ReportEnableError(std::string enable) : MNRLError("unknown enable code " + enable), enable(enable) {}
+			std::string get_enable() { return enable; }
+		private:
+			std::string enable;
+		};
 
 		class UpCounterThresholdError : public MNRLError {
 		public:

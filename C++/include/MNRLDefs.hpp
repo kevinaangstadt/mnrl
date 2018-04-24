@@ -11,39 +11,44 @@
 namespace MNRL {
     class MNRLDefs {
         public:
-            enum EnableType {
+            enum class EnableType {
                 ENABLE_ALWAYS,
                 ENABLE_ON_ACTIVATE_IN,
                 ENABLE_ON_START_AND_ACTIVATE_IN,
                 ENABLE_ON_LAST
             };
+            
+            enum class ReportEnableType {
+                ENABLE_ALWAYS,
+                ENABLE_ON_LAST
+            };
 
-            enum CounterMode {
+            enum class CounterMode {
                 TRIGGER_ON_THRESHOLD,
                 HIGH_ON_THRESHOLD,
                 ROLLOVER_ON_THRESHOLD
             };
 
-            enum BooleanMode {
+            enum class BooleanMode {
             	AND,
-				OR,
-				NOR,
-				NOT,
-				NAND
+      				OR,
+      				NOR,
+      				NOT,
+      				NAND
             };
 
-            enum NodeType {
+            enum class NodeType {
             	NODE,
-				STATE,
-				HSTATE,
-				BOOLEAN,
-				UPCOUNTER
+      				STATE,
+      				HSTATE,
+      				BOOLEAN,
+      				UPCOUNTER
             };
 
-            enum ReportIdType {
+            enum class ReportIdType {
             	NONE,
-				INT,
-				STRING
+      				INT,
+      				STRING
             };
 
             static const std::string STATE_INPUT,
@@ -58,6 +63,7 @@ namespace MNRL {
             static unsigned int BooleanToPort(const BooleanMode b);
             static std::string toMNRLEnable(const EnableType e);
             static EnableType fromMNRLEnable(const std::string e);
+            static ReportEnableType fromMNRLReportEnable(const std::string r);
             static std::string toMNRLCounterMode(const CounterMode c);
             static CounterMode fromMNRLCounterMode(const std::string c);
             static std::string toMNRLBooleanMode(const BooleanMode b);
