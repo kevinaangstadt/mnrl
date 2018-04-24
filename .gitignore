@@ -1,0 +1,5 @@
+.ropenproject
+C++/src/obj
+C++/*.so
+C++/*.a
+python/*.pyc
