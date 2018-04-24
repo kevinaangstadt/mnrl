@@ -62,6 +62,15 @@ class MNRLDefs(object):
             raise mnrlerror.EnableError(en)
 
     @staticmethod
+    def fromMNRLReportEnable(en):
+        if en == "always":
+            return MNRLDefs.ENABLE_ALWAYS
+        elif en == "onLast":
+            return MNRLDefs.ENABLE_ON_LAST
+        else:
+            raise mnrlerror.ReportEnableError(en)
+
+    @staticmethod
     def toMNRLEnable(en):
         if en == MNRLDefs.ENABLE_ON_ACTIVATE_IN:
             return "onActivateIn"
@@ -73,6 +82,15 @@ class MNRLDefs(object):
             return "onLast"
         else:
             raise mnrlerror.EnableError(en)
+
+    @staticmethod
+    def toMNRLReportEnable(en):
+        if en == MNRLDefs.ENABLE_ALWAYS:
+            return "always"
+        elif en == MNRLDefs.ENABLE_ON_LAST:
+            return "onLast"
+        else:
+            raise mnrlerror.ReportEnableError(en)
 
     @staticmethod
     def fromMNRLCounterMode(m):
@@ -135,6 +153,7 @@ class MNRLNetwork(object):
                  enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
                  id = None,
                  report = False,
+                 reportEnable = MNRLDefs.ENABLE_ALWAYS,
                  reportId = None,
                  latched = False,
                  attributes = {}
@@ -143,7 +162,7 @@ class MNRLNetwork(object):
 
         id = self._getUniqueNodeId(id)
 
-        state = State(outputSymbols, enable=enable, id=id, report=report, reportId=reportId, latched=latched, attributes=attributes)
+        state = State(outputSymbols, enable=enable, id=id, report=report, reportEnable=reportEnable, reportId=reportId, latched=latched, attributes=attributes)
 
         self.nodes[id] = state
 
@@ -154,6 +173,7 @@ class MNRLNetwork(object):
                   enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
                   id = None,
                   report = False,
+                  reportEnable = MNRLDefs.ENABLE_ALWAYS,
                   reportId = None,
                   latched = False,
                   attributes = {}
@@ -162,7 +182,7 @@ class MNRLNetwork(object):
 
         id = self._getUniqueNodeId(id)
 
-        hState = HState(symbols,enable=enable,id=id,report=report,reportId=reportId,latched=latched,attributes=attributes)
+        hState = HState(symbols,enable=enable,id=id,report=report,reportEnable=reportEnable,reportId=reportId,latched=latched,attributes=attributes)
 
         self.nodes[id] = hState
 
@@ -173,6 +193,7 @@ class MNRLNetwork(object):
                      mode = MNRLDefs.HIGH_ON_THRESHOLD,
                      id = None,
                      report = False,
+                     reportEnable = MNRLDefs.ENABLE_ALWAYS,
                      reportId = None,
                      attributes = {}
                     ):
@@ -180,7 +201,7 @@ class MNRLNetwork(object):
 
         id = self._getUniqueNodeId(id)
 
-        new_counter = UpCounter(threshold, mode=mode, id=id, report=report, reportId=reportId, attributes=attributes)
+        new_counter = UpCounter(threshold, mode=mode, id=id, report=report,reportEnable=reportEnable, reportId=reportId, attributes=attributes)
 
         self.nodes[id] = new_counter
 
@@ -190,6 +211,7 @@ class MNRLNetwork(object):
                    booleanType,
                    id = None,
                    report = False,
+                   reportEnable = MNRLDefs.ENABLE_ALWAYS,
                    enable = MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN,
                    reportId = None,
                    attributes = {}
@@ -202,7 +224,7 @@ class MNRLNetwork(object):
         except KeyError:
             raise mnrlerror.InvalidGateType(booleanType)
 
-        boolean = Boolean(booleanType,portCount=number_of_ports,id=id,enable=enable,report=report,reportId=reportId,attributes=attributes)
+        boolean = Boolean(booleanType,portCount=number_of_ports,id=id,enable=enable,report=report,reportEnable=reportEnable,reportId=reportId,attributes=attributes)
 
         self.nodes[id] = boolean
 
@@ -313,6 +335,7 @@ class MNRLNode(object):
                  id = None,
                  enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
                  report = False,
+                 reportEnable = MNRLDefs.ENABLE_ALWAYS,
                  inputDefs = [],
                  outputDefs = [],
                  attributes = {}
@@ -329,6 +352,14 @@ class MNRLNode(object):
         self.enable = enable
 
         self.report = report
+        
+        if reportEnable not in [
+            MNRLDefs.ENABLE_ALWAYS,
+            MNRLDefs.ENABLE_ON_LAST
+        ]:
+            raise mnrlerror.ReportEnableError(reportEnable)
+        
+        self.reportEnable = reportEnable
 
         #validate input ports
         self.inputDefs = self.__validate_ports(inputDefs,"input")
@@ -358,15 +389,20 @@ class MNRLNode(object):
                 'width': width,
                 'activate': connection_list
             })
-
-        return json.dumps({
+            
+        dump_obj = {
             'id' : self.id,
             'report' : self.report,
             'enable' : enable_string,
             'inputDefs' : inputDefs,
             'outputDefs' : outputDefs,
             'attributes' : self.attributes
-        })
+        }
+        
+        if self.reportEnable != MNRLDefs.ENABLE_ALWAYS:
+            dump_obj['reportEnable'] = MNRLDefs.toMNRLReportEnable(self.reportEnable)
+
+        return json.dumps(dump_obj)
 
     def getOutputConnections(self):
         """Returns the output connections dict of portid => (width, conn_list)"""
@@ -405,6 +441,7 @@ class State(MNRLNode):
                  enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
                  id = None,
                  report = False,
+                 reportEnable = MNRLDefs.ENABLE_ALWAYS,
                  latched = False,
                  reportId = None,
                  attributes = {}
@@ -429,6 +466,7 @@ class State(MNRLNode):
             id = id,
             enable = enable,
             report = report,
+            reportEnable = reportEnable,
             inputDefs = [(MNRLDefs.H_STATE_INPUT,1)],
             outputDefs = outputDefs,
             attributes = attributes
@@ -457,6 +495,7 @@ class HState(MNRLNode):
                   enable = MNRLDefs.ENABLE_ON_ACTIVATE_IN,
                   id = None,
                   report = False,
+                  reportEnable = MNRLDefs.ENABLE_ALWAYS,
                   latched = False,
                   reportId = None,
                   attributes = {}
@@ -466,6 +505,7 @@ class HState(MNRLNode):
             id = id,
             enable = enable,
             report = report,
+            reportEnable = reportEnable,
             inputDefs = [(MNRLDefs.H_STATE_INPUT,1)],
             outputDefs = [(MNRLDefs.H_STATE_OUTPUT,1)],
             attributes = attributes
@@ -512,6 +552,7 @@ class UpCounter(MNRLNode):
             id = id,
             enable = MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN, #a counter is always active
             report = report,
+            reportEnable = reportEnable,
             inputDefs = [
                 (MNRLDefs.UP_COUNTER_COUNT, 1),
                 (MNRLDefs.UP_COUNTER_RESET, 1)
@@ -544,6 +585,7 @@ class Boolean(MNRLNode):
                  id = None,
                  enable = MNRLDefs.ENABLE_ON_START_AND_ACTIVATE_IN,
                  report = False,
+                 reportEnable = MNRLDefs.ENABLE_ALWAYS,
                  reportId = None,
                  attributes = {}
                 ):
@@ -561,6 +603,7 @@ class Boolean(MNRLNode):
                 id = id,
                 enable = enable,
                 report = report,
+                reportEnable = reportEnable,
                 inputDefs = inputDefs,
                 outputDefs = [(MNRLDefs.BOOLEAN_OUTPUT, 1)],
                 attributes = attributes
@@ -600,6 +643,7 @@ class MNRLDecoder(json.JSONDecoder):
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     id = n['id'],
                     report = n['report'],
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
                     latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
@@ -610,6 +654,7 @@ class MNRLDecoder(json.JSONDecoder):
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     id = n['id'],
                     report = n['report'],
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
                     latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
@@ -620,6 +665,7 @@ class MNRLDecoder(json.JSONDecoder):
                     mode = MNRLDefs.fromMNRLCounterMode(n['attributes']['mode']),
                     id = n['id'],
                     report = n['report'],
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
@@ -632,6 +678,7 @@ class MNRLDecoder(json.JSONDecoder):
                     id = n['id'],
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     report = n['report'],
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
@@ -650,6 +697,7 @@ class MNRLDecoder(json.JSONDecoder):
                     id = n['id'],
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     report = n['report'],
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
                     inputDefs = ins,
                     outputDefs = outs,
                     attributes = n['attributes']

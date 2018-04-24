@@ -10,6 +10,10 @@
                     "enum": [ "onActivateIn", "onStartAndActivateIn", "onLast", "always" ]
                 },
                 "report": { "type": "boolean" },
+                "reportEnable" : {
+                  "type": "string",
+                  "enum": [ "always", "onLast" ]
+                },
                 "inputDefs" : {
                     "type": "array",
                     "items": {

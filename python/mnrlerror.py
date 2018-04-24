@@ -6,6 +6,11 @@ class EnableError(MNRLError):
     def __init__(self, enable_code):
         super(EnableError, self).__init__("unknown enable code " + enable_code)
         self.enable_code = enable_code
+
+class ReportEnableError(MNRLError):
+    def __init__(self, enable_code):
+        super(EnableError, self).__init__("unknown report enable code " + enable_code)
+        self.enable_code = enable_code
         
 class PortDefError(MNRLError):
     def __init__(self, ports):
