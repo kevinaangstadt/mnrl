@@ -34,7 +34,7 @@ namespace MNRL{
 
 		class EnableError : public MNRLError {
 		public:
-			EnableError(std::string enable) : MNRLError("unknown enable code " + enable), enable(enable) {}
+			EnableError(std::string enable) : MNRLError("unknown enable code '" + enable + "'"), enable(enable) {}
 			std::string get_enable() { return enable; }
 		private:
 			std::string enable;
@@ -42,7 +42,7 @@ namespace MNRL{
 		
 		class ReportEnableError : public MNRLError {
 		public:
-			ReportEnableError(std::string enable) : MNRLError("unknown enable code " + enable), enable(enable) {}
+			ReportEnableError(std::string enable) : MNRLError("unknown enable code '" + enable + "'"), enable(enable) {}
 			std::string get_enable() { return enable; }
 		private:
 			std::string enable;
