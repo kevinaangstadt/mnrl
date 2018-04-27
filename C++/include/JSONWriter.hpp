@@ -197,7 +197,7 @@ private:
 		attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(c->getReportId())));
 
 		// insert latched
-		attrs.insert(std::map<std::string, json11::Json>::value_type("mode", json11::Json(MNRLDefs::toMNRLCounterMode(c->getMode()))));
+		attrs.insert(std::map<std::string, json11::Json>::value_type("gateType", json11::Json(MNRLDefs::toMNRLCounterMode(c->getMode()))));
 
 		// update the attributes
 		mapping["attributes"] = json11::Json(attrs);
