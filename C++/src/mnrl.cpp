@@ -128,7 +128,8 @@ shared_ptr<MNRLNode> parse_node(Json n) {
 	}
 	
 	// set the reportEnable
-	node->setReportEnable(MNRLDefs::fromMNRLReportEnable(n["reportEnable"].string_value()));
+	if(!n["reportEnable"].is_null())
+		node->setReportEnable(MNRLDefs::fromMNRLReportEnable(n["reportEnable"].string_value()));
 	
 	return node;
 }
