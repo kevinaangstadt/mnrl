@@ -643,7 +643,7 @@ class MNRLDecoder(json.JSONDecoder):
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     id = n['id'],
                     report = n['report'],
-                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always")),
                     latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
@@ -654,7 +654,7 @@ class MNRLDecoder(json.JSONDecoder):
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     id = n['id'],
                     report = n['report'],
-                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always")),
                     latched = n['attributes']['latched'] if 'latched' in n['attributes'] else False,
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
@@ -665,7 +665,7 @@ class MNRLDecoder(json.JSONDecoder):
                     mode = MNRLDefs.fromMNRLCounterMode(n['attributes']['mode']),
                     id = n['id'],
                     report = n['report'],
-                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always")),
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
@@ -678,7 +678,7 @@ class MNRLDecoder(json.JSONDecoder):
                     id = n['id'],
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     report = n['report'],
-                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always")),
                     reportId = n['attributes']['reportId'] if 'reportId' in n['attributes'] else None,
                     attributes = n['attributes']
                 )
@@ -697,7 +697,7 @@ class MNRLDecoder(json.JSONDecoder):
                     id = n['id'],
                     enable = MNRLDefs.fromMNRLEnable(n['enable']),
                     report = n['report'],
-                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always"),
+                    reportEnable = MNRLDefs.fromMNRLReportEnable(n.get('reportEnable', "always")),
                     inputDefs = ins,
                     outputDefs = outs,
                     attributes = n['attributes']
