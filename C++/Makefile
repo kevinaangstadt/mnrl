@@ -8,7 +8,7 @@ OBJCPY = gobjcopy
 
 JSON11 = ./lib/json11
 VALIJSON = ./lib/valijson/include
-JSON = ./lib/valijson/thirdparty/nlohmann-json-1.1.0
+JSON = ./lib/valijson/thirdparty/nlohmann-json-3.1.2
 
 JSON11_HPP = $(JSON11)/json11.hpp
 
