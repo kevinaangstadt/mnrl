@@ -3,7 +3,8 @@
 //
 // Functions for Creating JSON from various MNRL objects
 
-#include <json11.hpp>
+#include <rapidjson/document.h>
+#include <rapidjson/allocators.h>
 #include <vector>
 
 #include "MNRLNetwork.hpp"
@@ -14,212 +15,186 @@
 #include "MNRLUpCounter.hpp"
 
 namespace MNRL {
+	
+	using namespace rapidjson;
+	
 	class JSONWriter {
 	public:
-		static json11::Json toJSON(MNRLNetwork &net) {
-			std::vector<json11::Json> n;
+		static Document toJSON(MNRLNetwork &net) {
+			Document d(kObjectType);
+			
+			Value n(kArrayType);
+
 			for(auto &kv : net.getNodes()) {
-				json11::Json j;
+				Value j;
 				
 				switch(kv.second->getNodeType()) {
 					case MNRLDefs::NodeType::NODE:
-					j = JSONWriter::toJSON(dynamic_cast<MNRLNode*>(kv.second));
+					j = JSONWriter::toJSON(dynamic_cast<MNRLNode*>(kv.second),d );
 					break;
 					case MNRLDefs::NodeType::STATE:
-					j = JSONWriter::toJSON(dynamic_cast<MNRLState*>(kv.second));
+					j = JSONWriter::toJSON(dynamic_cast<MNRLState*>(kv.second), d);
 					break;
 					case MNRLDefs::NodeType::HSTATE:
-					j = JSONWriter::toJSON(dynamic_cast<MNRLHState*>(kv.second));
+					j = JSONWriter::toJSON(dynamic_cast<MNRLHState*>(kv.second), d);
 					break;
 					case MNRLDefs::NodeType::BOOLEAN:
-					j = JSONWriter::toJSON(dynamic_cast<MNRLBoolean*>(kv.second));
+					j = JSONWriter::toJSON(dynamic_cast<MNRLBoolean*>(kv.second), d);
 					break;
 					case MNRLDefs::NodeType::UPCOUNTER:
-					j = JSONWriter::toJSON(dynamic_cast<MNRLUpCounter*>(kv.second));
+					j = JSONWriter::toJSON(dynamic_cast<MNRLUpCounter*>(kv.second), d);
 					break;
 				}
-				n.push_back(j);
+				n.PushBack(j, d.GetAllocator());
 			}
-			
-			return json11::Json::object {
-				{"id", net.getId()},
-				{"nodes", n }
-			};
+
+			d.AddMember("id", StringRef(net.getId().c_str()), d.GetAllocator());
+			d.AddMember("nodes", n, d.GetAllocator());
+			return d;
 		}
 	private:
-		static json11::Json toJSON(MNRLNode *n) {
+		static Value toJSON(MNRLNode *n, Document &d) {
 			// convert to input port definitions
-			std::vector<json11::Json::object> iDefs;
+			Value iDefs(kArrayType);
 			for(auto &kv : n->getInputConnections()) {
-				iDefs.push_back(json11::Json::object {
-					{ "portId", kv.first },
-					{ "width", kv.second.getWidth() }
-				});
+				Value obj(kObjectType);
+				obj.AddMember("portId", Value(StringRef(kv.first.c_str())), d.GetAllocator());
+				obj.AddMember("width", kv.second.getWidth(), d.GetAllocator());
+				iDefs.PushBack(obj, d.GetAllocator());
 			}
 			
 			// convert to output port definitions
-			std::vector<json11::Json::object> oDefs;
+			Value oDefs(kArrayType);
 			for(auto &kv : n->getOutputConnections()) {
 				// get all of the connections
-				std::vector<json11::Json::object> mnrl_conn;
+				Value mnrl_conn(kArrayType);
 				for(auto &np : kv.second.getConnections()) {
-					mnrl_conn.push_back(json11::Json::object {
-						{ "id", np.first },
-						{ "portId", np.second }
-					});
+					Value obj(kObjectType);
+					obj.AddMember("id", Value(StringRef(np.first.c_str())), d.GetAllocator());
+					obj.AddMember("portId", Value(StringRef(np.second.c_str())), d.GetAllocator());
+					mnrl_conn.PushBack(obj, d.GetAllocator());
 				}
 				
-				oDefs.push_back(json11::Json::object {
-					{ "portId", kv.first },
-					{ "width", kv.second.getWidth() },
-					{ "activate", mnrl_conn }
-				});
+				Value obj(kObjectType);
+				obj.AddMember("portId", Value(StringRef(kv.first.c_str())), d.GetAllocator());
+				obj.AddMember("width", kv.second.getWidth(), d.GetAllocator());
+				obj.AddMember("activate", mnrl_conn, d.GetAllocator());
+				oDefs.PushBack(obj, d.GetAllocator());
 			}
 			
-			std::map<std::string, json11::Json> mapping({
-				{ "id", n->getId() },
-				{ "report", n->getReport() },
-				{ "enable", MNRLDefs::toMNRLEnable(n->getEnable()) },
-				{ "outputDefs", json11::Json(oDefs) },
-				{ "inputDefs", json11::Json(iDefs) },
-				{ "attributes", json11::Json(n->getAttributes()) }
-			});
+			Value node(kObjectType);
+			node.AddMember("id", Value(StringRef(n->getId().c_str())), d.GetAllocator());
+			node.AddMember("report", n->getReport(), d.GetAllocator());
+			std::string enable = MNRLDefs::toMNRLEnable(n->getEnable());
+			node.AddMember("enable", Value(enable.c_str(), d.GetAllocator()), d.GetAllocator());
+			node.AddMember("outputDefs", oDefs, d.GetAllocator());
+			node.AddMember("inputDefs", iDefs, d.GetAllocator());
+			
+			Value attrs(kObjectType);
+			for(auto &kv : n->getAttributes()) {
+				attrs.AddMember(Value(StringRef(kv.first.c_str())), Value(StringRef(kv.second.c_str())), d.GetAllocator());
+			}
+			node.AddMember("attributes", attrs, d.GetAllocator());
 			
 			switch(n->getReportEnable()) {
 				case MNRLDefs::ReportEnableType::ENABLE_ON_LAST:
-				mapping["reportEnable"] = "onLast";
+				node.AddMember("reportEnable", "onLast", d.GetAllocator());
 				break;
 				default:
 				break;
 			}
 			
-			return json11::Json(mapping);
+			return node;
 		}
-		static json11::Json toJSON(MNRLState *s) {
-			json11::Json parent = toJSON(dynamic_cast<MNRLNode*>(s));
-			
-			// we know that this is an obj
-			std::map<std::string, json11::Json> mapping = parent.object_items();
+		static Value toJSON(MNRLState *s, Document &d) {
+			Value mapping = toJSON(dynamic_cast<MNRLNode*>(s), d);
 			
 			// insert the type
-			mapping.insert(std::map<std::string, json11::Json>::value_type("type", json11::Json("state")));
-			
-			// get the attributes
-			std::map<std::string, json11::Json> attrs = mapping["attributes"].object_items();
-			
-			std::map<std::string, json11::Json> symbolSet;
+			mapping.AddMember("type", "state", d.GetAllocator());
+
+			Value symbolSet(kObjectType);
 			for(auto &st : s->getOutputSymbols()) {
 				// add the symbolSet for the given port
-				symbolSet.insert(std::map<std::string,json11::Json>::value_type(st.first, json11::Json(st.second)));
+				symbolSet.AddMember(Value(StringRef(st.first.c_str())), Value(StringRef(st.second.c_str())), d.GetAllocator());
 			}
 			
 			// insert the symbolSets
-			attrs.insert(std::map<std::string, json11::Json>::value_type("symbolSet", json11::Json(symbolSet)));
+			mapping["attributes"].AddMember("symbolSet", symbolSet, d.GetAllocator());
 			
 			// insert reportId
-			attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(s->getReportId())));
+			mapping["attributes"].AddMember("reportId", JSONWriter::toJSON(s->getReportId(), d), d.GetAllocator());
 			
 			// insert latched
-			attrs.insert(std::map<std::string, json11::Json>::value_type("latched", json11::Json(s->getLatched())));
+			mapping["attributes"].AddMember("latched", s->getLatched(), d.GetAllocator());
 			
-			// update the attributes
-			mapping["attributes"] = json11::Json(attrs);
-			
-			return json11::Json(mapping);
+			return mapping;
 		}
-		static json11::Json toJSON(MNRLHState *s) {
-			json11::Json parent = JSONWriter::toJSON(dynamic_cast<MNRLNode*>(s));
-			
-			// we know that this is an obj
-			std::map<std::string, json11::Json> mapping = parent.object_items();
+		static Value toJSON(MNRLHState *s, Document &d) {
+			Value mapping = toJSON(dynamic_cast<MNRLNode*>(s), d);
 			
 			// insert the type
-			mapping.insert(std::map<std::string, json11::Json>::value_type("type", json11::Json("hState")));
-			
-			// get the attributes
-			std::map<std::string, json11::Json> attrs = mapping["attributes"].object_items();
+			mapping.AddMember("type", "hState", d.GetAllocator());
 			
 			// insert the symbolSets
-			attrs.insert(std::map<std::string, json11::Json>::value_type("symbolSet", json11::Json(s->getSymbolSet())));
+			mapping["attributes"].AddMember("symbolSet", Value(StringRef(s->getSymbolSet().c_str())), d.GetAllocator());
 			
 			// insert reportId
-			attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(s->getReportId())));
+			mapping["attributes"].AddMember("reportId", JSONWriter::toJSON(s->getReportId(), d), d.GetAllocator());
 			
 			// insert latched
-			attrs.insert(std::map<std::string, json11::Json>::value_type("latched", json11::Json(s->getLatched())));
+			mapping["attributes"].AddMember("latched", s->getLatched(), d.GetAllocator());
 			
-			// update the attributes
-			mapping["attributes"] = json11::Json(attrs);
-			
-			return json11::Json(mapping);
+			return mapping;
 		}
-		static json11::Json toJSON(MNRLBoolean *b) {
-			json11::Json parent = JSONWriter::toJSON(dynamic_cast<MNRLNode*>(b));
-			
-			// we know that this is an obj
-			std::map<std::string, json11::Json> mapping = parent.object_items();
+		static Value toJSON(MNRLBoolean *b, Document &d) {
+			Value mapping = toJSON(dynamic_cast<MNRLNode*>(b), d);
 			
 			// insert the type
-			mapping.insert(std::map<std::string, json11::Json>::value_type("type", json11::Json("boolean")));
-			
-			// get the attributes
-			std::map<std::string, json11::Json> attrs = mapping["attributes"].object_items();
+			mapping.AddMember("type", "boolean", d.GetAllocator());
 			
 			// insert reportId
-			attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(b->getReportId())));
+			mapping["attributes"].AddMember("reportId", JSONWriter::toJSON(b->getReportId(), d), d.GetAllocator());
 			
-			// insert latched
-			attrs.insert(std::map<std::string, json11::Json>::value_type("gateType", json11::Json(MNRLDefs::toMNRLBooleanMode(b->getMode()))));
+			// insert mode
+			mapping["attributes"].AddMember("gateType", Value(MNRLDefs::toMNRLBooleanMode(b->getMode()).c_str(), d.GetAllocator()), d.GetAllocator());
 			
-			// update the attributes
-			mapping["attributes"] = json11::Json(attrs);
-			
-			return json11::Json(mapping);
+			return mapping;
 		}
-		static json11::Json toJSON(MNRLUpCounter *c) {
-			json11::Json parent = JSONWriter::toJSON(dynamic_cast<MNRLNode*>(c));
-			
-			// we know that this is an obj
-			std::map<std::string, json11::Json> mapping = parent.object_items();
+		static Value toJSON(MNRLUpCounter *c, Document &d) {
+			Value mapping = toJSON(dynamic_cast<MNRLNode*>(c), d);
 			
 			// insert the type
-			mapping.insert(std::map<std::string, json11::Json>::value_type("type", json11::Json("upCounter")));
+			mapping.AddMember("type", "upCounter", d.GetAllocator());
 			
-			// get the attributes
-			std::map<std::string, json11::Json> attrs = mapping["attributes"].object_items();
-			
-			// insert the symbolSets
-			attrs.insert(std::map<std::string, json11::Json>::value_type("threshold", json11::Json(c->getThreshold())));
+			// insert the threshold
+			mapping.AddMember("threshold", c->getThreshold(), d.GetAllocator());
 			
 			// insert reportId
-			attrs.insert(std::map<std::string, json11::Json>::value_type("reportId", JSONWriter::toJSON(c->getReportId())));
+			mapping["attributes"].AddMember("reportId", JSONWriter::toJSON(c->getReportId(), d), d.GetAllocator());
 			
-			// insert latched
-			attrs.insert(std::map<std::string, json11::Json>::value_type("gateType", json11::Json(MNRLDefs::toMNRLCounterMode(c->getMode()))));
+			// insert mode
+			mapping.AddMember("mode", Value(MNRLDefs::toMNRLCounterMode(c->getMode()).c_str(), d.GetAllocator()), d.GetAllocator());
 			
-			// update the attributes
-			mapping["attributes"] = json11::Json(attrs);
-			
-			return json11::Json(mapping);
+			return mapping;
 		}
 		
-		static json11::Json toJSON(MNRLReportId *r) {
+		static Value toJSON(MNRLReportId *r, Document &d) {
 			switch(r->get_type()) {
 				case MNRLDefs::ReportIdType::INT:
-				return toJSON(dynamic_cast<MNRLReportIdInt*>(r));
+				return toJSON(dynamic_cast<MNRLReportIdInt*>(r), d);
 				case MNRLDefs::ReportIdType::STRING:
-				return toJSON(dynamic_cast<MNRLReportIdString*>(r));
+				return toJSON(dynamic_cast<MNRLReportIdString*>(r), d);
 				default:
-				return json11::Json();
+				return Value();
 			}
 		}
 		
-		static json11::Json toJSON(MNRLReportIdInt *r) {
-			return json11::Json(r->getId());
+		static Value toJSON(MNRLReportIdInt *r, Document &d) {
+			return Value(r->getId());
 		}
 		
-		static json11::Json toJSON(MNRLReportIdString *r) {
-			return json11::Json(r->getId());
+		static Value toJSON(MNRLReportIdString *r, Document &d) {
+			return Value(StringRef(r->getId().c_str()));
 		}
 	};
 }

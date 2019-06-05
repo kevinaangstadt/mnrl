@@ -9,6 +9,7 @@ OBJCPY = gobjcopy
 JSON11 = ./lib/json11
 VALIJSON = ./lib/valijson/include
 JSON = ./lib/valijson/thirdparty/nlohmann-json-3.1.2
+RAPIDJSON = ./lib/rapidjson/include
 
 JSON11_HPP = $(JSON11)/json11.hpp
 
@@ -17,7 +18,7 @@ NAME = libmnrl
 SNAME = $(NAME).a
 DNAME = $(NAME).so
 
-CXXFLAGS = -I$(IDIR) -I$(VALIJSON) -I$(JSON) -I$(JSON11) --std=c++11 -fPIC
+CXXFLAGS = -I$(IDIR) -I $(RAPIDJSON) -I$(VALIJSON) -I$(JSON) -I$(JSON11) --std=c++11 -fPIC
 LDFLAGS = -L.
 ARFLAGS = rcs
 
@@ -83,14 +84,16 @@ $(JSON11_HPP):
 	git submodule init
 	git submodule update	
 
-test: libmnrl $(TESTDIR)/readwrite
+test: tests 
+	../tests/readwrite_test.sh tests/readwrite tests/
+
+tests: libmnrl $(TESTDIR)/readwrite $(TESTDIR)/readandprint
 
 $(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@ 
-	../tests/readwrite_test.sh tests/readwrite tests/
 
 $(TESTDIR)/readandprint: $(TESTDIR)/readandprint.cpp
-	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
+	$(CC) -g3 $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
 
 .PHONY: all release debug test clean
 

@@ -1,30 +1,44 @@
 /*
- * Kevin Angstadt
- * angstadt {at} virginia.edu
- *
- * MNRLNetwork.cpp
- */
+* Kevin Angstadt
+* angstadt {at} virginia.edu
+*
+* MNRLNetwork.cpp
+*/
 
- #include <json11.hpp>
- #include <json.hpp>
+#include <cstdio>
 
- #include "MNRLNetwork.hpp"
- #include "MNRLState.hpp"
- #include "MNRLHState.hpp"
- #include "MNRLUpCounter.hpp"
- #include "MNRLBoolean.hpp"
- #include "JSONWriter.hpp"
+#include <rapidjson/document.h>
+#include <rapidjson/filewritestream.h>
+#include <rapidjson/prettywriter.h>
+#include <rapidjson/writer.h>
 
- using namespace std;
- using namespace MNRL;
- using namespace json11;
- 
- void MNRLNetwork::exportToFile(std::string filename, bool pretty) {
-   ofstream out(filename);
-   if(pretty) {
-    out << nlohmann::json::parse(JSONWriter::toJSON(*this).dump()).dump(4) << endl;
+
+#include "MNRLNetwork.hpp"
+#include "MNRLState.hpp"
+#include "MNRLHState.hpp"
+#include "MNRLUpCounter.hpp"
+#include "MNRLBoolean.hpp"
+#include "JSONWriter.hpp"
+
+using namespace std;
+using namespace MNRL;
+using namespace rapidjson;
+
+void MNRLNetwork::exportToFile(std::string filename, bool pretty) {
+  Document d = JSONWriter::toJSON(*this);
+  
+  FILE *out = fopen(filename.c_str(), "wb");
+  char writeBuffer[65536];
+  
+  FileWriteStream os(out, writeBuffer, sizeof(writeBuffer));
+  
+  if(pretty) {
+    PrettyWriter<FileWriteStream> writer(os);
+    d.Accept(writer);
   } else {
-    out << JSONWriter::toJSON(*this).dump() << endl;
+    Writer<FileWriteStream> writer(os);
+    d.Accept(writer);
   }
-   out.close();
- }
+  
+  fclose(out);
+}
