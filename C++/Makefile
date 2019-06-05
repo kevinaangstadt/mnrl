@@ -84,11 +84,13 @@ $(JSON11_HPP):
 	git submodule init
 	git submodule update	
 
-test: libmnrl $(TESTDIR)/readwrite
+test: tests 
+	../tests/readwrite_test.sh tests/readwrite tests/
+
+tests: libmnrl $(TESTDIR)/readwrite $(TESTDIR)/readandprint
 
 $(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@ 
-	../tests/readwrite_test.sh tests/readwrite tests/
 
 $(TESTDIR)/readandprint: $(TESTDIR)/readandprint.cpp
 	$(CC) -g3 $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
