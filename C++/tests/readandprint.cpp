@@ -10,8 +10,8 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	shared_ptr<MNRL::MNRLNetwork> m = MNRL::loadMNRL(string(argv[1]));
-	for(auto &node : m->getNodes()) {
+	MNRL::MNRLNetwork m = MNRL::loadMNRL(string(argv[1]));
+	for(auto &node : m.getNodes()) {
 		cout << node.second->getId() << endl;
 	}
 	return 0;
