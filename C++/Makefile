@@ -91,7 +91,7 @@ $(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 	../tests/readwrite_test.sh tests/readwrite tests/
 
 $(TESTDIR)/readandprint: $(TESTDIR)/readandprint.cpp
-	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
+	$(CC) -g3 $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
 
 .PHONY: all release debug test clean
 

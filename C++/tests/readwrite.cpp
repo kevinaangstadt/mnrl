@@ -10,7 +10,7 @@ int main(int argc, char *argv[]) {
 		return 1;
 	}
 
-	shared_ptr<MNRL::MNRLNetwork> m = MNRL::loadMNRL(string(argv[1]));
-	m->exportToFile(string(argv[2]));
+	MNRL::MNRLNetwork m = MNRL::loadMNRL(string(argv[1]));
+	m.exportToFile(string(argv[2]));
 	return 0;
 }
