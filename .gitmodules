@@ -7,3 +7,6 @@
 [submodule "C++/test/jq"]
 	path = tests/jq
 	url = https://github.com/stedolan/jq
+[submodule "C++/lib/rapidjson"]
+	path = C++/lib/rapidjson
+	url = https://github.com/Tencent/rapidjson
