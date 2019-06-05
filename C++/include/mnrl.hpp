@@ -29,7 +29,7 @@ namespace MNRL {
 	class MNRLUpCounter;
 	class MNRLBoolean;
 
-	MNRLNetwork loadMNRL(std::string &filename);
+	MNRLNetwork loadMNRL(const std::string &filename);
 
 }
 

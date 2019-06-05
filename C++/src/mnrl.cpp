@@ -181,7 +181,7 @@ string MNRLSchema() {
 	return s;
 }
 
-MNRLNetwork MNRL::loadMNRL(string &filename) {
+MNRLNetwork MNRL::loadMNRL(const string &filename) {
 	// Load JSON schema using JSON11 with Valijson helper function
 	string err;
 	Json mySchemaDoc = Json::parse(MNRLSchema(),err);
