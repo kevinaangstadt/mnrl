@@ -9,6 +9,7 @@ OBJCPY = gobjcopy
 JSON11 = ./lib/json11
 VALIJSON = ./lib/valijson/include
 JSON = ./lib/valijson/thirdparty/nlohmann-json-3.1.2
+RAPIDJSON = ./lib/rapidjson/include
 
 JSON11_HPP = $(JSON11)/json11.hpp
 
@@ -17,7 +18,7 @@ NAME = libmnrl
 SNAME = $(NAME).a
 DNAME = $(NAME).so
 
-CXXFLAGS = -I$(IDIR) -I$(VALIJSON) -I$(JSON) -I$(JSON11) --std=c++11 -fPIC
+CXXFLAGS = -I$(IDIR) -I $(RAPIDJSON) -I$(VALIJSON) -I$(JSON) -I$(JSON11) --std=c++11 -fPIC
 LDFLAGS = -L.
 ARFLAGS = rcs
 

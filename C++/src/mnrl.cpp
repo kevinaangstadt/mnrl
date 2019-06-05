@@ -5,33 +5,30 @@
  * mnrl.cpp
  */
 
+#include <iostream>
 #include <set>
-#include <json11.hpp>
 
-#include <valijson/adapters/json11_adapter.hpp>
-#include <valijson/utils/json11_utils.hpp>
-#include <valijson/schema.hpp>
-#include <valijson/schema_parser.hpp>
-#include <valijson/validator.hpp>
+#include <rapidjson/error/en.h>
+#include <rapidjson/filereadstream.h>
+#include <rapidjson/schema.h>
+#include <rapidjson/stringbuffer.h>
+#include <rapidjson/prettywriter.h>
 
 #include "mnrl.hpp"
 
 using namespace std;
 using namespace MNRL;
-using namespace json11;
-using valijson::Schema;
-using valijson::SchemaParser;
-using valijson::Validator;
-using valijson::ValidationResults;
-using valijson::adapters::Json11Adapter;
+using namespace rapidjson;
+
+using Json = Value;
 
 static map<string,string> getAttrs(const Json &jattr, set<string> exclude=set<string>()) {
 	// get the items out of the map
 	map<string,string> attrs;
-	for(auto &a : jattr.object_items()) {
-		if(exclude.find(a.first) != exclude.end() && a.second.is_string()) {
-			string name = a.first;
-			string value = a.second.string_value();
+	for(auto &a : jattr.GetObject()) {
+		if(exclude.find(a.name.GetString()) != exclude.end() && a.value.IsString()) {
+			string name = a.name.GetString();
+			string value = a.value.GetString();
 			attrs[name] = value;
 		}
 	}
@@ -39,117 +36,117 @@ static map<string,string> getAttrs(const Json &jattr, set<string> exclude=set<st
 }
 
 void parse_node(Json &n, MNRLNetwork &net) {
-	string typ = n["type"].string_value();
+	string typ = n["type"].GetString();
 
 	if( typ.compare("state") == 0 ) {
 		// create output ports
 		vector<pair<string,string>> output;
-		for(auto p : (n["attributes"]["symbolSet"]).object_items()) {
-			output.emplace_back(p.first,p.second.string_value());
+		for(auto &p : (n["attributes"]["symbolSet"]).GetObject()) {
+			output.emplace_back(p.name.GetString(),p.value.GetString());
 		}
 
 		set<string> excludes = {"symbolSet", "latched", "reportId"};
 
-		n["attributes"]["reportId"].is_string() ?
+		n["attributes"]["reportId"].IsString() ?
 		net.addState(
 				output,
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["id"].string_value(),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].string_value(),
-				n["attributes"]["latched"].bool_value(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetString(),
+				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
 		) :
 		net.addState(
 				output,
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["id"].string_value(),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].number_value(),
-				n["attributes"]["latched"].bool_value(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetInt(),
+				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
 		);
 	} else if( typ.compare("hState") == 0 ) {
 		set<string> excludes = {"symbolSet", "latched", "reportId"};
-		n["attributes"]["reportId"].is_string() ?
+		n["attributes"]["reportId"].IsString() ?
 		net.addHState(
-				n["attributes"]["symbolSet"].string_value(),
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["id"].string_value(),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].string_value(),
-				n["attributes"]["latched"].bool_value(),
+				n["attributes"]["symbolSet"].GetString(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetString(),
+				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
 		) :
 		net.addHState(
-				n["attributes"]["symbolSet"].string_value(),
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["id"].string_value(),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].number_value(),
-				n["attributes"]["latched"].bool_value(),
+				n["attributes"]["symbolSet"].GetString(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetInt(),
+				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
 		);
 	} else if( typ.compare("upCounter") == 0 ) {
 		set<string> excludes = {"mode", "threshold", "reportId"};
-		n["attributes"]["reportId"].is_string() ?
+		n["attributes"]["reportId"].IsString() ?
 		net.addUpCounter(
-				n["attributes"]["threshold"].int_value(),
-				MNRLDefs::fromMNRLCounterMode(n["attributes"]["mode"].string_value()),
-				n["id"].string_value(),
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].string_value(),
+				n["attributes"]["threshold"].GetInt(),
+				MNRLDefs::fromMNRLCounterMode(n["attributes"]["mode"].GetString()),
+				n["id"].GetString(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetString(),
 				getAttrs(n["attributes"], excludes)
 		) :
 		net.addUpCounter(
-				n["attributes"]["threshold"].int_value(),
-				MNRLDefs::fromMNRLCounterMode(n["attributes"]["mode"].string_value()),
-				n["id"].string_value(),
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].number_value(),
+				n["attributes"]["threshold"].GetInt(),
+				MNRLDefs::fromMNRLCounterMode(n["attributes"]["mode"].GetString()),
+				n["id"].GetString(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetInt(),
 				getAttrs(n["attributes"], excludes)
 		);
 	} else if( typ.compare("boolean") == 0 ) {
 
 		set<string> excludes = {"gateType", "reportId"};
 
-		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attributes"]["gateType"].string_value());
-		n["attributes"]["reportId"].is_string() ?
+		MNRLDefs::BooleanMode mode = MNRLDefs::fromMNRLBooleanMode(n["attributes"]["gateType"].GetString());
+		n["attributes"]["reportId"].IsString() ?
 		net.addBoolean(
 				mode,
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["id"].string_value(),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].string_value(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetString(),
 				getAttrs(n["attributes"], excludes)
 		) : 
 		net.addBoolean(
 				mode,
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["id"].string_value(),
-				n["report"].bool_value(),
-				n["attributes"]["reportId"].number_value(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				n["attributes"]["reportId"].GetInt(),
 				getAttrs(n["attributes"], excludes)
 		);
 	} else {
 		// convert input defs into format needed for constructor
 		port_def ins;
-		for(auto k : n["inputDefs"].object_items()) {
-			ins.emplace_back(k.second["portId"].string_value(), k.second["width"].int_value());
+		for(auto &k : n["inputDefs"].GetObject()) {
+			ins.emplace_back(k.value["portId"].GetString(), k.value["width"].GetInt());
 		}
 
 		// convert output defs into format needed for constructor
 		port_def outs;
-		for(auto k : n["outputDefs"].object_items()) {
-			outs.emplace_back(k.second["portId"].string_value(), k.second["width"].int_value());
+		for(auto &k : n["outputDefs"].GetObject()) {
+			outs.emplace_back(k.value["portId"].GetString(), k.value["width"].GetInt());
 		}
 
 		net.addNode(
-				n["id"].string_value(),
-				MNRLDefs::fromMNRLEnable(n["enable"].string_value()),
-				n["report"].bool_value(),
+				n["id"].GetString(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["report"].GetBool(),
 				ins,
 				outs,
 				getAttrs(n["attributes"])
@@ -157,8 +154,9 @@ void parse_node(Json &n, MNRLNetwork &net) {
 	}
 	
 	// set the reportEnable
-	if(!n["reportEnable"].is_null())
-		net.getNodeById(n["id"].string_value()).setReportEnable(MNRLDefs::fromMNRLReportEnable(n["reportEnable"].string_value()));
+	auto it = n.FindMember("reportEnable");
+	if(it != n.MemberEnd())
+		net.getNodeById(n["id"].GetString()).setReportEnable(MNRLDefs::fromMNRLReportEnable(it->value.GetString()));
 
 }
 
@@ -184,35 +182,46 @@ string MNRLSchema() {
 MNRLNetwork MNRL::loadMNRL(const string &filename) {
 	// Load JSON schema using JSON11 with Valijson helper function
 	string err;
-	Json mySchemaDoc = Json::parse(MNRLSchema(),err);
-	if(err.length() != 0) {
+	Document mySchemaDoc;
+	mySchemaDoc.Parse(MNRLSchema().c_str());
+	
+	if(mySchemaDoc.HasParseError()) {
 		throw std::runtime_error("Failed to load the MNRL Schema");
 	}
 
 	// Parse JSON schema content using valijson
-	Schema mySchema;
-	SchemaParser parser;
-	Json11Adapter mySchemaAdapter(mySchemaDoc);
-	parser.populateSchema(mySchemaAdapter, mySchema);
-
-	Json mnrlDoc;
-	if (!valijson::utils::loadDocument(filename, mnrlDoc)) {
+	SchemaDocument mySchema(mySchemaDoc);
+	
+	FILE* fp = fopen(filename.c_str(), "r");
+	char buffer[65536];
+	FileReadStream is(fp, buffer, sizeof(buffer));
+	
+	Document mnrlDoc;
+	SchemaValidatingReader<kParseDefaultFlags, FileReadStream, UTF8<>> reader(is, mySchema);
+	mnrlDoc.Populate(reader);
+	
+	if(!reader.GetParseResult()) {
+		// Check the validation result
+    if (!reader.IsValid()) {
+      // Input JSON is invalid according to the schema
+      // Output diagnostic information
+      StringBuffer sb;
+      reader.GetInvalidSchemaPointer().StringifyUriFragment(sb);
+			cerr <<  "Invalid schema: " << sb.GetString() << endl;
+      cerr <<  "Invalid keyword: " << reader.GetInvalidSchemaKeyword() << endl;
+      sb.Clear();
+      reader.GetInvalidDocumentPointer().StringifyUriFragment(sb);
+    	cerr << "Invalid document: " << sb.GetString() << endl;
+			
+			std::runtime_error("Validation failed.");
+    }
+		
 		throw std::runtime_error("Failed to load " + filename);
-	}
-
-	Validator validator;
-	ValidationResults results;
-	Json11Adapter myTargetAdapter(mnrlDoc);
-	if (!validator.validate(mySchema, myTargetAdapter, &results)) {
-		for(auto e : results) {
-			cout << e.description << endl;
-		}
-		std::runtime_error("Validation failed.");
 	}
 
 	// parse into MNRL
 	// create the MNRLNetwork object, including the ID
-	MNRLNetwork mnrl_obj(mnrlDoc["id"].string_value());
+	MNRLNetwork mnrl_obj(mnrlDoc["id"].GetString());
 
 	/*
 	 * Now build up the network in two steps
@@ -221,18 +230,18 @@ MNRLNetwork MNRL::loadMNRL(const string &filename) {
 	 * 2. add all the connections
 	 */
 
-	for(auto n : mnrlDoc["nodes"].array_items()) {
+	for(auto &n : mnrlDoc["nodes"].GetArray()) {
 		parse_node(n, mnrl_obj);
 	}
 
-	for(auto n : mnrlDoc["nodes"].array_items()) {
-		for(auto k : n["outputDefs"].array_items()) {
-			for(auto c : k["activate"].array_items()) {
+	for(auto &n : mnrlDoc["nodes"].GetArray()) {
+		for(auto &k : n["outputDefs"].GetArray()) {
+			for(auto &c : k["activate"].GetArray()) {
 				mnrl_obj.addConnection(
-						n["id"].string_value(),
-						k["portId"].string_value(),
-						c["id"].string_value(),
-						c["portId"].string_value()
+						n["id"].GetString(),
+						k["portId"].GetString(),
+						c["id"].GetString(),
+						c["portId"].GetString()
 				);
 			}
 		}
