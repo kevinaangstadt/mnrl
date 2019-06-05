@@ -200,6 +200,8 @@ MNRLNetwork MNRL::loadMNRL(const string &filename) {
 	SchemaValidatingReader<kParseDefaultFlags, FileReadStream, UTF8<>> reader(is, mySchema);
 	mnrlDoc.Populate(reader);
 	
+	fclose(fp);
+	
 	if(!reader.GetParseResult()) {
 		// Check the validation result
     if (!reader.IsValid()) {
