@@ -23,7 +23,7 @@ ARFLAGS = rcs
 
 _DEPS = *.hpp
 _OBJ_VALIDATE = validate.o 
-_OBJ_MNRL = mnrl.o mnrl_schema.o MNRLDefs.o MNRLReportId.o MNRLPort.o MNRLNode.o MNRLState.o MNRLHState.o MNRLUpCounter.o MNRLBoolean.o MNRLNetwork.o
+_OBJ_MNRL = mnrl.o mnrl_schema.o MNRLNetwork.o MNRLDefs.o
 
 ODIR = $(SRCDIR)/obj
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))
@@ -47,7 +47,13 @@ TESTDIR = tests
 TESTLDFLAGS = -lmnrl
 ###########
 
-all: libmnrl validate
+all: release
+	
+release: CXXFLAGS += -O3
+release: libmnrl validate
+
+debug: CXXFLAGS += -g3
+debug: libmnrl validate
 
 libmnrl: $(JSON11_HPP) $(SNAME) $(DNAME)
 
@@ -86,7 +92,7 @@ $(TESTDIR)/readwrite: $(TESTDIR)/readwrite.cpp
 $(TESTDIR)/readandprint: $(TESTDIR)/readandprint.cpp
 	$(CC) $(CXXFLAGS) $(LDFLAGS) $< $(TESTLDFLAGS) -o $@
 
-.PHONY: clean
+.PHONY: all release debug test clean
 
 clean:
 	rm -f $(ODIR)/*.o validate $(SNAME) $(DNAME) tests/readwrite tests/readandprint

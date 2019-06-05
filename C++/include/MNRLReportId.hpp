@@ -12,30 +12,30 @@
 namespace MNRL {
 	class MNRLReportId {
 		public:
-			MNRLReportId();
-			virtual ~MNRLReportId();
-			virtual MNRLDefs::ReportIdType get_type();
-			virtual std::string toString();
+			MNRLReportId() {}
+			virtual ~MNRLReportId() {}
+			virtual MNRLDefs::ReportIdType get_type() { return MNRLDefs::ReportIdType::NONE; }
+			virtual std::string toString() { return ""; }
 	};
 
 	class MNRLReportIdInt : public MNRLReportId {
 		public:
-			MNRLReportIdInt(int id);
-			virtual ~MNRLReportIdInt();
-			int getId();
-			virtual MNRLDefs::ReportIdType get_type();
-			virtual std::string toString();
+			MNRLReportIdInt(int id) : MNRLReportId(), id(id) {}
+			virtual ~MNRLReportIdInt() {}
+			int getId() { return id; }
+			virtual MNRLDefs::ReportIdType get_type() { return MNRLDefs::ReportIdType::INT; }
+			virtual std::string toString() { return std::to_string(id); }
 		private:
 			int id;
 	};
 
 	class MNRLReportIdString : public MNRLReportId {
 		public:
-				MNRLReportIdString(std::string id);
-				virtual ~MNRLReportIdString();
-				std::string getId();
-				virtual MNRLDefs::ReportIdType get_type();
-				virtual std::string toString();
+				MNRLReportIdString(std::string id) : MNRLReportId(), id(id) {}
+				virtual ~MNRLReportIdString() {}
+				std::string getId() { return id; }
+				virtual MNRLDefs::ReportIdType get_type() { return MNRLDefs::ReportIdType::STRING; }
+				virtual std::string toString() { return id; }
 			private:
 				std::string id;
 	};

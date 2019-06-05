@@ -13,100 +13,114 @@
 
 #include "MNRLDefs.hpp"
 #include "MNRLNode.hpp"
-#include "MNRLPort.hpp"
 #include "MNRLReportId.hpp"
 
 namespace MNRL {
-	class MNRLDefs;
-	class MNRLNode;
-	class MNRLPort;
 	class MNRLUpCounter : public MNRLNode {
-		public:
-			MNRLUpCounter(
-				int threshold,
-				MNRLDefs::CounterMode mode,
-				std::string id,
-				MNRLDefs::EnableType enable,
-				bool report,
-				std::shared_ptr<MNRLReportId> reportId,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
+	public:
+		MNRLUpCounter(
+			int threshold,
+			MNRLDefs::CounterMode mode,
+			std::string id,
+			MNRLDefs::EnableType enable,
+			bool report,
+			int reportId,
+			std::map<std::string,std::string> attributes
+		) : MNRLNode (
+			id,
+			enable,
+			report,
+			gen_input(),
+			gen_output(),
+			attributes
+		), threshold(threshold), mode(mode), reportId(new MNRLReportIdInt(reportId)) {}
+		
+		MNRLUpCounter(
+			int threshold,
+			MNRLDefs::CounterMode mode,
+			std::string id,
+			MNRLDefs::EnableType enable,
+			bool report,
+			std::string reportId,
+			std::map<std::string,std::string> attributes
+		) : MNRLNode (
+			id,
+			enable,
+			report,
+			gen_input(),
+			gen_output(),
+			attributes
+		), threshold(threshold), mode(mode), reportId(new MNRLReportIdString(reportId)) {}
+		
+		MNRLUpCounter(
+			int threshold,
+			MNRLDefs::CounterMode mode,
+			std::string id,
+			MNRLDefs::EnableType enable,
+			bool report,
+			std::map<std::string,std::string> attributes
+		) : MNRLNode (
+			id,
+			enable,
+			report,
+			gen_input(),
+			gen_output(),
+			attributes
+		), threshold(threshold), mode(mode), reportId(new MNRLReportId()) {}
+		
+		virtual ~MNRLUpCounter() {
+			delete reportId;
+			reportId = nullptr;
+		}
+		
+		virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::UPCOUNTER; }
+		
+		MNRLReportId *getReportId() { return reportId; }
+		
+		void setReportId(std::string &id) { 
+			delete reportId;
+			reportId = nullptr;
+			reportId = new MNRLReportIdString(id); 
+		}
+		
+		void setReportId(int id) { 
+			delete reportId;
+			reportId = nullptr;
+			reportId = new MNRLReportIdInt(id); 
+		}
+		
+		MNRLDefs::CounterMode getMode() { return mode; }
+		void setMode(MNRLDefs::CounterMode m) { mode = m; }
+		
+		int getThreshold() { return threshold; }
+		void setThreshold(int t) { threshold = t; }
+		
+	protected:
+		int threshold;
+		MNRLDefs::CounterMode mode;
+		MNRLReportId *reportId;
+		
+	private:
+		static port_def gen_input() {
+			port_def in;
+			in.emplace_back(
+				MNRLDefs::UP_COUNTER_COUNT,
+				1
 			);
-			MNRLUpCounter(
-				int threshold,
-				MNRLDefs::CounterMode mode,
-				std::string id,
-				MNRLDefs::EnableType enable,
-				bool report,
-				int reportId,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
+			in.emplace_back(
+				MNRLDefs::UP_COUNTER_RESET,
+				1
 			);
-			MNRLUpCounter(
-				int threshold,
-				MNRLDefs::CounterMode mode,
-				std::string id,
-				MNRLDefs::EnableType enable,
-				bool report,
-				std::string reportId,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
+			return in;
+		}
+		static port_def gen_output() {
+			port_def outs;
+			outs.emplace_back(
+				MNRLDefs::UP_COUNTER_OUTPUT,
+				1
 			);
-			MNRLUpCounter(
-				int threshold,
-				MNRLDefs::CounterMode mode,
-				std::string id,
-				MNRLDefs::EnableType enable,
-				bool report,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
-			);
-			virtual ~MNRLUpCounter();
-
-			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::UPCOUNTER; }
-
-			std::shared_ptr<MNRLReportId> getReportId();
-			void setReportId(std::string id);
-			void setReportId(int id);
-			void setReportId(std::shared_ptr<MNRLReportId> id);
-
-			MNRLDefs::CounterMode getMode();
-			void setMode(MNRLDefs::CounterMode m);
-
-			int getThreshold();
-			void setThreshold(int t);
-
-		protected:
-			int threshold;
-			MNRLDefs::CounterMode mode;
-			std::shared_ptr<MNRLReportId> reportId;
-
-		private:
-			static port_def gen_input() {
-				port_def in;
-				in.push_back(
-					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::UP_COUNTER_COUNT,
-							1
-						)
-					)
-				);
-				in.push_back(
-					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::UP_COUNTER_RESET,
-							1
-						)
-					)
-				);
-				return in;
-			}
-			static port_def gen_output() {
-				port_def outs;
-				outs.push_back(
-					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::UP_COUNTER_OUTPUT,
-							1
-						)
-					)
-				);
-				return outs;
-			}
+			return outs;
+		}
 	};
 }
 

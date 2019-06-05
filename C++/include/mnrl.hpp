@@ -7,13 +7,10 @@
 #ifndef MNRL_HPP
 #define MNRL_HPP
 
-#include <memory>
-
 #include "MNRLDefs.hpp"
 #include "MNRLError.hpp"
 #include "MNRLNetwork.hpp"
 #include "MNRLNode.hpp"
-#include "MNRLPort.hpp"
 #include "MNRLState.hpp"
 #include "MNRLHState.hpp"
 #include "MNRLUpCounter.hpp"
@@ -32,7 +29,7 @@ namespace MNRL {
 	class MNRLUpCounter;
 	class MNRLBoolean;
 
-	std::shared_ptr<MNRLNetwork> loadMNRL(std::string filename);
+	MNRLNetwork loadMNRL(std::string &filename);
 
 }
 

@@ -13,91 +13,110 @@
 
 #include "MNRLDefs.hpp"
 #include "MNRLNode.hpp"
-#include "MNRLPort.hpp"
 #include "MNRLReportId.hpp"
 
 namespace MNRL {
-	class MNRLDefs;
-	class MNRLNode;
-	class MNRLPort;
 	class MNRLState : public MNRLNode {
-		public:
-			MNRLState(
-				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
-				MNRLDefs::EnableType enable,
-				std::string id,
-				bool report,
-				bool latched,
-				std::shared_ptr<MNRLReportId> reportId,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
+	public:		
+		MNRLState(
+			std::vector<std::pair<std::string,std::string>> outputSymbols,
+			MNRLDefs::EnableType enable,
+			std::string id,
+			bool report,
+			int reportId,
+			bool latched,
+			std::map<std::string,std::string> attributes
+		) : MNRLNode (
+			id,
+			enable,
+			report,
+			gen_input(),
+			gen_output(outputSymbols),
+			attributes
+		), outputSymbols(outputSymbols), reportId(new MNRLReportIdInt(reportId)), latched(latched) {}
+		
+		MNRLState(
+			std::vector<std::pair<std::string,std::string>> outputSymbols,
+			MNRLDefs::EnableType enable,
+			std::string id,
+			bool report,
+			std::string reportId,
+			bool latched,
+			std::map<std::string,std::string> attributes
+		) : MNRLNode (
+			id,
+			enable,
+			report,
+			gen_input(),
+			gen_output(outputSymbols),
+			attributes
+		), outputSymbols(outputSymbols), reportId(new MNRLReportIdString(reportId)), latched(latched) {}
+		
+		MNRLState(
+			std::vector<std::pair<std::string,std::string>> outputSymbols,
+			MNRLDefs::EnableType enable,
+			std::string id,
+			bool report,
+			bool latched,
+			std::map<std::string,std::string> attributes
+		) : MNRLNode (
+			id,
+			enable,
+			report,
+			gen_input(),
+			gen_output(outputSymbols),
+			attributes
+		), outputSymbols(outputSymbols), reportId(new MNRLReportId()), latched(latched) {}
+		
+		virtual ~MNRLState() {
+			delete reportId;
+			reportId = nullptr;
+		}
+		
+		virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::STATE; }
+		
+		MNRLReportId *getReportId() { return reportId; }
+		
+		void setReportId(std::string &id) { 
+			delete reportId;
+			reportId = nullptr;
+			reportId = new MNRLReportIdString(id); 
+		}
+		
+		void setReportId(int id) { 
+			delete reportId;
+			reportId = nullptr;
+			reportId = new MNRLReportIdInt(id); 
+		}
+		
+		bool getLatched() { return latched; }
+		void setLatched(bool l) { latched = l; }
+		
+		const std::vector<std::pair<std::string,std::string>> getOutputSymbols() const { return outputSymbols; }
+		
+	protected:
+		std::vector<std::pair<std::string,std::string>> outputSymbols;
+		bool latched;
+		MNRLReportId *reportId;
+		
+	private:
+		static port_def gen_input() {
+			port_def in;
+			in.emplace_back(
+				MNRLDefs::STATE_INPUT,
+				1
 			);
-			MNRLState(
-				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
-				MNRLDefs::EnableType enable,
-				std::string id,
-				bool report,
-				bool latched,
-				int reportId,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
-			);
-			MNRLState(
-				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
-				MNRLDefs::EnableType enable,
-				std::string id,
-				bool report,
-				bool latched,
-				std::string reportId,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
-			);
-			MNRLState(
-				std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols,
-				MNRLDefs::EnableType enable,
-				std::string id,
-				bool report,
-				bool latched,
-				std::shared_ptr<std::map<std::string,std::string>> attributes
-			);
-
-			virtual ~MNRLState();
-
-			virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::STATE; }
-
-			std::shared_ptr<MNRLReportId> getReportId();
-			void setReportId(std::string id);
-			void setReportId(int id);
-			void setReportId(std::shared_ptr<MNRLReportId> id);
-
-			bool getLatched();
-			void setLatched(bool l);
-
-			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> getOutputSymbols();
-
-		protected:
-			std::shared_ptr<std::vector<std::pair<std::string,std::string>>> outputSymbols;
-			bool latched;
-			std::shared_ptr<MNRLReportId> reportId;
-
-		private:
-			static port_def gen_input() {
-				port_def in;
-				in.push_back(
-					std::shared_ptr<MNRLPort>( new MNRLPort(
-							MNRLDefs::STATE_INPUT,
-							1
-						)
-					)
+			return in;
+		}
+		static port_def gen_output(std::vector<std::pair<std::string,std::string>> &outputSymbols) {
+			port_def outs;
+			for(auto &o_s : outputSymbols) {
+				outs.emplace_back(
+					o_s.first, 1
 				);
-				return in;
 			}
-			static port_def gen_output(std::shared_ptr<std::vector<std::pair<std::string,std::string>>> &outputSymbols) {
-				port_def outs;
-				for(auto &o_s : *outputSymbols) {
-					outs.push_back(
-						std::shared_ptr<MNRLPort>(new MNRLPort(o_s.first, 1))
-					);
-				}
-				return outs;
-			}
+			return outs;
+		}
 	};
 }
 
