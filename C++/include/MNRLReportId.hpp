@@ -33,7 +33,7 @@ namespace MNRL {
 		public:
 				MNRLReportIdString(std::string id) : MNRLReportId(), id(id) {}
 				virtual ~MNRLReportIdString() {}
-				std::string getId() { return id; }
+				std::string &getId() { return id; }
 				virtual MNRLDefs::ReportIdType get_type() { return MNRLDefs::ReportIdType::STRING; }
 				virtual std::string toString() { return id; }
 			private:
