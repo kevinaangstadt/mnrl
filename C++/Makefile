@@ -6,8 +6,7 @@ AR = ar
 LD = ld
 
 RAPIDJSON = ./lib/rapidjson/include
-
-
+RAPIDJSON_LIC = $(RAPIDJSON)/../license.txt
 
 NAME = libmnrl
 SNAME = $(NAME).a
@@ -50,7 +49,7 @@ release: libmnrl
 debug: CXXFLAGS += -g3
 debug: libmnrl
 
-libmnrl: $(JSON11_HPP) $(SNAME) $(DNAME)
+libmnrl: $(RAPIDJSON_LIC) $(SNAME) $(DNAME)
 
 $(DNAME): LDFLAGS += -shared
 $(DNAME): $(OBJ_MNRL)
@@ -67,7 +66,7 @@ $(ODIR)/%.o: $(SRCDIR)/%.cpp $(DEPS)
 $(ODIR)/%.o: $(SRCDIR)/%.asm
 	nasm $(NASMFLAGS) -o $@ $<
 
-$(JSON11_HPP):
+$(RAPIDJSON_LIC):
 	git submodule init
 	git submodule update	
 
