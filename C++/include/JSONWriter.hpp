@@ -189,11 +189,11 @@ namespace MNRL {
 			}
 		}
 		
-		static Value toJSON(MNRLReportIdInt *r, Document &d) {
+		static Value toJSON(MNRLReportIdInt *r, Document &/*d*/) {
 			return Value(r->getId());
 		}
 		
-		static Value toJSON(MNRLReportIdString *r, Document &d) {
+		static Value toJSON(MNRLReportIdString *r, Document &/*d*/) {
 			return Value(StringRef(r->getId().c_str()));
 		}
 	};

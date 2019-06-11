@@ -20,7 +20,7 @@ namespace MNRL {
 	public:
 		MNRLBoolean (
 			MNRLDefs::BooleanMode mode,
-			int portCount,
+			unsigned int portCount,
 			std::string id,
 			MNRLDefs::EnableType enable,
 			bool report,
@@ -37,7 +37,7 @@ namespace MNRL {
 		
 		MNRLBoolean (
 			MNRLDefs::BooleanMode mode,
-			int portCount,
+			unsigned int portCount,
 			std::string id,
 			MNRLDefs::EnableType enable,
 			bool report,
@@ -54,7 +54,7 @@ namespace MNRL {
 		
 		MNRLBoolean (
 			MNRLDefs::BooleanMode mode,
-			int portCount,
+			unsigned int portCount,
 			std::string id,
 			MNRLDefs::EnableType enable,
 			bool report,
@@ -98,9 +98,9 @@ namespace MNRL {
 		MNRLReportId *reportId;
 		
 	private:
-		static port_def gen_input(int port_count) {
+		static port_def gen_input(unsigned int port_count) {
 			port_def in;
-			for(int i=0; i<port_count; ++i) {
+			for(unsigned int i=0; i<port_count; ++i) {
 				in.emplace_back(
 					"b" + std::to_string(i),
 					1

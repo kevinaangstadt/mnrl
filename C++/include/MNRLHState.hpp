@@ -33,7 +33,7 @@ namespace MNRL {
 				gen_input(),
 				gen_output(),
 				attributes
-		), symbols(symbols), reportId(new MNRLReportIdInt(reportId)), latched(latched) {}
+		), symbols(symbols), latched(latched), reportId(new MNRLReportIdInt(reportId)) {}
 		
 		MNRLHState(
 			std::string symbols,
@@ -50,7 +50,7 @@ namespace MNRL {
 				gen_input(),
 				gen_output(),
 				attributes
-		), symbols(symbols), reportId(new MNRLReportIdString(reportId)), latched(latched) {}
+		), symbols(symbols), latched(latched), reportId(new MNRLReportIdString(reportId)) {}
 		
 		MNRLHState(
 			std::string symbols,
@@ -66,7 +66,7 @@ namespace MNRL {
 				gen_input(),
 				gen_output(),
 				attributes
-		), symbols(symbols), reportId(new MNRLReportId()), latched(latched) {}
+		), symbols(symbols), latched(latched), reportId(new MNRLReportId()) {}
 		
 		virtual ~MNRLHState() {
 			delete reportId;

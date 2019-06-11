@@ -74,22 +74,23 @@ namespace MNRL {
 			port_def outputDefs,
 			std::map<std::string,std::string> attributes,
 			MNRLDefs::ReportEnableType report_enable = MNRLDefs::ReportEnableType::ENABLE_ALWAYS
-		) : id(id),
-			enable(enable),
+		) : 
+			id(id),
 			report(report),
+			reportEnable(report_enable),
+			enable(enable),
 			inputDefs( MNRLNode::validate_ports(inputDefs) ),
 			outputDefs( MNRLNode::validate_ports(outputDefs) ),
-			attributes(attributes),
-			reportEnable(report_enable) {} 
+			attributes(attributes) {} 
 		
 		MNRLNode(MNRLNode &other) :
 			id(other.id),
-			enable(other.enable),
 			report(other.report),
+			reportEnable(other.reportEnable),
+			enable(other.enable),
 			inputDefs(MNRLNode::validate_ports(other.inputDefs)),
 			outputDefs(MNRLNode::validate_ports(other.outputDefs)),
-			attributes(other.attributes),
-			reportEnable(other.reportEnable) {}
+			attributes(other.attributes) {}
 		virtual ~MNRLNode() {}
 		
 		virtual MNRLDefs::NodeType getNodeType() { return MNRLDefs::NodeType::NODE; }

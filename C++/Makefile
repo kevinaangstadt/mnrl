@@ -12,7 +12,8 @@ NAME = libmnrl
 SNAME = $(NAME).a
 DNAME = $(NAME).so
 
-CXXFLAGS = -I$(IDIR) -I $(RAPIDJSON) --std=c++11 -fPIC
+CXXFLAGS = -Wconversion -Wall -Werror -Wextra -pedantic 
+CXXFLAGS += -I$(IDIR) -I $(RAPIDJSON) --std=c++11 -fPIC
 LDFLAGS = -L.
 ARFLAGS = rcs
 
