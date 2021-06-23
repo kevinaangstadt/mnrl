@@ -8,6 +8,7 @@ import Data.Scientific
 import Data.Text (Text)
 import GHC.Exts
 import Control.Monad
+import qualified Data.Map as M
 
 import MNRLTypes
 
@@ -109,8 +110,7 @@ instance FromJSON OutputDef where
 
 instance ToJSON Node where
   toJSON node = Object $ (fromList [
-      "id" .= _nId node
-    , "enable" .= _nEnable node
+      "enable" .= _nEnable node
     , "inputDefs" .= _nInputDefs node
     , "outputDefs" .= _nOutputDefs node ])
     <> (case (_nReportEnable node) of
@@ -129,7 +129,6 @@ instance FromJSON HState where
   parseJSON = withObject "HState" $ \v -> do
     nodeType <- (v .: "type")
     guard $ nodeType == String "hState"
-    nodeId <- (v .: "id")
     nodeEnable <- (v .: "enable")
     nodeOuts <- (v .: "outputDefs")
     nodeIns <- (v .: "inputDefs")
@@ -139,7 +138,7 @@ instance FromJSON HState where
     nodeLatched <- attributes .: "latched"
     nodeSymbols <- attributes .: "symbolSet"
     nodeRId <- attributes .: "reportId"
-    let n = Node nodeId nodeEnable nodeReport nodeREnable nodeIns nodeOuts
+    let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
     let s = HState n nodeLatched nodeSymbols nodeRId
     return s
 
@@ -155,7 +154,6 @@ instance FromJSON State where
   parseJSON = withObject "State" $ \v -> do
     nodeType <- (v .: "type")
     guard $ nodeType == String "State"
-    nodeId <- (v .: "id")
     nodeEnable <- (v .: "enable")
     nodeOuts <- (v .: "outputDefs")
     nodeIns <- (v .: "inputDefs")
@@ -165,7 +163,7 @@ instance FromJSON State where
     nodeLatched <- attributes .: "latched"
     nodeSymbols <- attributes .: "symbolSet"
     nodeRId <- attributes .: "reportId"
-    let n = Node nodeId nodeEnable nodeReport nodeREnable nodeIns nodeOuts
+    let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
     let s = State n nodeLatched nodeSymbols nodeRId
     return s
 
@@ -180,7 +178,6 @@ instance FromJSON Gate where
   parseJSON = withObject "Gate" $ \v -> do
     nodeType <- (v .: "type")
     guard $ nodeType == String "boolean"
-    nodeId <- (v .: "id")
     nodeEnable <- (v .: "enable")
     nodeOuts <- (v .: "outputDefs")
     nodeIns <- (v .: "inputDefs")
@@ -189,7 +186,7 @@ instance FromJSON Gate where
     attributes <- v .: "attributes"
     gType <- attributes .: "gateType"
     gRId <- attributes .: "reportId"
-    let n = Node nodeId nodeEnable nodeReport nodeREnable nodeIns nodeOuts
+    let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
     let s = Gate n gType gRId
     return s
 
@@ -205,7 +202,6 @@ instance FromJSON Counter where
  parseJSON = withObject "Counter" $ \v -> do
    nodeType <- (v .: "type")
    guard $ nodeType == String "upCounter"
-   nodeId <- (v .: "id")
    nodeEnable <- (v .: "enable")
    nodeOuts <- (v .: "outputDefs")
    nodeIns <- (v .: "inputDefs")
@@ -215,7 +211,7 @@ instance FromJSON Counter where
    cMode <- attributes .: "mode"
    cThreshold <- attributes .: "threshold"
    cRId <- attributes .: "reportId"
-   let n = Node nodeId nodeEnable nodeReport nodeREnable nodeIns nodeOuts
+   let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
    let s = Counter n cMode cThreshold cRId
    return s
 
@@ -237,9 +233,22 @@ instance FromJSON Component where
 
 instance ToJSON MNRL where
   toJSON n = object [
-        "nodes" .= _mnrlComponents n
+        "nodes" .= nodes
       , "id" .= _mnrlId n ]
+    where
+      comps = M.toList $ _mnrlComponents n
+      nodes = map nodify comps
+      nodify (i, n) = (fromList [ "id" .= String i ])
+                      <> (toObject $ toJSON n)
 
 instance FromJSON MNRL where
   parseJSON = withObject "MNRL" $ \v -> do
-    MNRL <$> (v .: "nodes") <*> (v .: "id")
+    nodes <- v .: "nodes"
+    MNRL <$> (mapify nodes) <*> (v .: "id")
+    where
+      mapify comps = M.fromList <$> (mapM f comps)
+      f comp = do
+        id <- comp .: "id"
+        c <- parseJSON $ Object comp
+        return $ (id, c)
+

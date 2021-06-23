@@ -6,17 +6,18 @@ import Control.Lens
 import Data.Map
 import Data.Text (Text)
 
-data MNRL = MNRL { _mnrlComponents :: [Component], _mnrlId :: Id }
+data MNRL = MNRL { _mnrlComponents :: Map Id Component, _mnrlId :: Id }
 
 data Component = CompHState HState | CompState State | CompCounter Counter | CompGate Gate
 
 type Id = Text
+type PortId = Text
 data Enable = EOnActivateIn | EOnStartAndActivateIn | EOnLast | EAlways
 type Report = Bool
 data ReportEnable = RAlways | ROnLast
-data InputDef = InputDef { _iPortId ::  Id, _iWidth :: Int }
-data OutputDef = OutputDef { _oPortId ::  Id, _oWidth :: Int, _oActivates :: [Activate] }
-data Activate = Activate { _aPortId :: Id, _aId :: Id}
+data InputDef = InputDef { _iPortId ::  PortId, _iWidth :: Int }
+data OutputDef = OutputDef { _oPortId ::  PortId, _oWidth :: Int, _oActivates :: [Activate] }
+data Activate = Activate { _aPortId :: PortId, _aId :: Id}
 
 data ReportId = ReportInt Int | ReportString Text
 
@@ -24,8 +25,7 @@ data CtrMode = CTrigger | CHigh | CRollOver
 
 data GateType = GAnd | GOr | GNor | GNot | GNand
 
-data Node = Node { _nId :: Id
-            , _nEnable :: Enable
+data Node = Node { _nEnable :: Enable
             , _nReport :: Report
             , _nReportEnable :: Maybe ReportEnable
             , _nInputDefs :: [InputDef]
