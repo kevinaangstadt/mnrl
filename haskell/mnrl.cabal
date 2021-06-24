@@ -3,16 +3,14 @@ cabal-version: 1.12
 -- This file has been generated from package.yaml by hpack version 0.34.4.
 --
 -- see: https://github.com/sol/hpack
---
--- hash: 99c573568e702f3ef74e1c615f8645babcd0ed66dbd020fc3b7b41ca676a69c8
 
-name:           mnrl-compiler
+name:           mnrl
 version:        0.1.0.0
 description:    Please see the README on GitHub at <https://github.com/githubuser/mnrl-compiler#readme>
-homepage:       https://github.com/githubuser/mnrl-compiler#readme
-bug-reports:    https://github.com/githubuser/mnrl-compiler/issues
-author:         Author name here
-maintainer:     example@example.com
+homepage:       https://github.com/githubuser/mnrl#readme
+bug-reports:    https://github.com/githubuser/mnrl/issues
+author:         Agnishom Chattopadhyay
+maintainer:     agnishom@rice.edu
 copyright:      2021 Author name here
 license:        BSD3
 license-file:   LICENSE
@@ -23,7 +21,7 @@ extra-source-files:
 
 source-repository head
   type: git
-  location: https://github.com/githubuser/mnrl-compiler
+  location: https://github.com/githubuser/mnrl
 
 library
   exposed-modules:
@@ -32,7 +30,7 @@ library
       MNRL.Types
       MNRL.Utils
   other-modules:
-      Paths_mnrl_compiler
+      Paths_mnrl
   hs-source-dirs:
       src
   build-depends:
@@ -48,10 +46,10 @@ library
     , unordered-containers
   default-language: Haskell2010
 
-executable mnrl-compiler-exe
+executable mnrl-exe
   main-is: Main.hs
   other-modules:
-      Paths_mnrl_compiler
+      Paths_mnrl
   hs-source-dirs:
       app
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -62,18 +60,18 @@ executable mnrl-compiler-exe
     , bytestring
     , containers
     , lens
-    , mnrl-compiler
+    , mnrl
     , mtl
     , scientific
     , text
     , unordered-containers
   default-language: Haskell2010
 
-test-suite mnrl-compiler-test
+test-suite mnrl-test
   type: exitcode-stdio-1.0
   main-is: Spec.hs
   other-modules:
-      Paths_mnrl_compiler
+      Paths_mnrl
   hs-source-dirs:
       test
   ghc-options: -threaded -rtsopts -with-rtsopts=-N
@@ -84,7 +82,7 @@ test-suite mnrl-compiler-test
     , bytestring
     , containers
     , lens
-    , mnrl-compiler
+    , mnrl
     , mtl
     , scientific
     , text

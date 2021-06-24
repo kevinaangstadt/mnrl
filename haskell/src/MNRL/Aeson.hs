@@ -10,8 +10,22 @@ import GHC.Exts
 import Control.Monad
 import qualified Data.Map as M
 import qualified Data.HashMap.Lazy as HL
+import qualified Data.ByteString as BS
+import qualified Data.ByteString.Lazy as BSL
 
 import MNRL.Types
+
+{--|
+  This file contains the parsing and unparsing mechanisms for MNRL files
+
+  If you need to read from (or, write to) a file directly, see:
+
+  > eitherDecodeFileStrict :: FromJSON a => FilePath -> IO (Either String a)
+  > encodeFile :: ToJSON a => FilePath -> a -> IO ()
+
+  from `Data.Aeson`
+
+--}
 
 toObject :: ToJSON a => a -> Object
 toObject a = case toJSON a of

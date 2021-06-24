@@ -1,9 +1,9 @@
-name:                mnrl-compiler
+name:                mnrl
 version:             0.1.0.0
-github:              "githubuser/mnrl-compiler"
+github:              "githubuser/mnrl"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
+author:              "Agnishom Chattopadhyay"
+maintainer:          "agnishom@rice.edu"
 copyright:           "2021 Author name here"
 
 extra-source-files:
@@ -35,7 +35,7 @@ library:
   source-dirs: src
 
 executables:
-  mnrl-compiler-exe:
+  mnrl-exe:
     main:                Main.hs
     source-dirs:         app
     ghc-options:
@@ -43,10 +43,10 @@ executables:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - mnrl-compiler
+    - mnrl
 
 tests:
-  mnrl-compiler-test:
+  mnrl-test:
     main:                Spec.hs
     source-dirs:         test
     ghc-options:
@@ -54,4 +54,4 @@ tests:
     - -rtsopts
     - -with-rtsopts=-N
     dependencies:
-    - mnrl-compiler
+    - mnrl
