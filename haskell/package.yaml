@@ -27,6 +27,8 @@ dependencies:
 - text
 - scientific
 - bytestring
+- mtl
+- aeson-pretty
 
 library:
   source-dirs: src

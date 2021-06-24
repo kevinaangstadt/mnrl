@@ -100,7 +100,7 @@ instance ToJSON OutputDef where
   toJSON out = object [
       "portId" .= _oPortId out
     , "width"  .= _oWidth out
-    , "oActivates" .= toJSON (_oActivates out) ]
+    , "activate" .= toJSON (_oActivates out) ]
 
 instance FromJSON OutputDef where
   parseJSON = withObject "OutputDef" $ \v -> OutputDef
@@ -108,128 +108,114 @@ instance FromJSON OutputDef where
     <*>  v .: "width"
     <*>  v .: "activate"
 
-instance ToJSON Node where
-  toJSON node = Object $ (fromList [
-      "enable" .= _nEnable node
-    , "inputDefs" .= _nInputDefs node
-    , "outputDefs" .= _nOutputDefs node ])
-    <> (case (_nReportEnable node) of
-        Nothing -> mempty
-        Just x -> fromList [ "reportEnable" .= x])
-
-instance ToJSON HState where
-  toJSON hs = Object $
-    toObject (toJSON (_hStateNode hs))
-    <> fromList [ "type" .= String "hState" ]
-    <> fromList [ "attributes" .= object [ "latched" .= _hStateLatched hs
-                                           , "symbolSet" .= _hStateSymbolSet hs
-                                           , "reportId" .= _hStateReportId hs ] ]
-
-instance FromJSON HState where
-  parseJSON = withObject "HState" $ \v -> do
-    nodeType <- (v .: "type")
-    guard $ nodeType == String "hState"
-    nodeEnable <- (v .: "enable")
-    nodeOuts <- (v .: "outputDefs")
-    nodeIns <- (v .: "inputDefs")
-    nodeReport <- v .:?  "report" .!= False
-    nodeREnable <- v .:? "reportEnable"
-    attributes <- v .: "attributes"
-    nodeLatched <- attributes .: "latched"
-    nodeSymbols <- attributes .: "symbolSet"
-    nodeRId <- attributes .: "reportId"
-    let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
-    let s = HState n nodeLatched nodeSymbols nodeRId
-    return s
-
-instance ToJSON State where
-  toJSON s = Object $
-    toObject (toJSON (_stateNode s))
-    <> fromList [ "type" .= String "state" ]
-    <> fromList [ "attributes" .= object [ "latched" .= _stateLatched s
-                                           , "symbolSet" .= _stateSymbolSet s
-                                           , "reportId" .= _stateReportId s ] ]
-
-instance FromJSON State where
-  parseJSON = withObject "State" $ \v -> do
-    nodeType <- (v .: "type")
-    guard $ nodeType == String "State"
-    nodeEnable <- (v .: "enable")
-    nodeOuts <- (v .: "outputDefs")
-    nodeIns <- (v .: "inputDefs")
-    nodeReport <- v .:?  "report" .!= False
-    nodeREnable <- v .:? "reportEnable"
-    attributes <- v .: "attributes"
-    nodeLatched <- attributes .: "latched"
-    nodeSymbols <- attributes .: "symbolSet"
-    nodeRId <- attributes .: "reportId"
-    let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
-    let s = State n nodeLatched nodeSymbols nodeRId
-    return s
-
-instance ToJSON Gate where
-  toJSON g = Object $
-    toObject (toJSON (_gateNode g))
-    <> fromList [ "type" .= String "boolean" ]
-    <> fromList [ "attributes" .= object [ "gateType" .= _gateType g
-                                         , "reportId" .= _gateReportId g ] ]
-
-instance FromJSON Gate where
-  parseJSON = withObject "Gate" $ \v -> do
-    nodeType <- (v .: "type")
-    guard $ nodeType == String "boolean"
-    nodeEnable <- (v .: "enable")
-    nodeOuts <- (v .: "outputDefs")
-    nodeIns <- (v .: "inputDefs")
-    nodeReport <- v .:?  "report" .!= False
-    nodeREnable <- v .:? "reportEnable"
-    attributes <- v .: "attributes"
-    gType <- attributes .: "gateType"
-    gRId <- attributes .: "reportId"
-    let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
-    let s = Gate n gType gRId
-    return s
-
-instance ToJSON Counter where
-  toJSON c = Object $
-    toObject (toJSON (_ctrNode c))
-    <> fromList [ "type" .= String "upCounter" ]
-    <> fromList [ "attributes" .= object [ "mode" .= _ctrMode c
-                                         , "threshold" .= _ctrThreshold c
-                                         , "reportId" .= _ctrReportId c ] ]
-
-instance FromJSON Counter where
- parseJSON = withObject "Counter" $ \v -> do
-   nodeType <- (v .: "type")
-   guard $ nodeType == String "upCounter"
-   nodeEnable <- (v .: "enable")
-   nodeOuts <- (v .: "outputDefs")
-   nodeIns <- (v .: "inputDefs")
-   nodeReport <- v .:?  "report" .!= False
-   nodeREnable <- v .:? "reportEnable"
-   attributes <- v .: "attributes"
-   cMode <- attributes .: "mode"
-   cThreshold <- attributes .: "threshold"
-   cRId <- attributes .: "reportId"
-   let n = Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
-   let s = Counter n cMode cThreshold cRId
-   return s
-
-instance ToJSON Component where
-  toJSON (CompHState x) = toJSON x
-  toJSON (CompState x) = toJSON x
-  toJSON (CompCounter x) = toJSON x
-  toJSON (CompGate x) = toJSON x
-
 instance FromJSON Component where
-  parseJSON = withObject "Component" $ \v -> do
-    nodeType  <- v .: "type" :: Parser Text
-    case nodeType of
-      "upCounter" -> CompCounter <$> (parseJSON $ Object v)
-      "boolean" -> CompGate <$> (parseJSON $ Object v)
-      "hState" -> CompHState <$> (parseJSON $ Object v)
-      "state" -> CompState <$> (parseJSON $ Object v)
-      _ -> fail "unclear node type"
+  parseJSON = withObject "Component" $ \v ->
+    Component <$> (parseNode v) <*> (parseAttr v)
+
+parseNode :: Object -> Parser Node
+parseNode v = do
+  nodeEnable <- (v .: "enable")
+  nodeOuts <- (v .: "outputDefs")
+  nodeIns <- (v .: "inputDefs")
+  nodeReport <- v .:?  "report" .!= False
+  nodeREnable <- v .:? "reportEnable"
+  return $ Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
+
+parseAttr :: Object -> Parser Attributes
+parseAttr v = do
+  nodeType  <- v .: "type" :: Parser Text
+  case nodeType of
+    "upCounter" -> AttrCounter <$> (parseCounter v)
+    "boolean" -> AttrGate <$> (parseGate v)
+    "hState" -> AttrHState <$> (parseHState v)
+    "state" -> AttrState <$> (parseState v)
+    _ -> fail "unclear node type"
+
+parseHState :: Object -> Parser HState
+parseHState v = do
+  nodeType <- (v .: "type")
+  guard $ nodeType == String "hState"
+  attributes <- v .: "attributes"
+  nodeLatched <- attributes .: "latched"
+  nodeSymbols <- attributes .: "symbolSet"
+  nodeRId <- attributes .: "reportId"
+  return $ HState nodeLatched nodeSymbols nodeRId
+
+parseState :: Object -> Parser State
+parseState v = do
+  nodeType <- (v .: "type")
+  guard $ nodeType == String "state"
+  attributes <- v .: "attributes"
+  nodeLatched <- attributes .: "latched"
+  nodeSymbols <- attributes .: "symbolSet"
+  nodeRId <- attributes .: "reportId"
+  return $ State nodeLatched nodeSymbols nodeRId
+
+parseGate :: Object -> Parser Gate
+parseGate v = do
+  nodeType <- (v .: "type")
+  guard $ nodeType == String "boolean"
+  attributes <- v .: "attributes"
+  gType <- attributes .: "gateType"
+  gRId <- attributes .: "reportId"
+  return $ Gate gType gRId
+
+parseCounter :: Object -> Parser Counter
+parseCounter v = do
+  nodeType <- (v .: "type")
+  guard $ nodeType == String "upCounter"
+  attributes <- v .: "attributes"
+  cMode <- attributes .: "mode"
+  cThreshold <- attributes .: "threshold"
+  cRId <- attributes .: "reportId"
+  return $ Counter cMode cThreshold cRId
+
+unparseHState :: HState -> Object
+unparseHState hs = fromList [ "type" .= String "hState" ]
+              <>   fromList [ "attributes" .=
+                                object [ "latched" .= _hStateLatched hs
+                                       , "symbolSet" .= _hStateSymbolSet hs
+                                       , "reportId" .= _hStateReportId hs ] ]
+
+unparseState :: State -> Object
+unparseState s = fromList [ "type" .= String "state" ]
+              <> fromList [ "attributes" .=
+                              object [ "latched" .= _stateLatched s
+                                     , "symbolSet" .= _stateSymbolSet s
+                                     , "reportId" .= _stateReportId s ] ]
+
+unparseGate :: Gate -> Object
+unparseGate g = fromList [ "type" .= String "boolean" ]
+             <> fromList [ "attributes" .=
+                              object [ "gateType" .= _gateType g
+                                     , "reportId" .= _gateReportId g ] ]
+
+unparseCounter :: Counter -> Object
+unparseCounter c = fromList [ "type" .= String "upCounter" ]
+                <> fromList [ "attributes" .=
+                              object [ "mode" .= _ctrMode c
+                                     , "threshold" .= _ctrThreshold c
+                                     , "reportId" .= _ctrReportId c ] ]
+
+unparseAttrs :: Attributes -> Object
+unparseAttrs (AttrHState x) = unparseHState x
+unparseAttrs (AttrState x) = unparseState x
+unparseAttrs (AttrCounter x) = unparseCounter x
+unparseAttrs (AttrGate x) = unparseGate x
+
+unparseNode :: Node -> Object
+unparseNode node =
+      (fromList [ "enable" .= _nEnable node
+                , "report" .= _nReport node
+                , "inputDefs" .= _nInputDefs node
+                , "outputDefs" .= _nOutputDefs node ])
+      <> (case (_nReportEnable node) of
+            Nothing -> mempty
+            Just x -> fromList [ "reportEnable" .= x])
+
+unparseComponent :: Component -> Object
+unparseComponent c = (unparseNode $ _cNode c) <> (unparseAttrs $ _cAttrs c)
+
 
 instance ToJSON MNRL where
   toJSON n = object [
@@ -239,7 +225,7 @@ instance ToJSON MNRL where
       comps = M.toList $ _mnrlComponents n
       nodes = map nodify comps
       nodify (i, n) = (fromList [ "id" .= String i ])
-                      <> (toObject $ toJSON n)
+                      <> (unparseComponent n)
 
 instance FromJSON MNRL where
   parseJSON = withObject "MNRL" $ \v -> do
@@ -251,4 +237,3 @@ instance FromJSON MNRL where
         id <- comp .: "id"
         c <- parseJSON $ Object comp
         return $ (id, c)
-

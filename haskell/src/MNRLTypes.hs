@@ -8,7 +8,11 @@ import Data.Text (Text)
 
 data MNRL = MNRL { _mnrlComponents :: Map Id Component, _mnrlId :: Id }
 
-data Component = CompHState HState | CompState State | CompCounter Counter | CompGate Gate
+data Component = Component { _cNode :: Node
+                           , _cAttrs :: Attributes
+                           }
+
+data Attributes = AttrHState HState | AttrState State | AttrCounter Counter | AttrGate Gate
 
 type Id = Text
 type PortId = Text
@@ -26,32 +30,28 @@ data CtrMode = CTrigger | CHigh | CRollOver
 data GateType = GAnd | GOr | GNor | GNot | GNand
 
 data Node = Node { _nEnable :: Enable
-            , _nReport :: Report
-            , _nReportEnable :: Maybe ReportEnable
-            , _nInputDefs :: [InputDef]
-            , _nOutputDefs :: [OutputDef]
-            }
+                 , _nReport :: Report
+                 , _nReportEnable :: Maybe ReportEnable
+                 , _nInputDefs :: [InputDef]
+                 , _nOutputDefs :: [OutputDef]
+                 }
 
-data HState = HState { _hStateNode :: Node
-                     , _hStateLatched :: Bool
+data HState = HState { _hStateLatched :: Bool
                      , _hStateSymbolSet :: Text
                      , _hStateReportId :: ReportId
                      }
 
-data State = State { _stateNode :: Node
-                   , _stateLatched :: Bool
+data State = State { _stateLatched :: Bool
                    , _stateSymbolSet :: Map Id Text
                    , _stateReportId :: ReportId
                    }
 
-data Counter = Counter { _ctrNode :: Node
-                       , _ctrMode :: CtrMode
+data Counter = Counter { _ctrMode :: CtrMode
                        , _ctrThreshold :: Int
                        , _ctrReportId :: ReportId
                        }
 
-data Gate = Gate { _gateNode :: Node
-                 , _gateType :: GateType
+data Gate = Gate { _gateType :: GateType
                  , _gateReportId :: ReportId}
 
 makeLenses ''MNRL
