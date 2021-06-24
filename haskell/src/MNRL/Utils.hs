@@ -1,12 +1,12 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module MNRLUtils where
+module MNRL.Utils where
 
 import Control.Lens
 import qualified Control.Monad.State as St
 import qualified Data.Map as M
 
-import MNRLTypes
+import MNRL.Types
 
 emptyMNRL :: MNRL
 emptyMNRL = MNRL M.empty "__0__"

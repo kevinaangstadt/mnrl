@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 9698893a1cc454a834cef82892e696031650ef343a381f7113c141d9da81fcac
+-- hash: 99c573568e702f3ef74e1c615f8645babcd0ed66dbd020fc3b7b41ca676a69c8
 
 name:           mnrl-compiler
 version:        0.1.0.0
@@ -28,9 +28,9 @@ source-repository head
 library
   exposed-modules:
       Lib
-      MNRLAeson
-      MNRLTypes
-      MNRLUtils
+      MNRL.Aeson
+      MNRL.Types
+      MNRL.Utils
   other-modules:
       Paths_mnrl_compiler
   hs-source-dirs:
@@ -45,6 +45,7 @@ library
     , mtl
     , scientific
     , text
+    , unordered-containers
   default-language: Haskell2010
 
 executable mnrl-compiler-exe
@@ -65,6 +66,7 @@ executable mnrl-compiler-exe
     , mtl
     , scientific
     , text
+    , unordered-containers
   default-language: Haskell2010
 
 test-suite mnrl-compiler-test
@@ -86,4 +88,5 @@ test-suite mnrl-compiler-test
     , mtl
     , scientific
     , text
+    , unordered-containers
   default-language: Haskell2010

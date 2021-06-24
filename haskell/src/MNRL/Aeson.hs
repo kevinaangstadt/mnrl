@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module MNRLAeson where
+module MNRL.Aeson where
 
 import Data.Aeson
 import Data.Aeson.Types
@@ -9,8 +9,9 @@ import Data.Text (Text)
 import GHC.Exts
 import Control.Monad
 import qualified Data.Map as M
+import qualified Data.HashMap.Lazy as HL
 
-import MNRLTypes
+import MNRL.Types
 
 toObject :: ToJSON a => a -> Object
 toObject a = case toJSON a of
@@ -119,7 +120,8 @@ parseNode v = do
   nodeIns <- (v .: "inputDefs")
   nodeReport <- v .:?  "report" .!= False
   nodeREnable <- v .:? "reportEnable"
-  return $ Node nodeEnable nodeReport nodeREnable nodeIns nodeOuts
+  nodeRId <- (v .: "attributes") >>= (.: "reportId")
+  return $ Node nodeEnable nodeReport nodeRId nodeREnable nodeIns nodeOuts
 
 parseAttr :: Object -> Parser Attributes
 parseAttr v = do
@@ -138,8 +140,7 @@ parseHState v = do
   attributes <- v .: "attributes"
   nodeLatched <- attributes .: "latched"
   nodeSymbols <- attributes .: "symbolSet"
-  nodeRId <- attributes .: "reportId"
-  return $ HState nodeLatched nodeSymbols nodeRId
+  return $ HState nodeLatched nodeSymbols
 
 parseState :: Object -> Parser State
 parseState v = do
@@ -148,8 +149,7 @@ parseState v = do
   attributes <- v .: "attributes"
   nodeLatched <- attributes .: "latched"
   nodeSymbols <- attributes .: "symbolSet"
-  nodeRId <- attributes .: "reportId"
-  return $ State nodeLatched nodeSymbols nodeRId
+  return $ State nodeLatched nodeSymbols
 
 parseGate :: Object -> Parser Gate
 parseGate v = do
@@ -157,8 +157,7 @@ parseGate v = do
   guard $ nodeType == String "boolean"
   attributes <- v .: "attributes"
   gType <- attributes .: "gateType"
-  gRId <- attributes .: "reportId"
-  return $ Gate gType gRId
+  return $ Gate gType
 
 parseCounter :: Object -> Parser Counter
 parseCounter v = do
@@ -167,35 +166,30 @@ parseCounter v = do
   attributes <- v .: "attributes"
   cMode <- attributes .: "mode"
   cThreshold <- attributes .: "threshold"
-  cRId <- attributes .: "reportId"
-  return $ Counter cMode cThreshold cRId
+  return $ Counter cMode cThreshold
 
 unparseHState :: HState -> Object
 unparseHState hs = fromList [ "type" .= String "hState" ]
               <>   fromList [ "attributes" .=
                                 object [ "latched" .= _hStateLatched hs
-                                       , "symbolSet" .= _hStateSymbolSet hs
-                                       , "reportId" .= _hStateReportId hs ] ]
+                                       , "symbolSet" .= _hStateSymbolSet hs ] ]
 
 unparseState :: State -> Object
 unparseState s = fromList [ "type" .= String "state" ]
               <> fromList [ "attributes" .=
                               object [ "latched" .= _stateLatched s
-                                     , "symbolSet" .= _stateSymbolSet s
-                                     , "reportId" .= _stateReportId s ] ]
+                                     , "symbolSet" .= _stateSymbolSet s ] ]
 
 unparseGate :: Gate -> Object
 unparseGate g = fromList [ "type" .= String "boolean" ]
              <> fromList [ "attributes" .=
-                              object [ "gateType" .= _gateType g
-                                     , "reportId" .= _gateReportId g ] ]
+                              object [ "gateType" .= _gateType g ] ]
 
 unparseCounter :: Counter -> Object
 unparseCounter c = fromList [ "type" .= String "upCounter" ]
                 <> fromList [ "attributes" .=
                               object [ "mode" .= _ctrMode c
-                                     , "threshold" .= _ctrThreshold c
-                                     , "reportId" .= _ctrReportId c ] ]
+                                     , "threshold" .= _ctrThreshold c ] ]
 
 unparseAttrs :: Attributes -> Object
 unparseAttrs (AttrHState x) = unparseHState x
@@ -214,7 +208,10 @@ unparseNode node =
             Just x -> fromList [ "reportEnable" .= x])
 
 unparseComponent :: Component -> Object
-unparseComponent c = (unparseNode $ _cNode c) <> (unparseAttrs $ _cAttrs c)
+unparseComponent c = HL.adjust
+  (\x -> Object $ (toObject x) <> (fromList ["reportId" .= _nReportId (_cNode c)]))
+  "attributes"
+  ((unparseNode $ _cNode c) <> (unparseAttrs $ _cAttrs c))
 
 
 instance ToJSON MNRL where

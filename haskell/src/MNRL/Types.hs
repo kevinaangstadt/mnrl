@@ -1,6 +1,6 @@
 {-# LANGUAGE TemplateHaskell #-}
 
-module MNRLTypes where
+module MNRL.Types where
 
 import Control.Lens
 import Data.Map
@@ -31,6 +31,7 @@ data GateType = GAnd | GOr | GNor | GNot | GNand
 
 data Node = Node { _nEnable :: Enable
                  , _nReport :: Report
+                 , _nReportId :: ReportId
                  , _nReportEnable :: Maybe ReportEnable
                  , _nInputDefs :: [InputDef]
                  , _nOutputDefs :: [OutputDef]
@@ -38,21 +39,17 @@ data Node = Node { _nEnable :: Enable
 
 data HState = HState { _hStateLatched :: Bool
                      , _hStateSymbolSet :: Text
-                     , _hStateReportId :: ReportId
                      }
 
 data State = State { _stateLatched :: Bool
                    , _stateSymbolSet :: Map Id Text
-                   , _stateReportId :: ReportId
                    }
 
 data Counter = Counter { _ctrMode :: CtrMode
                        , _ctrThreshold :: Int
-                       , _ctrReportId :: ReportId
                        }
 
-data Gate = Gate { _gateType :: GateType
-                 , _gateReportId :: ReportId}
+data Gate = Gate { _gateType :: GateType }
 
 makeLenses ''MNRL
 makeLenses ''Component

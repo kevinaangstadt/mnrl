@@ -29,6 +29,7 @@ dependencies:
 - bytestring
 - mtl
 - aeson-pretty
+- unordered-containers
 
 library:
   source-dirs: src
