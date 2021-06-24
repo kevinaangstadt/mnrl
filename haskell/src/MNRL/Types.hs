@@ -31,7 +31,7 @@ data GateType = GAnd | GOr | GNor | GNot | GNand
 
 data Node = Node { _nEnable :: Enable
                  , _nReport :: Report
-                 , _nReportId :: ReportId
+                 , _nReportId :: Maybe ReportId
                  , _nReportEnable :: Maybe ReportEnable
                  , _nInputDefs :: [InputDef]
                  , _nOutputDefs :: [OutputDef]
@@ -61,3 +61,4 @@ makeLenses ''HState
 makeLenses ''State
 makeLenses ''Counter
 makeLenses ''Gate
+makePrisms ''Attributes

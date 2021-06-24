@@ -120,7 +120,7 @@ parseNode v = do
   nodeIns <- (v .: "inputDefs")
   nodeReport <- v .:?  "report" .!= False
   nodeREnable <- v .:? "reportEnable"
-  nodeRId <- (v .: "attributes") >>= (.: "reportId")
+  nodeRId <- (v .: "attributes") >>= (.:? "reportId")
   return $ Node nodeEnable nodeReport nodeRId nodeREnable nodeIns nodeOuts
 
 parseAttr :: Object -> Parser Attributes
@@ -206,12 +206,21 @@ unparseNode node =
       <> (case (_nReportEnable node) of
             Nothing -> mempty
             Just x -> fromList [ "reportEnable" .= x])
+      -- <> (case (_nReportId node) of
+      --       Nothing -> mempty
+      --       Just x -> fromList [ "reportId" .= x])
 
 unparseComponent :: Component -> Object
-unparseComponent c = HL.adjust
-  (\x -> Object $ (toObject x) <> (fromList ["reportId" .= _nReportId (_cNode c)]))
-  "attributes"
-  ((unparseNode $ _cNode c) <> (unparseAttrs $ _cAttrs c))
+unparseComponent c =
+  case _nReportId (_cNode c) of
+    Nothing -> nodePlusAttrs
+    Just x -> upd x
+  where
+      nodePlusAttrs = (unparseNode $ _cNode c) <> (unparseAttrs $ _cAttrs c)
+      upd y = HL.adjust
+                (\x -> Object $ (toObject x) <> (fromList ["reportId" .= y]))
+                "attributes"
+                nodePlusAttrs
 
 
 instance ToJSON MNRL where
