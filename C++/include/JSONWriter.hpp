@@ -193,8 +193,10 @@ namespace MNRL {
 			return Value(r->getId());
 		}
 		
-		static Value toJSON(MNRLReportIdString *r, Document &/*d*/) {
-			return Value(StringRef(r->getId().c_str()));
+		static Value toJSON(MNRLReportIdString *r, Document &d) {
+			Value s;
+			s.SetString(r->getId().c_str(), r->getId().length(), d.GetAllocator());
+			return s;
 		}
 	};
 }
