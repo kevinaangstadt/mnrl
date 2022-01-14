@@ -195,7 +195,7 @@ namespace MNRL {
 		
 		static Value toJSON(MNRLReportIdString *r, Document &d) {
 			Value s;
-			s.SetString(r->getId().c_str(), r->getId().length(), d.GetAllocator());
+			s.SetString(r->getId().c_str(), static_cast<rapidjson::SizeType>(r->getId().length()), d.GetAllocator());
 			return s;
 		}
 	};
