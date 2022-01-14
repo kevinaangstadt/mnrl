@@ -47,46 +47,79 @@ void parse_node(Json &n, MNRLNetwork &net) {
 
 		set<string> excludes = {"symbolSet", "latched", "reportId"};
 
-		n["attributes"]["reportId"].IsString() ?
-		net.addState(
+		auto rid = n["attributes"].FindMember("reportId");
+
+		if (rid == n.MemberEnd()) {
+			// no report ID, make one up
+			net.addState(
 				output,
 				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
 				n["id"].GetString(),
 				n["report"].GetBool(),
-				n["attributes"]["reportId"].GetString(),
 				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
-		) :
-		net.addState(
+			);
+		} else {
+			rid->value.IsString() ?
+			net.addState(
 				output,
 				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
 				n["id"].GetString(),
 				n["report"].GetBool(),
-				n["attributes"]["reportId"].GetInt(),
+				rid->value.GetString(),
 				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
-		);
+			) :
+			net.addState(
+				output,
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				rid->value.GetInt(),
+				n["attributes"]["latched"].GetBool(),
+				getAttrs(n["attributes"], excludes)
+			);
+		}
+
+		
 	} else if( typ.compare("hState") == 0 ) {
 		set<string> excludes = {"symbolSet", "latched", "reportId"};
-		n["attributes"]["reportId"].IsString() ?
-		net.addHState(
+
+		auto rid = n["attributes"].FindMember("reportId");
+
+		if (rid == n.MemberEnd()) {
+			// no report ID
+			net.addHState(
 				n["attributes"]["symbolSet"].GetString(),
 				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
 				n["id"].GetString(),
 				n["report"].GetBool(),
-				n["attributes"]["reportId"].GetString(),
 				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
-		) :
-		net.addHState(
+			);
+		} else {
+			rid->value.IsString() ?
+			net.addHState(
 				n["attributes"]["symbolSet"].GetString(),
 				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
 				n["id"].GetString(),
 				n["report"].GetBool(),
-				n["attributes"]["reportId"].GetInt(),
+				rid->value.GetString(),
 				n["attributes"]["latched"].GetBool(),
 				getAttrs(n["attributes"], excludes)
-		);
+			) :
+			net.addHState(
+				n["attributes"]["symbolSet"].GetString(),
+				MNRLDefs::fromMNRLEnable(n["enable"].GetString()),
+				n["id"].GetString(),
+				n["report"].GetBool(),
+				rid->value.GetInt(),
+				n["attributes"]["latched"].GetBool(),
+				getAttrs(n["attributes"], excludes)
+			);
+		}
+
+		
 	} else if( typ.compare("upCounter") == 0 ) {
 		set<string> excludes = {"mode", "threshold", "reportId"};
 		n["attributes"]["reportId"].IsString() ?
@@ -166,7 +199,7 @@ void parse_node(Json &n, MNRLNetwork &net) {
 string MNRLSchema() {
 	extern const char binary_mnrl_schema_json_start asm("_binary_mnrl_schema_json_start");
 	extern const char binary_mnrl_schema_json_end asm("_binary_mnrl_schema_json_end");
-	extern const int binary_mnrl_schema_json_size asm("_binary_mnrl_schema_json_size");
+	//extern const int binary_mnrl_schema_json_size asm("_binary_mnrl_schema_json_size");
 
 	string s(&(binary_mnrl_schema_json_start), &(binary_mnrl_schema_json_end));
 
