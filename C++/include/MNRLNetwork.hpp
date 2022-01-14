@@ -45,8 +45,25 @@ namespace MNRL {
 		
 		MNRLNode &addNode(MNRLNode &theNode) {
 			std::string id = getUniqueNodeId(theNode.getId());
-			theNode.setId(id);
-			nodes[id] = new MNRLNode(theNode);
+
+			switch(theNode.getNodeType()) {
+				case MNRLDefs::NodeType::NODE:
+					nodes[id] = new MNRLNode(theNode);
+					break;
+				case MNRLDefs::NodeType::STATE:
+					nodes[id] = new MNRLState(dynamic_cast<MNRLState&>(theNode));
+					break;
+				case MNRLDefs::NodeType::HSTATE:
+					nodes[id] = new MNRLHState(dynamic_cast<MNRLHState&>(theNode));
+					break;
+				case MNRLDefs::NodeType::BOOLEAN:
+					nodes[id] = new MNRLBoolean(dynamic_cast<MNRLBoolean&>(theNode));
+					break;
+				case MNRLDefs::NodeType::UPCOUNTER:
+					nodes[id] = new MNRLUpCounter(dynamic_cast<MNRLUpCounter&>(theNode));
+					break;
+			}
+			nodes[id]->setId(id);
 			return *(nodes[id]);
 		}
 		
@@ -88,6 +105,19 @@ namespace MNRL {
 		) {
 			std::string new_id = getUniqueNodeId(id);
 			nodes[new_id] = new MNRLState(outputSymbols, enable, new_id, report, reportId, latched, attributes);
+			return *(dynamic_cast<MNRLState*>(nodes[new_id]));
+		}
+
+		MNRLState &addState(
+			std::vector<std::pair<std::string,std::string>> outputSymbols,
+			MNRLDefs::EnableType enable,
+			std::string id,
+			bool report,
+			bool latched,
+			std::map<std::string,std::string> attributes
+		) {
+			std::string new_id = getUniqueNodeId(id);
+			nodes[new_id] = new MNRLState(outputSymbols, enable, new_id, report, latched, attributes);
 			return *(dynamic_cast<MNRLState*>(nodes[new_id]));
 		}
 		
