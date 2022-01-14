@@ -66,7 +66,12 @@ namespace MNRL {
 				gen_input(),
 				gen_output(),
 				attributes
-		), symbols(symbols), latched(latched), reportId(new MNRLReportId()) {}
+		), symbols(symbols), reportId(new MNRLReportId()), latched(latched) {}
+
+		MNRLHState(MNRLHState& other) :
+			MNRLNode ( other ),
+			symbols(other.symbols),
+			reportId(other.reportId->copy()), latched(latched) {}
 		
 		virtual ~MNRLHState() {
 			delete reportId;

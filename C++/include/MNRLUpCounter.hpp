@@ -67,6 +67,12 @@ namespace MNRL {
 			gen_output(),
 			attributes
 		), threshold(threshold), mode(mode), reportId(new MNRLReportId()) {}
+
+		MNRLUpCounter(MNRLUpCounter& other) :
+			MNRLNode ( other ),
+			threshold(other.threshold),
+			mode(other.mode),
+			reportId(other.reportId->copy()) {}
 		
 		virtual ~MNRLUpCounter() {
 			delete reportId;

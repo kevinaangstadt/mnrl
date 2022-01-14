@@ -67,6 +67,11 @@ namespace MNRL {
 			gen_output(),
 			attributes
 		),  mode(mode), reportId(new MNRLReportId()) {}
+
+		MNRLBoolean(MNRLBoolean& other) :
+			MNRLNode ( other ),
+			mode(other.mode),
+			reportId(other.reportId->copy()) {}
 		
 		virtual ~MNRLBoolean() {
 			delete reportId;
