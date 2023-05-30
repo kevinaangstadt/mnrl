@@ -1,0 +1,218 @@
+{
+    "$schema": "http://json-schema.org/draft-04/schema#",
+    "type": "object",
+    "definitions": {
+        "node" : {
+            "properties": {
+                "id": { "type": "string" },
+                "enable": {
+                    "type": "string",
+                    "enum": [ "onActivateIn", "onStartAndActivateIn", "onLast", "always" ]
+                },
+                "report": { "type": "boolean" },
+                "reportEnable" : {
+                  "type": "string",
+                  "enum": [ "always", "onLast" ]
+                },
+                "inputDefs" : {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "portId": { "type": "string" },
+                            "width": { "type": "number" }
+                        },
+                        "required": ["portId","width"]
+                    }
+                },
+                "outputDefs" : {
+                    "type": "array",
+                    "items": {
+                        "type": "object",
+                        "properties": {
+                            "portId": { "type": "string" },
+                            "width": { "type": "number" },
+                            "activate": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "id": { "type": "string" },
+                                        "portId": { "type": "string" }
+                                    },
+                                    "required": ["id","portId"]
+                                }
+                            }
+                        },
+                        "required": ["portId","width","activate"]
+                    }
+                }
+            },
+            "required": ["id","enable","report","inputDefs","outputDefs"]
+        },
+        "attributes": {
+            "type": "object",
+            "properties": {
+                "reportId": { "type": ["number", "string"] }
+            }
+        },
+        "state": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["state"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "latched": {
+                                            "type": "boolean"
+                                        },
+                                        "symbolSet" : {
+                                            "type": "object",
+                                            "additionalProperties" : {
+                                                "type": "string"
+                                            }
+                                        }
+                                    },
+                                    "required": ["symbolSet"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "hState": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["hState"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "latched": {
+                                            "type": "boolean"
+                                        },
+                                        "symbolSet" : {
+                                            "type": "string"
+                                        }
+                                    },
+                                    "required": ["symbolSet"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "upCounter": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["upCounter"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "threshold": {
+                                            "type": "number"
+                                        },
+                                        "mode": {
+                                            "enum": [
+                                                "trigger",
+                                                "high",
+                                                "rollover"
+                                            ]
+                                        }
+                                    },
+                                    "required": ["threshold","mode"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
+        "boolean": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["boolean"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "gateType": {
+                                            "enum": [
+                                                "and",
+                                                "or",
+                                                "nor",
+                                                "not",
+                                                "nand"
+                                            ]
+                                        }
+                                    },
+                                    "required": ["gateType"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        }
+    },
+    "properties": {
+        "id": { "type": "string" },
+        "nodes": {
+            "type": "array",
+            "items": {
+                "oneOf": [
+                    { "$ref": "#/definitions/state" },
+                    { "$ref": "#/definitions/hState" },
+                    { "$ref": "#/definitions/upCounter" },
+                    { "$ref": "#/definitions/boolean" }
+                ]
+            }
+        },
+        "attributes" : { "type": "object" }
+    },
+    "required" : ["id", "nodes"]
+}
