@@ -1,3 +1,6 @@
+# auto-generated hpp
+include/mnrl_schema_json.hpp
+
 # extra junk
 .settings
 .cproject
