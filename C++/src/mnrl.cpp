@@ -1,6 +1,6 @@
 /*
  * Kevin Angstadt
- * angstadt {at} umich.edu
+ * kangstadt {at} stlawu.edu
  *
  * mnrl.cpp
  */

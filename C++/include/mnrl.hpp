@@ -1,5 +1,5 @@
 // Kevin Angstadt
-// angstadt {at} umich.edu
+// kangstadt {at} stlawu.edu
 // University of Virginia
 //
 // C++ objects for manipulating MNRL files

@@ -1,5 +1,5 @@
 // Kevin Angstadt
-// angstadt {at} umich.edu
+// kangstadt {at} stlawu.edu
 //
 // Functions for Creating JSON from various MNRL objects
 
