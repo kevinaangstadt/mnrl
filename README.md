@@ -3,11 +3,16 @@
 MNRL is an open source, JSON-based representation for graph-based structures. It
 is primarily used for representing finite automata; however, it is general
 enough to support other use cases.  This repository contains the JSON
-specification for MNRL and both a C++ and a Python API.
+specification for MNRL and APIs for:
+
+* C++ 
+* Haskell
+* Python2
+* Python3
 
 ## Versions
 
-- [v1.1](../../tree/v1.1): Updated C++ API that is significantly faster for loading
+- [v1.1.1](../../tree/v1.1.1): Updated C++ API that is significantly faster for loading
   and validating MNRL files.  **NOTE:** The API has changed slightly from v1.0
   and is **not** backwards-compatible.  We now use RapidJSON instead of JSON11
   and ValiJSON.
