@@ -18,7 +18,7 @@ def loadMNRL(filename):
         try:
             jsonschema.validate(json.loads(json_string),schema)
         except jsonschema.exceptions.ValidationError as e:
-            print "ERROR:", e
+            print ("ERROR:", e)
             return None
 
         # parse into MNRL

@@ -125,6 +125,44 @@
                 }
             ]
         },
+        "mealyState": {
+            "type": "object",
+            "allOf": [
+                {
+                    "$ref": "#/definitions/node"
+                },
+                {
+                    "properties": {
+                        "type": {
+                            "enum": ["mealyState"]
+                        },
+                        "attributes": {
+                            "allOf": [
+                                {
+                                    "$ref": "#/definitions/attributes"
+                                },
+                                {
+                                    "properties": {
+                                        "latched": {
+                                            "type": "boolean"
+                                        },
+                                        "symbolSet" : {
+                                            "type": "object",
+                                            "additionalProperties" : {
+                                                "type": "object",
+                                                "input": "string",
+                                                "output": "string"
+                                            }
+                                        }
+                                    },
+                                    "required": ["symbolSet"]
+                                }
+                            ]
+                        }
+                    }
+                }
+            ]
+        },
         "upCounter": {
             "type": "object",
             "allOf": [
@@ -207,6 +245,7 @@
                 "oneOf": [
                     { "$ref": "#/definitions/state" },
                     { "$ref": "#/definitions/hState" },
+                    { "$ref": "#/definitions/mealyState" },
                     { "$ref": "#/definitions/upCounter" },
                     { "$ref": "#/definitions/boolean" }
                 ]
